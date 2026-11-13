@@ -1,0 +1,19 @@
+{
+  "name": "carrear-kit",
+  "owner": {
+    "name": "CarrEar"
+  },
+  "metadata": {
+    "description": "Marketplace de CarrEar. Versión de prueba de humo: solo cascarones, sin datos de nadie.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "carrear-humo",
+      "source": "./plugins/carrear-humo",
+      "description": "Kit de prueba de CarrEar: un cascarón que explica qué es CarrEar y un mini-instalador que crea la carpeta CarrEar, la ficha de configuración vacía y una tarea programada de prueba.",
+      "version": "0.1.0",
+      "category": "productivity"
+    }
+  ]
+}

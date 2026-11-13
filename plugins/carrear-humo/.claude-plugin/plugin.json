@@ -1,0 +1,9 @@
+{
+  "name": "carrear-humo",
+  "version": "0.1.0",
+  "description": "Prueba de humo de CarrEar: skill cascarón «carrear-hola» y mini-instalador «carrear-instalar-humo». No contiene datos de ninguna persona.",
+  "author": {
+    "name": "CarrEar"
+  },
+  "keywords": ["carrear", "carrera", "prueba"]
+}

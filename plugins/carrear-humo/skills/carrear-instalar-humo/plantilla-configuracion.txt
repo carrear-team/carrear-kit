@@ -1,0 +1,113 @@
+DIGITAL BRAIN — CONFIGURACIÓN
+Formato: una línea «clave: valor» por campo. Listas separadas por « | ». Vacío = —
+Creado por: carrear-instalar-humo 0.1.0 (prueba de humo). No contiene datos de nadie.
+
+NÚCLEO
+configVersion: 1
+boardUrl: —
+installedAt: {installedAt}
+updatedAt: {installedAt}
+profileGoal: —
+level: —
+levelCap: —
+
+IDENTIDAD DEL USUARIO
+user.firstName: —
+user.brandName: —
+user.gender: —
+user.emailPrimary: —
+user.emailsOther: —
+user.phone: —
+user.linkedinUrl: —
+user.city: —
+user.country: —
+user.timezone: —
+user.lang: —
+user.langsWrite: —
+user.languageVariant: —
+user.homeArea: —
+user.workArea: —
+user.reservationName: —
+
+FAMILIA
+family.partnerName: —
+family.partnerEmail: —
+family.partnerCalendarPrefix: —
+family.userCalendarPrefix: —
+family.children: —
+family.childcareModel: —
+family.sharedCareRules: —
+
+DRIVE: CARPETAS Y DOCUMENTOS
+drive.rootFolderId: {rootFolderId}
+drive.folders.sistema: —
+drive.folders.quienEres: —
+drive.folders.trayectoria: —
+drive.folders.vacantes: —
+drive.folders.marca: —
+drive.folders.fotos: —
+drive.folders.proyectos: —
+drive.folders.asistente: —
+docs.config: {configDocId}
+docs.maestro: —
+docs.perfilCarrera: —
+docs.criteriosMatch: —
+docs.planDesarrollo: —
+docs.valorMercado: —
+docs.marcaPersonal: —
+docs.remuneracion: —
+docs.balanceVida: —
+docs.miFicha: —
+docs.lugares: —
+docs.cvBase: —
+assets.photoMain: —
+assets.photoAlt: —
+assets.signature: —
+
+HOJAS DE GOOGLE
+sheets.personasId: —
+sheets.reglasId: —
+sheets.registroAlertasId: —
+
+CORREO, CALENDARIO Y TAREAS
+mail.provider: —
+mail.draftAccount: —
+mail.labelsPrefix: —
+calendar.id: —
+calendar.meetingTool: —
+calendar.notetaker: —
+todoist.enabled: —
+todoist.projectPro: —
+todoist.projectPersonal: —
+todoist.labelNeedsUser: —
+
+WHATSAPP Y ORDENADOR
+whatsapp.mode: ninguno
+whatsapp.ownNumber: —
+whatsapp.birdNumberId: —
+whatsapp.makeScenarioId: —
+whatsapp.autoReplyEnabled: —
+computer.os: —
+computer.deviceName: —
+computer.taskIds: —
+linkedin.mode: manual
+
+MARCA Y CONFIDENCIALIDAD
+brand.publicTitle: —
+brand.validatedTaglines: —
+confidential.employers: —
+confidential.publicAlias: —
+confidential.partners: —
+confidential.legalTopics: —
+people.excluded: —
+people.doNotContact: —
+
+INSTALACIÓN Y CONSUMO
+install.services: —
+install.levels.alerts: —
+install.tasks: —
+install.claudePlan: —
+install.onboardings: —
+
+PRUEBAS DE HUMO
+(La tarea programada de prueba añade aquí una línea cada vez que corre.)

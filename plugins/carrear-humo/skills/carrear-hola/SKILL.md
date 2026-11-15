@@ -22,9 +22,9 @@ Esta skill es un cascarón: no lleva el método de CarrEar. En la versión final
 > - **Marco**, dealmaker: te abre puertas en las empresas.
 > - **Maya**, brand manager: tu marca profesional.
 >
-> Esto es una **versión de prueba** (kit de humo 0.3.0). Para empezar, crea el proyecto **«Digital Brain»**, abre un chat dentro y escribe **«Instala CarrEar»**.
+> Esto es una **versión de prueba** (kit de humo 0.3.1). Para empezar, crea el proyecto **«Digital Brain»**, abre un chat dentro y escribe **«Instala CarrEar»**.
 >
-> `CARREAR-HUMO-OK · carrear-hola 0.3.0 · conector de licencia: no disponible (mensaje fijo)`
+> `CARREAR-HUMO-OK · carrear-hola 0.3.1 · conector de licencia: no disponible (mensaje fijo)`
 
 3. No añadas nada más: ni ejemplos con nombres, ni ciudades, ni correos.
 

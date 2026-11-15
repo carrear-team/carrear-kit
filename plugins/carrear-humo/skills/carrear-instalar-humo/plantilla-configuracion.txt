@@ -1,6 +1,6 @@
 DIGITAL BRAIN — CONFIGURACIÓN
 Formato: una línea «clave: valor» por campo. Listas separadas por « | ». Vacío = —
-Creado por: carrear-instalar-humo 0.1.0 (prueba de humo). No contiene datos de nadie.
+Creado por: carrear-instalar-humo 0.3.0 (prueba de humo). Solo contiene el nombre de pila.
 
 NÚCLEO
 configVersion: 1
@@ -11,8 +11,13 @@ profileGoal: —
 level: —
 levelCap: —
 
+PLAN CONTRATADO
+license.addons: —
+license.upgradeUrl: —
+(Membresía siempre incluida. Extras posibles: pro | nina | marco. Ejemplo: license.addons: nina | marco)
+
 IDENTIDAD DEL USUARIO
-user.firstName: —
+user.firstName: {nombre}
 user.brandName: —
 user.gender: —
 user.emailPrimary: —
@@ -21,7 +26,7 @@ user.phone: —
 user.linkedinUrl: —
 user.city: —
 user.country: —
-user.timezone: —
+user.timezone: {timezone}
 user.lang: —
 user.langsWrite: —
 user.languageVariant: —
@@ -39,16 +44,16 @@ family.childcareModel: —
 family.sharedCareRules: —
 
 DRIVE: CARPETAS Y DOCUMENTOS
+drive.rootFolderName: Digital Brain — {nombre}
 drive.rootFolderId: {rootFolderId}
-drive.folders.sistema: —
-drive.folders.quienEres: —
-drive.folders.trayectoria: —
-drive.folders.vacantes: —
-drive.folders.marca: —
-drive.folders.fotos: —
-drive.folders.proyectos: —
-drive.folders.asistente: —
+drive.folders.perfil: {f_perfil}
+drive.folders.personas: {f_personas}
+drive.folders.vacantes: {f_vacantes}
+drive.folders.marca: {f_marca}
+drive.folders.proyectos: {f_proyectos}
+drive.folders.documentos: {f_documentos}
 docs.config: {configDocId}
+docs.bitacoraPruebas: {logDocId}
 docs.maestro: —
 docs.perfilCarrera: —
 docs.criteriosMatch: —
@@ -105,9 +110,8 @@ people.doNotContact: —
 INSTALACIÓN Y CONSUMO
 install.services: —
 install.levels.alerts: —
-install.tasks: —
+install.tasks: ⚙️ CarrEar — prueba de humo (diaria)
 install.claudePlan: —
 install.onboardings: —
-
-PRUEBAS DE HUMO
-(La tarea programada de prueba añade aquí una línea cada vez que corre.)
+install.projectName: Digital Brain
+install.installerChat: 📌 Instalador — CarrEar

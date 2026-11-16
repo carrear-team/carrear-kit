@@ -5,3 +5,7 @@
 - Acceso: comprueba la licencia con el conector CarrEar; si no está activa, muestra el enlace para activarla.
 - Claire (Hoy), Leo (Agenda), Helena (Tu carrera) y Conexiones (CarrEar, Gmail, Google Calendar, Google Drive).
 - Base personal privada (solo la ve su dueño). Idiomas: español, francés e inglés.
+
+## 0.1.1 · 17-nov-2026
+- Pide todos los permisos en una sola ventana al abrir (antes, una ventana por conector).
+- Viaja dentro del plugin (carrear-humo 0.4.0): el Instalador la publica desde el chat con «Instala CarrEar».

@@ -1,0 +1,148 @@
+<title>CarrEar</title>
+<meta name="carrear-version" content="0.1.1">
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--fg:#1c1d1f;--mut:#6a6c70;--line:#e4e2dc;--acc:#1f4a3f;--acc2:#e2b060;--ok:#1e7a3c;--ko:#b3261e;--warn:#9a6700}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15161a;--card:#1e2026;--fg:#ecebe6;--mut:#a3a39c;--line:#2e3038;--acc:#7cc4a6;--acc2:#e2b060;--ok:#5cc27e;--ko:#ff8a80;--warn:#e2b060}}
+:root[data-theme="dark"]{--bg:#15161a;--card:#1e2026;--fg:#ecebe6;--mut:#a3a39c;--line:#2e3038;--acc:#7cc4a6;--acc2:#e2b060;--ok:#5cc27e;--ko:#ff8a80;--warn:#e2b060}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.w{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+h1{font-size:22px;margin:0;letter-spacing:-.01em}h1 b{color:var(--acc)}
+h2{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:13px;border:1px solid var(--line);background:var(--card)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mut)}.dot.ok{background:var(--ok)}.dot.ko{background:var(--ko)}.dot.warn{background:var(--warn)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.ag{width:28px;height:28px;border-radius:50%;display:inline-grid;place-items:center;font-size:13px;font-weight:600;color:#fff;background:var(--acc);flex:0 0 auto}
+.ag.l{background:#3b5b8c}.ag.h{background:#9b5a3c}
+.mut{color:var(--mut);font-size:13px}
+ul{list-style:none;margin:0;padding:0}li{padding:8px 0;border-top:1px solid var(--line)}li:first-child{border-top:0}
+.t{font-variant-numeric:tabular-nums;color:var(--mut);font-size:13px;margin-right:8px}
+button,.btn{font:inherit;font-size:14px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;text-decoration:none;display:inline-block}
+button.p{background:var(--acc);color:#fff;border-color:var(--acc)}
+.conn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0}
+.gate{display:none;text-align:center;padding:48px 16px}.gate h2{justify-content:center;font-size:20px}
+body.locked .app{display:none}body.locked .gate{display:block}
+.say{background:color-mix(in srgb,var(--acc) 8%,transparent);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px}
+footer{margin-top:24px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+code{font-size:13px;background:color-mix(in srgb,var(--fg) 7%,transparent);padding:1px 6px;border-radius:6px}
+</style>
+<div class="w">
+<header><h1><b>CarrEar</b> · <span data-i>Tu equipo</span></h1><span class="chip" id="lic"><span class="dot"></span><span data-i>Comprobando tu acceso…</span></span></header>
+
+<div class="gate" id="gate"><h2 id="gateT" data-i>Tu acceso a CarrEar no está activo</h2><p class="mut" id="gateM"></p><p><a class="btn p" id="gateL" target="_blank" rel="noopener" data-i>Activar mi acceso</a></p><p class="mut" data-i>Tus datos siguen en tu cuenta; vuelven en cuanto se active.</p></div>
+
+<div class="app">
+<div class="grid">
+ <section class="card"><h2><span class="ag">C</span>Claire · <span data-i>Hoy</span></h2><ul id="hoy"><li class="mut" data-i>Cargando…</li></ul><div class="say" data-i>Para hablar con Claire, escribe «Claire» en el chat de tu proyecto «Digital Brain».</div></section>
+ <section class="card"><h2><span class="ag l">L</span>Leo · <span data-i>Agenda</span></h2><ul id="agenda"><li class="mut" data-i>Cargando…</li></ul></section>
+ <section class="card"><h2><span class="ag h">H</span>Helena · <span data-i>Tu carrera</span></h2><div id="helena"><p class="mut" data-i>Cargando…</p></div><div class="say" data-i>Para empezar con Helena, escribe «Empieza con Helena» en el chat de tu proyecto.</div></section>
+ <section class="card"><h2 data-i>Conexiones</h2><div id="conns"></div><p style="margin:10px 0 0"><button id="permBtn" data-i>Revisar permisos</button></p><p class="mut" id="drive"></p></section>
+</div>
+<footer><span class="mut"><span data-i>Versión</span> <span id="ver"></span> · <span data-i>Tu equipo solo deja borradores; nunca envía nada sin tu sí.</span></span><button id="reload" data-i>Actualizar</button></footer>
+</div>
+</div>
+<script>
+(function(){'use strict';
+var VER=document.querySelector('meta[name=carrear-version]').content;
+var L=(navigator.language||'es').slice(0,2);
+var D={
+ "Tu equipo":["Your team","Ton équipe"],
+ "Comprobando tu acceso…":["Checking your access…","Vérification de ton accès…"],
+ "Tu acceso a CarrEar no está activo":["Your CarrEar access is not active","Ton accès à CarrEar n'est pas actif"],
+ "Activar mi acceso":["Activate my access","Activer mon accès"],
+ "Tus datos siguen en tu cuenta; vuelven en cuanto se active.":["Your data stays in your account; it comes back as soon as access is active.","Tes données restent dans ton compte ; elles reviennent dès que l'accès est actif."],
+ "Hoy":["Today","Aujourd'hui"],"Agenda":["Calendar","Agenda"],"Tu carrera":["Your career","Ta carrière"],"Conexiones":["Connections","Connexions"],
+ "Cargando…":["Loading…","Chargement…"],
+ "Para hablar con Claire, escribe «Claire» en el chat de tu proyecto «Digital Brain».":["To talk to Claire, type “Claire” in the chat of your “Digital Brain” project.","Pour parler à Claire, écris « Claire » dans le chat de ton projet « Digital Brain »."],
+ "Para empezar con Helena, escribe «Empieza con Helena» en el chat de tu proyecto.":["To start with Helena, type “Start with Helena” in your project's chat.","Pour commencer avec Helena, écris « Commence avec Helena » dans le chat de ton projet."],
+ "Revisar permisos":["Review permissions","Vérifier les autorisations"],
+ "Versión":["Version","Version"],
+ "Tu equipo solo deja borradores; nunca envía nada sin tu sí.":["Your team only leaves drafts; it never sends anything without your yes.","Ton équipe ne laisse que des brouillons ; elle n'envoie rien sans ton oui."],
+ "Actualizar":["Refresh","Actualiser"],
+ "Acceso activo hasta {0}":["Access active until {0}","Accès actif jusqu'au {0}"],
+ "Acceso no activo":["Access not active","Accès inactif"],
+ "Sin conexión con CarrEar":["No connection to CarrEar","Pas de connexion à CarrEar"],
+ "Conectado":["Connected","Connecté"],"Sin conectar":["Not connected","Non connecté"],"Vuelve a conectar":["Reconnect","Reconnecte"],"Sin permiso de la página":["Page not allowed yet","Page pas encore autorisée"],"No responde":["Not responding","Ne répond pas"],
+ "Nada pendiente hoy.":["Nothing pending today.","Rien en attente aujourd'hui."],
+ "{0} correos importantes sin leer":["{0} important unread emails","{0} e-mails importants non lus"],
+ "Sin eventos en los próximos 2 días.":["No events in the next 2 days.","Aucun événement dans les 2 prochains jours."],
+ "Conecta Google Calendar para ver tu agenda.":["Connect Google Calendar to see your calendar.","Connecte Google Agenda pour voir ton agenda."],
+ "Conecta Gmail para ver tus correos importantes.":["Connect Gmail to see your important emails.","Connecte Gmail pour voir tes e-mails importants."],
+ "Aún no has empezado con Helena.":["You haven't started with Helena yet.","Tu n'as pas encore commencé avec Helena."],
+ "Paso {0} de {1}":["Step {0} of {1}","Étape {0} sur {1}"],
+ "Tu carpeta: {0}":["Your folder: {0}","Ton dossier : {0}"],
+ "Aún no está tu carpeta «Digital Brain» en Drive.":["Your “Digital Brain” folder isn't in Drive yet.","Ton dossier « Digital Brain » n'est pas encore dans Drive."],
+ "todo el día":["all day","toute la journée"],
+ "Para activarlo, abre el enlace con la misma cuenta de Google que usas en Claude.":["To activate it, open the link with the same Google account you use in Claude.","Pour l'activer, ouvre le lien avec le même compte Google que dans Claude."]
+};
+function t(s,a){var r=D[s];var o=(r&&L==='en')?r[0]:(r&&L==='fr')?r[1]:s;if(a!=null)o=o.replace('{0}',a[0]).replace('{1}',a[1]);return o}
+document.querySelectorAll('[data-i]').forEach(function(e){e.textContent=t(e.textContent.trim())});
+document.documentElement.lang=L;
+var $=function(i){return document.getElementById(i)};
+$('ver').textContent=VER;
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fmtD(iso,opt){try{return new Date(iso).toLocaleString(L,opt)}catch(e){return iso}}
+
+var SRV=[['carrear','CarrEar'],['Gmail','Gmail'],['Google Calendar','Google Calendar'],['Google Drive','Google Drive']];
+var state={};
+function paintConns(){var h='';SRV.forEach(function(s){var st=state[s[0]]||'?';var cls=st==='ok'?'ok':st==='?'?'':st==='prompt'?'warn':'ko';var lab=st==='ok'?t('Conectado'):st==='?'?t('Cargando…'):st==='prompt'?t('Sin permiso de la página'):st==='needs_reauth'?t('Vuelve a conectar'):st==='server_unavailable'?t('No responde'):t('Sin conectar');h+='<div class="conn"><span>'+esc(s[1])+'</span><span class="chip"><span class="dot '+cls+'"></span>'+esc(lab)+'</span></div>'});$('conns').innerHTML=h}
+paintConns();
+function fail(srv,e){var c=(e&&e.code)||'error';state[srv]=(c==='not_granted'||c==='consent_required')?'prompt':c;paintConns();return c}
+function ok(srv){state[srv]='ok';paintConns()}
+
+var mcp=null,db=null,uid=null;
+async function call(srv,tool,input){var r=await mcp.callTool(srv,tool,input||{});ok(srv);return r.payload}
+
+async function licencia(){
+ try{var p=await call('carrear','licencia',{});
+  var chip=$('lic');
+  if(p&&p.estado==='activa'){chip.innerHTML='<span class="dot ok"></span>'+esc(t('Acceso activo hasta {0}',[fmtD(p.hasta,{day:'numeric',month:'long'})]));document.body.classList.remove('locked');return true}
+  chip.innerHTML='<span class="dot ko"></span>'+esc(t('Acceso no activo'));
+  $('gateM').textContent=(p&&p.mensaje)||t('Para activarlo, abre el enlace con la misma cuenta de Google que usas en Claude.');
+  if(p&&p.enlacePago)$('gateL').href=p.enlacePago;else $('gateL').style.display='none';
+  document.body.classList.add('locked');return false;
+ }catch(e){fail('carrear',e);$('lic').innerHTML='<span class="dot ko"></span>'+esc(t('Sin conexión con CarrEar'));return false}
+}
+
+async function hoy(){
+ var items=[];
+ if(db&&uid){try{var s=await db.collection('data/users/'+uid).doc('estado').get();var d=s.exists?s.data():null;(d&&d.pendientes||[]).filter(function(x){return!x.hecho}).slice(0,6).forEach(function(x){items.push(esc(x.texto))})}catch(e){}}
+ try{var p=await call('Gmail','search_threads',{query:'is:unread is:important newer_than:2d -in:sent',view:'THREAD_VIEW_IDS_ONLY',pageSize:50});var n=(p&&p.threads||[]).length;if(n)items.push(esc(t('{0} correos importantes sin leer',[n])))}
+ catch(e){fail('Gmail',e);items.push('<span class="mut">'+esc(t('Conecta Gmail para ver tus correos importantes.'))+'</span>')}
+ $('hoy').innerHTML=items.length?items.map(function(x){return'<li>'+x+'</li>'}).join(''):'<li class="mut">'+esc(t('Nada pendiente hoy.'))+'</li>';
+}
+
+async function agenda(){
+ try{var now=new Date(),end=new Date(now.getTime()+2*864e5);var f=function(d){return d.toISOString().slice(0,19)};
+  var p=await call('Google Calendar','list_events',{startTime:f(now),endTime:f(end),orderBy:'startTime',pageSize:8});
+  var ev=(p&&(p.events||p.items))||[];
+  if(!ev.length){$('agenda').innerHTML='<li class="mut">'+esc(t('Sin eventos en los próximos 2 días.'))+'</li>';return}
+  $('agenda').innerHTML=ev.map(function(e){var s=e.start||{};var dt=s.dateTime||s.date||e.startTime;var when=s.date&&!s.dateTime?t('todo el día'):fmtD(dt,{weekday:'short',hour:'2-digit',minute:'2-digit'});return'<li><span class="t">'+esc(when)+'</span>'+esc(e.summary||e.title||'—')+'</li>'}).join('');
+ }catch(e){fail('Google Calendar',e);$('agenda').innerHTML='<li class="mut">'+esc(t('Conecta Google Calendar para ver tu agenda.'))+'</li>'}
+}
+
+async function helena(){
+ var h=null;if(db&&uid){try{var s=await db.collection('data/users/'+uid).doc('estado').get();h=s.exists?(s.data().helena||null):null}catch(e){}}
+ $('helena').innerHTML=h&&h.paso?'<p><b>'+esc(t('Paso {0} de {1}',[h.paso,h.total||8]))+'</b></p><p class="mut">'+esc(h.resumen||'')+'</p>':'<p class="mut">'+esc(t('Aún no has empezado con Helena.'))+'</p>';
+}
+
+async function drive(){
+ try{var p=await call('Google Drive','search_files',{query:"title contains 'Digital Brain' and mimeType = 'application/vnd.google-apps.folder' and trashed = false",excludeContentSnippets:true,pageSize:3});
+  var f=(p&&p.files||[])[0];$('drive').innerHTML=f?esc(t('Tu carpeta: {0}',[''])).replace(/\s*$/,' ')+'<a href="'+esc(f.viewUrl||f.webViewLink||'#')+'" target="_blank" rel="noopener">'+esc(f.title||f.name)+'</a>':esc(t('Aún no está tu carpeta «Digital Brain» en Drive.'));
+ }catch(e){fail('Google Drive',e)}
+}
+
+async function run(){
+ if(!mcp){SRV.forEach(function(s){state[s[0]]='unavailable'});paintConns();$('lic').innerHTML='<span class="dot ko"></span>'+esc(t('Sin conexión con CarrEar'));['hoy','agenda'].forEach(function(i){$(i).innerHTML='<li class="mut">'+esc(t('Sin conexión con CarrEar'))+'</li>'});$('helena').innerHTML='';return}
+ var activa=await licencia();if(!activa)return;
+ await Promise.all([hoy(),agenda(),helena(),drive()]);
+}
+$('reload').onclick=run;
+$('permBtn').onclick=function(){claude.use('permissions').then(function(p){p&&p.manage&&p.manage().catch(function(){})}).catch(function(){})};
+Promise.all([claude.use('mcp'),claude.use('db'),claude.use('user'),claude.use('permissions')]).then(async function(r){mcp=r[0];db=r[1];var u=r[2],pm=r[3];
+ if(pm){try{var st=await pm.state();var ask=Object.keys(st).filter(function(k){return st[k]==='prompt'});if(ask.length)await pm.request(ask)}catch(e){}}
+ try{uid=u?await u.id():null}catch(e){}run()});
+})();
+</script>

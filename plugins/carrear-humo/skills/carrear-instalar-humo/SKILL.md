@@ -3,7 +3,7 @@ name: carrear-instalar-humo
 description: "Mini-instalador de prueba de CarrEar. Úsala cuando el usuario diga «Instala CarrEar», «instalar CarrEar» o «configura CarrEar». Sigue el recorrido del onboarding de cliente: comprueba el proyecto «Digital Brain», crea en Google Drive la carpeta «Digital Brain — [Nombre]» con sus subcarpetas y el doc «Digital Brain — Configuración», deja el texto para las instrucciones del proyecto, apunta todo en una bitácora aparte y propone una tarea programada de prueba. Versión de prueba de humo: solo pide el nombre de pila."
 ---
 
-# CarrEar · Instalador de prueba (humo 0.3.0)
+# CarrEar · Instalador de prueba (humo 0.4.0)
 
 Objetivo: comprobar en una cuenta nueva el recorrido del onboarding de cliente (doc «CarrEar — Onboarding: as-is, en camino e ideal», etapa 3 «Instalar»):
 1. que el chat del instalador vive en el proyecto «Digital Brain» y se llama «📌 Instalador — CarrEar»;
@@ -17,6 +17,12 @@ Habla en el idioma del usuario, frases cortas. Al final de cada paso di «Paso N
 Desde el paso 3, cada paso que termine (OK o KO) añade una línea al final del doc «Bitácora de pruebas»:
 `<fecha y hora ISO> · INSTALADOR · Paso N · OK|KO · <qué se hizo o el error exacto>`
 Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
+
+## Paso 0 — Tu acceso a CarrEar
+- Busca la herramienta `licencia` del conector CarrEar (si está diferida, cárgala) y llámala.
+- Si no existe el conector: «Paso 0: KO — falta la conexión CarrEar. Ve a Personalizar › Plug-ins › Carrear humo › Conectores › Conectar y vuelve a escribir "Instala CarrEar"». Para.
+- Si `estado` no es `activa`: enseña su `mensaje` y su `enlacePago` y para. No sigas con ningún paso.
+- Si es `activa`: «Paso 0: OK — acceso activo hasta <hasta>».
 
 ## Paso 1 — Proyecto «Digital Brain» y nombre del chat
 - Comprueba si este chat está dentro de un proyecto llamado «Digital Brain» (lo ves en tu contexto: instrucciones o archivos del proyecto). Si no lo sabes, pregúntalo con un sí/no.
@@ -58,6 +64,15 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 - Si no puedes leer la plantilla, crea el doc con las secciones vacías NÚCLEO, PLAN CONTRATADO, IDENTIDAD DEL USUARIO, FAMILIA, DRIVE: CARPETAS Y DOCUMENTOS, HOJAS DE GOOGLE, CORREO, CALENDARIO Y TAREAS, WHATSAPP Y ORDENADOR, MARCA Y CONFIDENCIALIDAD, INSTALACIÓN Y CONSUMO, y apunta en la bitácora que se usó el plan B.
 - Guarda su id: es `configDocId`. Enseña el enlace al doc.
 
+## Paso 5b — Tu página CarrEar
+- Lee el archivo `carrear-piloto.html` de la carpeta de esta skill. Anota la versión que trae (`<meta name="carrear-version" content="…">`).
+- Publícalo como artefacto nuevo, **exactamente como está, sin cambiar ni una letra**, con estas capacidades:
+  `{"mcp": {"servers": [{"server": "carrear", "tools": ["licencia"]}, {"server": "Gmail", "tools": ["search_threads"]}, {"server": "Google Calendar", "tools": ["list_events"]}, {"server": "Google Drive", "tools": ["search_files"]}]}, "db": {}, "user": {}}`
+  Si un conector de Google no existe en la cuenta, déjalo igual en la lista: la página lo muestra como «Sin conectar».
+- Si ya publicaste esta página antes en esta cuenta (lo dice el usuario o lo ves en el chat), vuelve a publicar en **el mismo enlace** para que no pierda su base.
+- Dile: «Abre tu página CarrEar y pulsa Continuar en la ventana de permisos (una sola vez). Arriba debe decir "Acceso activo hasta …"». Espera su «hecho».
+- Apunta en la bitácora: versión, enlace de la página y si vio «Acceso activo».
+
 ## Paso 6 — Instrucciones del proyecto «Digital Brain»
 Las skills leen los ids desde dos sitios fijos: este doc de configuración y las instrucciones del proyecto. Tú no puedes editar las instrucciones del proyecto: dale al usuario este bloque listo para copiar (con los ids reales) y dile dónde pegarlo: «Proyecto Digital Brain › Instrucciones › Editar › pega al final › Guardar».
 ```
@@ -76,7 +91,8 @@ Di en dos líneas qué vas a crear y pide un «sí». Con el «sí», crea la ta
 - Prompt (pon los ids reales en lugar de `<configDocId>` y `<logDocId>`):
 
 ```
-⚙️ Tarea automática de CarrEar (kit de humo 0.3.0). Corre sin nadie delante: no preguntes nada.
+⚙️ Tarea automática de CarrEar (kit de humo 0.4.0). Corre sin nadie delante: no preguntes nada.
+0. Llama a la herramienta `licencia` del conector CarrEar. Si su estado no es «activa», apunta en la bitácora «TAREA · diaria · PARADA · acceso no activo» y termina con «Acceso no activo: tarea parada». No hagas nada más.
 Empieza tu respuesta con esta línea, tal cual: «⚙️ Tarea automática de CarrEar — esta conversación se reinicia en cada corrida. ¿Cambios? → 📌 Instalador — CarrEar».
 1. Con el conector Google Drive, abre el Google Doc con id <configDocId> («Digital Brain — Configuración»). Si el id falla, búscalo por título exacto. Solo léelo; no lo cambies.
 2. Abre el Google Doc con id <logDocId> («Bitácora de pruebas»). Si el id falla, búscalo por título exacto.
@@ -88,7 +104,7 @@ Empieza tu respuesta con esta línea, tal cual: «⚙️ Tarea automática de Ca
 Si no existe la herramienta de tareas programadas, o falla por permisos o por el plan de la cuenta: di «Paso 7: KO — <mensaje exacto>», apúntalo en la bitácora (indica qué no permite el plan) y da al usuario los datos de arriba para crearla a mano (Tareas programadas › Nueva tarea), con el prompt listo para copiar.
 
 ## Paso 8 — Cierre
-Resume en 6 líneas: chat (proyecto y nombre), carpeta «Digital Brain — {nombre}» (enlace), configuración (enlace), bitácora (enlace), tarea (nombre y estado) y tiempo total desde el paso 1. Después: «Para comprobar la tarea ya: abre la tarea y pulsa "Ejecutar ahora"; en menos de 5 min debe aparecer una línea TAREA en la bitácora y la conversación de la tarea debe empezar por la línea ⚙️». Recuerda: «Al terminar la prueba, pon la tarea en pausa». Añade a la bitácora la línea de cierre con el tiempo total.
+Resume en 7 líneas: acceso (hasta cuándo), chat (proyecto y nombre), página CarrEar (enlace), carpeta «Digital Brain — {nombre}» (enlace), configuración (enlace), bitácora (enlace), tarea (nombre y estado) y tiempo total desde el paso 1. Después: «Para comprobar la tarea ya: abre la tarea y pulsa "Ejecutar ahora"; en menos de 5 min debe aparecer una línea TAREA en la bitácora y la conversación de la tarea debe empezar por la línea ⚙️». Recuerda: «Al terminar la prueba, pon la tarea en pausa». Añade a la bitácora la línea de cierre con el tiempo total.
 
 ## Nunca
 - Pedir, inventar ni escribir datos personales aparte del nombre de pila.

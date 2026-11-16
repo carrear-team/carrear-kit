@@ -1,5 +1,5 @@
 <title>CarrEar</title>
-<meta name="carrear-version" content="0.1.0">
+<meta name="carrear-version" content="0.1.1">
 <style>
 :root{--bg:#f7f6f2;--card:#fff;--fg:#1c1d1f;--mut:#6a6c70;--line:#e4e2dc;--acc:#1f4a3f;--acc2:#e2b060;--ok:#1e7a3c;--ko:#b3261e;--warn:#9a6700}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15161a;--card:#1e2026;--fg:#ecebe6;--mut:#a3a39c;--line:#2e3038;--acc:#7cc4a6;--acc2:#e2b060;--ok:#5cc27e;--ko:#ff8a80;--warn:#e2b060}}
@@ -141,6 +141,8 @@ async function run(){
 }
 $('reload').onclick=run;
 $('permBtn').onclick=function(){claude.use('permissions').then(function(p){p&&p.manage&&p.manage().catch(function(){})}).catch(function(){})};
-Promise.all([claude.use('mcp'),claude.use('db'),claude.use('user')]).then(async function(r){mcp=r[0];db=r[1];var u=r[2];try{uid=u?await u.id():null}catch(e){}run()});
+Promise.all([claude.use('mcp'),claude.use('db'),claude.use('user'),claude.use('permissions')]).then(async function(r){mcp=r[0];db=r[1];var u=r[2],pm=r[3];
+ if(pm){try{var st=await pm.state();var ask=Object.keys(st).filter(function(k){return st[k]==='prompt'});if(ask.length)await pm.request(ask)}catch(e){}}
+ try{uid=u?await u.id():null}catch(e){}run()});
 })();
 </script>

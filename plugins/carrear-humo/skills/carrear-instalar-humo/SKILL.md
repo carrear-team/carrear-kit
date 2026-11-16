@@ -25,7 +25,7 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 - Si es `activa`: «Paso 0: OK — acceso activo hasta <hasta>».
 
 ## Paso 1 — Proyecto «Digital Brain» y nombre del chat
-- Comprueba si este chat está dentro de un proyecto llamado «Digital Brain» (lo ves en tu contexto: instrucciones o archivos del proyecto). Si no lo sabes, pregúntalo con un sí/no.
+- Comprueba si este chat está dentro de un proyecto cuyo nombre empieza por «Digital Brain» (p. ej. «Digital Brain · PRUEBA») (lo ves en tu contexto: instrucciones o archivos del proyecto). Si no lo sabes, pregúntalo con un sí/no.
 - Si no está: «Paso 1: KO — este chat no está en el proyecto Digital Brain. Crea el proyecto (Proyectos › Nuevo proyecto › "Digital Brain"), abre un chat dentro y vuelve a escribir "Instala CarrEar"». Para.
 - Si está: pide renombrar este chat: «Pulsa ⋮ junto a este chat › Renombrar › escribe 📌 Instalador — CarrEar. Si tu app permite fijar chats, fíjalo arriba». Espera su «hecho» y sigue (el renombre no lo puedes comprobar tú: anótalo como «hecho según el usuario»).
 

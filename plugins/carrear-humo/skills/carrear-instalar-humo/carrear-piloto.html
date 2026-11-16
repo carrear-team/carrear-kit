@@ -1,5 +1,5 @@
 <title>CarrEar</title>
-<meta name="carrear-version" content="0.1.1">
+<meta name="carrear-version" content="0.1.2">
 <style>
 :root{--bg:#f7f6f2;--card:#fff;--fg:#1c1d1f;--mut:#6a6c70;--line:#e4e2dc;--acc:#1f4a3f;--acc2:#e2b060;--ok:#1e7a3c;--ko:#b3261e;--warn:#9a6700}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15161a;--card:#1e2026;--fg:#ecebe6;--mut:#a3a39c;--line:#2e3038;--acc:#7cc4a6;--acc2:#e2b060;--ok:#5cc27e;--ko:#ff8a80;--warn:#e2b060}}
@@ -40,7 +40,7 @@ code{font-size:13px;background:color-mix(in srgb,var(--fg) 7%,transparent);paddi
  <section class="card"><h2><span class="ag h">H</span>Helena · <span data-i>Tu carrera</span></h2><div id="helena"><p class="mut" data-i>Cargando…</p></div><div class="say" data-i>Para empezar con Helena, escribe «Empieza con Helena» en el chat de tu proyecto.</div></section>
  <section class="card"><h2 data-i>Conexiones</h2><div id="conns"></div><p style="margin:10px 0 0"><button id="permBtn" data-i>Revisar permisos</button></p><p class="mut" id="drive"></p></section>
 </div>
-<footer><span class="mut"><span data-i>Versión</span> <span id="ver"></span> · <span data-i>Tu equipo solo deja borradores; nunca envía nada sin tu sí.</span></span><button id="reload" data-i>Actualizar</button></footer>
+<footer><span class="mut"><span data-i>Versión</span> <span id="ver"></span> · <span data-i>Contigo desde</span> <span id="desde">—</span> · <span data-i>Tu equipo solo deja borradores; nunca envía nada sin tu sí.</span></span><button id="reload" data-i>Actualizar</button></footer>
 </div>
 </div>
 <script>
@@ -61,6 +61,7 @@ var D={
  "Versión":["Version","Version"],
  "Tu equipo solo deja borradores; nunca envía nada sin tu sí.":["Your team only leaves drafts; it never sends anything without your yes.","Ton équipe ne laisse que des brouillons ; elle n'envoie rien sans ton oui."],
  "Actualizar":["Refresh","Actualiser"],
+ "Contigo desde":["With you since","Avec toi depuis"],
  "Acceso activo hasta {0}":["Access active until {0}","Accès actif jusqu'au {0}"],
  "Acceso no activo":["Access not active","Accès inactif"],
  "Sin conexión con CarrEar":["No connection to CarrEar","Pas de connexion à CarrEar"],
@@ -117,12 +118,20 @@ async function hoy(){
 async function agenda(){
  try{var now=new Date(),end=new Date(now.getTime()+2*864e5);var f=function(d){return d.toISOString().slice(0,19)};
   var p=await call('Google Calendar','list_events',{startTime:f(now),endTime:f(end),orderBy:'startTime',pageSize:8});
-  var ev=(p&&(p.events||p.items))||[];
+  var ev=((p&&(p.events||p.items))||[]).filter(function(e){var s=e.start||{};var d=new Date(s.dateTime||s.date||e.startTime);return !(d>end)});
   if(!ev.length){$('agenda').innerHTML='<li class="mut">'+esc(t('Sin eventos en los próximos 2 días.'))+'</li>';return}
   $('agenda').innerHTML=ev.map(function(e){var s=e.start||{};var dt=s.dateTime||s.date||e.startTime;var when=s.date&&!s.dateTime?t('todo el día'):fmtD(dt,{weekday:'short',hour:'2-digit',minute:'2-digit'});return'<li><span class="t">'+esc(when)+'</span>'+esc(e.summary||e.title||'—')+'</li>'}).join('');
  }catch(e){fail('Google Calendar',e);$('agenda').innerHTML='<li class="mut">'+esc(t('Conecta Google Calendar para ver tu agenda.'))+'</li>'}
 }
 
+async function visita(){
+ if(!(db&&uid))return;
+ try{var ref=db.collection('data/users/'+uid).doc('estado');var s=await ref.get();var d=s.exists?s.data():{};
+  var desde=d.desde||new Date().toISOString();var n=(d.visitas||0)+1;
+  if(s.exists)await ref.update({desde:desde,visitas:n,version:VER});else await ref.set({desde:desde,visitas:n,version:VER});
+  $('desde').textContent=fmtD(desde,{day:'numeric',month:'long',year:'numeric'})+' · '+n;
+ }catch(e){}
+}
 async function helena(){
  var h=null;if(db&&uid){try{var s=await db.collection('data/users/'+uid).doc('estado').get();h=s.exists?(s.data().helena||null):null}catch(e){}}
  $('helena').innerHTML=h&&h.paso?'<p><b>'+esc(t('Paso {0} de {1}',[h.paso,h.total||8]))+'</b></p><p class="mut">'+esc(h.resumen||'')+'</p>':'<p class="mut">'+esc(t('Aún no has empezado con Helena.'))+'</p>';
@@ -137,7 +146,7 @@ async function drive(){
 async function run(){
  if(!mcp){SRV.forEach(function(s){state[s[0]]='unavailable'});paintConns();$('lic').innerHTML='<span class="dot ko"></span>'+esc(t('Sin conexión con CarrEar'));['hoy','agenda'].forEach(function(i){$(i).innerHTML='<li class="mut">'+esc(t('Sin conexión con CarrEar'))+'</li>'});$('helena').innerHTML='';return}
  var activa=await licencia();if(!activa)return;
- await Promise.all([hoy(),agenda(),helena(),drive()]);
+ await Promise.all([hoy(),agenda(),helena(),drive(),visita()]);
 }
 $('reload').onclick=run;
 $('permBtn').onclick=function(){claude.use('permissions').then(function(p){p&&p.manage&&p.manage().catch(function(){})}).catch(function(){})};

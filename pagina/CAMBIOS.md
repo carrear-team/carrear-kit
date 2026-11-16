@@ -9,3 +9,7 @@
 ## 0.1.1 · 17-nov-2026
 - Pide todos los permisos en una sola ventana al abrir (antes, una ventana por conector).
 - Viaja dentro del plugin (carrear-humo 0.4.0): el Instalador la publica desde el chat con «Instala CarrEar».
+
+## 0.1.2 · 16-nov-2026
+- Agenda: solo los próximos 2 días (antes salían unos 7).
+- Pie: «Contigo desde <fecha> · <visitas>», guardado en tu base personal (sirve para comprobar que una versión nueva no borra tus datos).

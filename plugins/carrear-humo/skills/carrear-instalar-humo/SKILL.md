@@ -3,7 +3,7 @@ name: carrear-instalar-humo
 description: "Mini-instalador de prueba de CarrEar. Úsala cuando el usuario diga «Instala CarrEar», «instalar CarrEar» o «configura CarrEar». Sigue el recorrido del onboarding de cliente: comprueba el proyecto «Digital Brain», crea en Google Drive la carpeta «Digital Brain — [Nombre]» con sus subcarpetas y el doc «Digital Brain — Configuración», deja el texto para las instrucciones del proyecto, apunta todo en una bitácora aparte y propone una tarea programada de prueba. Versión de prueba de humo: solo pide el nombre de pila."
 ---
 
-# CarrEar · Instalador de prueba (humo 0.4.0)
+# CarrEar · Instalador de prueba (humo 0.4.1)
 
 Objetivo: comprobar en una cuenta nueva el recorrido del onboarding de cliente (doc «CarrEar — Onboarding: as-is, en camino e ideal», etapa 3 «Instalar»):
 1. que el chat del instalador vive en el proyecto «Digital Brain» y se llama «📌 Instalador — CarrEar»;
@@ -14,7 +14,7 @@ Todo lo que pase se apunta en una bitácora aparte. **El único dato personal qu
 Habla en el idioma del usuario, frases cortas. Al final de cada paso di «Paso N: OK» o «Paso N: KO — <mensaje exacto del error>». Apunta la hora de inicio: al cerrar se mide el tiempo total (meta del ensayo: ≤ 30 min).
 
 ## Regla de la bitácora
-Desde el paso 3, cada paso que termine (OK o KO) añade una línea al final del doc «Bitácora de pruebas»:
+Desde el paso 3, cada paso que termine (OK o KO) añade una línea al final del doc «Bitácora de pruebas» **con el conector Google Docs** (insertar texto al final del documento; el de Drive no edita):
 `<fecha y hora ISO> · INSTALADOR · Paso N · OK|KO · <qué se hizo o el error exacto>`
 Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 
@@ -32,6 +32,7 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 ## Paso 2 — Comprobar Google Drive y pedir el nombre
 - Busca las herramientas del conector Google Drive (por ejemplo `search_files` y `create_file`). Si están diferidas, cárgalas.
 - Si no hay conector de Drive: «Paso 2: KO — falta el conector Google Drive. Actívalo en Ajustes › Conectores y vuelve a escribir "Instala CarrEar"». Para.
+- Busca también las herramientas del conector Google Docs (las que editan un doc, por ejemplo `update_doc`). Si no está: «Paso 2: KO — falta el conector Google Docs (sirve para que tu equipo apunte cosas en tus documentos). Actívalo en Personalizar › Conectores › Google Docs › Conectar y vuelve a escribir "Instala CarrEar"». Para.
 - Pregunta: «¿Cómo te llamas? Solo tu nombre de pila; lo uso para el nombre de tu carpeta». Guárdalo como `{nombre}`.
 
 ## Paso 3 — Bitácora de pruebas (solo para la prueba)
@@ -91,12 +92,12 @@ Di en dos líneas qué vas a crear y pide un «sí». Con el «sí», crea la ta
 - Prompt (pon los ids reales en lugar de `<configDocId>` y `<logDocId>`):
 
 ```
-⚙️ Tarea automática de CarrEar (kit de humo 0.4.0). Corre sin nadie delante: no preguntes nada.
+⚙️ Tarea automática de CarrEar (kit de humo 0.4.1). Corre sin nadie delante: no preguntes nada.
 0. Llama a la herramienta `licencia` del conector CarrEar. Si su estado no es «activa», apunta en la bitácora «TAREA · diaria · PARADA · acceso no activo» y termina con «Acceso no activo: tarea parada». No hagas nada más.
 Empieza tu respuesta con esta línea, tal cual: «⚙️ Tarea automática de CarrEar — esta conversación se reinicia en cada corrida. ¿Cambios? → 📌 Instalador — CarrEar».
 1. Con el conector Google Drive, abre el Google Doc con id <configDocId> («Digital Brain — Configuración»). Si el id falla, búscalo por título exacto. Solo léelo; no lo cambies.
 2. Abre el Google Doc con id <logDocId> («Bitácora de pruebas»). Si el id falla, búscalo por título exacto.
-3. Añade al final de la bitácora una línea nueva: «<fecha y hora ISO actual> · TAREA · diaria · OK · config legible» (o «KO · <motivo exacto>»). No cambies nada más.
+3. Con el conector Google Docs, añade al final de la bitácora una línea nueva: «<fecha y hora ISO actual> · TAREA · diaria · OK · config legible» (o «KO · <motivo exacto>»). No cambies nada más.
 4. No leas correo ni calendario, no envíes nada, no crees ni borres otros archivos.
 5. Termina con una sola línea: «Prueba de humo OK» o «Prueba de humo KO: <motivo>».
 ```

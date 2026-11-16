@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Conector de licencia de CarrEar (prueba T2): entrar con Google + MCP con hola y licencia.",
-  "scripts": { "deploy": "wrangler deploy", "dev": "wrangler dev", "check": "tsc -p ." },
+  "scripts": { "deploy": "wrangler deploy", "dev": "wrangler dev" },
   "dependencies": { "@cloudflare/workers-oauth-provider": "1.2.4" },
-  "devDependencies": { "wrangler": "4.162.0", "typescript": "^5.6.0", "@cloudflare/workers-types": "^4.20261101.0" }
+  "devDependencies": { "wrangler": "4.162.0" }
 }

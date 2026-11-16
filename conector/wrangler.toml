@@ -1,0 +1,11 @@
+name = "carrear-conector"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+# Las variables (GOOGLE_CLIENT_ID, PUBLIC_URL, PAGO_URL, LICENCIAS_ACTIVAS) y el secreto GOOGLE_CLIENT_SECRET
+# se ponen en Cloudflare › Worker › Settings › Variables. keep_vars evita que un despliegue las borre.
+keep_vars = true
+
+[[kv_namespaces]]
+binding = "OAUTH_KV"
+id = "4d7a4765480a40a1a3d0575f258eeda1"

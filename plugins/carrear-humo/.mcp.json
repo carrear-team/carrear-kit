@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "carrear": {
+      "type": "http",
+      "url": "https://carrear-conector.ericalexandre-pulido.workers.dev/mcp"
+    }
+  }
+}

@@ -11,11 +11,12 @@ interface Env {
   GOOGLE_CLIENT_SECRET: string;  // secreto: se pone en Cloudflare › Settings › Variables, nunca en el código
   LICENCIAS_ACTIVAS: string;     // correos con licencia de prueba, separados por comas
   PAGO_URL: string;              // enlace de pago (piloto: página de prueba)
+  LICENCIA_EXTRAS?: string;      // opcional: «correo=nina,marco;correo2=pro». Sin la variable: piloto con todos los extras
 }
 type Props = { sub: string; email: string };
 
 const esc = (v: string) => String(v).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-const VERSION = '0.2.0';
+const VERSION = '0.2.1';
 // El método (capa 1) NO está en este código ni en el repo: vive en el KV privado de Cloudflare (claves «metodo:<agente>»).
 const AGENTES = ['claire', 'leo', 'helena', 'nina', 'marco', 'maya'];
 const METODO_VERSION = '0.2';
@@ -147,9 +148,20 @@ async function instrucciones(env: Env, email: string, args: any) {
 
 function finDeMes(d = new Date()) { return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).toISOString().slice(0, 10); }
 
+function extras(env: Env, email: string): string[] {
+  const todos = ['pro', 'nina', 'marco'];
+  const raw = String(env.LICENCIA_EXTRAS || '').trim();
+  if (!raw) return todos; // piloto: todos los extras
+  for (const par of raw.toLowerCase().split(';')) {
+    const [c, l] = par.split('=');
+    if (c && c.trim() === email) return String(l || '').split(/[\s,+]+/).filter(x => todos.includes(x));
+  }
+  return [];
+}
+
 function licencia(env: Env, email: string) {
   const lista = String(env.LICENCIAS_ACTIVAS || '').toLowerCase().split(/[\s,;]+/).filter(Boolean);
-  if (lista.includes(email)) return { estado: 'activa', hasta: finDeMes(), cuenta: email };
+  if (lista.includes(email)) return { estado: 'activa', hasta: finDeMes(), cuenta: email, addons: extras(env, email), upgradeUrl: env.PAGO_URL || 'https://mycarrearteam.com' };
   return { estado: 'inactiva', cuenta: email, enlacePago: env.PAGO_URL || 'https://mycarrearteam.com',
     mensaje: 'Tu acceso a CarrEar no está activo. Actívalo en el enlace y vuelve a intentarlo.' };
 }

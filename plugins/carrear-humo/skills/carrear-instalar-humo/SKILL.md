@@ -3,7 +3,7 @@ name: carrear-instalar-humo
 description: "Mini-instalador de prueba de CarrEar. Úsala cuando el usuario diga «Instala CarrEar», «instalar CarrEar» o «configura CarrEar». Sigue el recorrido del onboarding de cliente: comprueba el proyecto «Digital Brain», crea en Google Drive la carpeta «Digital Brain — [Nombre]» con sus subcarpetas y el doc «Digital Brain — Configuración», deja el texto para las instrucciones del proyecto, apunta todo en una bitácora aparte y propone una tarea programada de prueba. Versión de prueba de humo: solo pide el nombre de pila."
 ---
 
-# CarrEar · Instalador de prueba (humo 0.4.1)
+# CarrEar · Instalador de prueba (humo 0.8.0)
 
 Objetivo: comprobar en una cuenta nueva el recorrido del onboarding de cliente (doc «CarrEar — Onboarding: as-is, en camino e ideal», etapa 3 «Instalar»):
 1. que el chat del instalador vive en el proyecto «Digital Brain» y se llama «📌 Instalador — CarrEar»;
@@ -65,15 +65,30 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 - Si no puedes leer la plantilla, crea el doc con las secciones vacías NÚCLEO, PLAN CONTRATADO, IDENTIDAD DEL USUARIO, FAMILIA, DRIVE: CARPETAS Y DOCUMENTOS, HOJAS DE GOOGLE, CORREO, CALENDARIO Y TAREAS, WHATSAPP Y ORDENADOR, MARCA Y CONFIDENCIALIDAD, INSTALACIÓN Y CONSUMO, y apunta en la bitácora que se usó el plan B.
 - Guarda su id: es `configDocId`. Enseña el enlace al doc.
 
-## Paso 5b — Tu página CarrEar
-- Lee el archivo `carrear-piloto.html` de la carpeta de esta skill. Anota la versión que trae (`<meta name="carrear-version" content="…">`).
-- Publícalo como artefacto nuevo, **exactamente como está, sin cambiar ni una letra**, con estas capacidades:
-  `{"mcp": {"servers": [{"server": "carrear", "tools": ["licencia"]}, {"server": "Gmail", "tools": ["search_threads"]}, {"server": "Google Calendar", "tools": ["list_events"]}, {"server": "Google Drive", "tools": ["search_files"]}]}, "db": {}, "user": {}}`
-  Si un conector de Google no existe en la cuenta, déjalo igual en la lista: la página lo muestra como «Sin conectar».
-- Si ya publicaste esta página antes en esta cuenta (lo dice el usuario o lo ves en el chat), vuelve a publicar en **el mismo enlace** para que no pierda su base.
-- Dile: «Abre tu página CarrEar y pulsa Continuar en la ventana de permisos (una sola vez). Arriba debe decir "Acceso activo hasta …"». Espera su «hecho».
-- Apunta en la bitácora: versión, enlace de la página y si vio «Acceso activo».
-- Escribe el enlace de la página en el doc de configuración, línea `boardUrl:` (con el conector Google Docs; cambia solo esa línea). Las skills lo usan para crear fichas y pendientes en la página.
+## Paso 5b — Tu página CarrEar (completa)
+- Lee `archivos-pagina.json` (carpeta de esta skill): trae `version`, `maestro` y `files` (cada ruta con su origen `{artifact, path}`).
+- Publica `carrear.html` (carpeta de esta skill) como artefacto nuevo, **exactamente como está, sin cambiar ni una letra**, pasando en `files` el objeto `files` de ese JSON tal cual (no subas esos archivos desde disco: la plataforma los copia del maestro de CarrEar en el servidor). Capacidades:
+  `{"db": {}, "sample": {}, "mcp": {"servers": [{"server": "carrear", "tools": ["licencia"]}, {"server": "Gmail", "tools": ["search_threads", "get_thread", "label_thread", "unlabel_thread", "trash_thread", "mark_thread_spam", "create_draft"]}, {"server": "Google Calendar", "tools": ["list_events", "create_event", "update_event", "get_event", "delete_event", "respond_to_event"]}, {"server": "Google Drive", "tools": ["search_files", "read_file_content", "download_file_content", "create_file", "update_file"]}, {"server": "Google Sheets", "tools": ["get_values", "update_values", "append_values"]}]}}`
+  Si un conector no existe en la cuenta, déjalo igual en la lista: la página lo muestra como «Sin conectar».
+  WhatsApp (Make + Bird) y tareas con Siri (Todoist) son opcionales y no van en esta instalación: si el usuario los pide, dile que es un módulo aparte que se activa después («activa WhatsApp» / «activa Todoist»).
+- La primera vez, Claude pregunta si permites copiar del artefacto de CarrEar (otra organización). Dile: «Acepta: es el código de tu página, sin datos de nadie». Si la herramienta pide reintentar para hacer esa pregunta, reintenta la misma publicación.
+- Si la publicación falla de otra forma: «Paso 5b: KO — <error exacto>», publica en su lugar `carrear-piloto.html` como página provisional (mismas capacidades) y apúntalo en la bitácora.
+- Si ya publicaste la página antes en esta cuenta, vuelve a publicar en **el mismo enlace** para que no pierda su base.
+- Dile: «Abre tu página CarrEar y pulsa Continuar en la ventana de permisos (una sola vez). Si ves "Tu acceso a CarrEar no está activo", avísame». Espera su «hecho».
+- Apunta en la bitácora: versión, enlace y si la página abrió sin el aviso de acceso.
+- Escribe el enlace en el doc de configuración, línea `boardUrl:` (conector Google Docs; solo esa línea).
+
+## Paso 5c — Configuración de la página
+Con la herramienta de base de datos de artefactos (ArtifactData; si está diferida, cárgala) escribe en la página del paso 5b la colección `dashboard`, documento `userConfig` (si ya existe, léelo y usa `update` con su versión; nunca borres campos):
+`{"boardUrl": "<enlace de la página>", "user": {"firstName": "<nombre>", "timezone": "<zona o vacío>"}, "drive": {"rootFolderId": "<rootFolderId>", "rootFolderName": "Digital Brain — <nombre>", "folders": {"vacantes": "<id Vacantes>", "misDatos": "<id Perfil y carrera>"}}, "claude": {"projectId": "<id del proyecto si lo ves, si no vacío>"}, "chats": {}}`
+Nada más: ni correo, ni teléfono, ni familia. «Paso 5c: OK» cuando la escritura confirme versión.
+
+## Paso 5d — Un chat fijo por agente
+Cargar un agente en un chat nuevo tarda; por eso cada agente vive en su propio chat fijado. Dile, en un solo mensaje:
+«Vamos a dejar a tu equipo cada uno en su chat (2 minutos). Dentro del proyecto Digital Brain, para cada agente: abre un chat nuevo, escribe solo su nombre (Claire, Leo, Helena, Nina, Marco o Maya) y envíalo; luego ⋮ › Renombrar → "📌 <Nombre>", y fíjalo si tu app lo permite. Después pégame aquí los 6 enlaces (o los que tengas).»
+- Con los enlaces que pegue (solo los que empiezan por `https://claude.ai/chat/`), haz `update` de `dashboard/userConfig` con `{"chats": {"claire": "…", "leo": "…", …}}`.
+- Explícale: «En tu página, abajo a la derecha, verás un botón por agente que abre su chat. Cuando la página te proponga pedirle algo a un agente, copiará el mensaje y abrirá su chat: solo pégalo. La página sigue siendo para ver; las peticiones a tu equipo, en su chat».
+- Si no quiere ahora: «Paso 5d: pendiente» y sigue; se puede hacer luego diciendo «configura mis chats».
 
 ## Paso 6 — Instrucciones del proyecto «Digital Brain»
 Las skills leen los ids desde dos sitios fijos: este doc de configuración y las instrucciones del proyecto. Tú no puedes editar las instrucciones del proyecto: dale al usuario este bloque listo para copiar (con los ids reales) y dile dónde pegarlo: «Proyecto Digital Brain › Instrucciones › Editar › pega al final › Guardar».
@@ -120,6 +135,7 @@ Resume en 7 líneas: acceso (hasta cuándo), chat (proyecto y nombre), página C
 «Sobre los permisos de Claude: la primera vez que uses cada herramienta, Claude te preguntará si lo permite.
 · Para lo que solo lee (tu acceso a CarrEar, el método de Claire, Leo y Helena, leer tu correo, tu agenda y tu Drive) puedes elegir "Permitir siempre" o "Permitir una vez"; tú decides, y puedes cambiarlo cuando quieras en Ajustes.
 · Para lo que crea, mueve, borra o envía, Claude te preguntará cada vez, y antes tu agente te dirá en una línea qué va a tocar (título del evento, archivo o destinatario).
+· En tu página CarrEar, los botones funcionan después de pulsar una vez "Continuar" en su ventana de permisos.
 · Claude tiene también un modo Auto: en él actúa sin pedirte confirmación, también al borrar o enviar. Es opción tuya; CarrEar no lo cambia ni lo recomienda, y la regla de tu equipo sigue igual: nada sale sin tu sí.» Añade a la bitácora la línea de cierre con el tiempo total.
 
 ## Nunca

@@ -1,0 +1,646 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="stylesheet" id="cr-p0259" href="css/01-cr-p0259.css"><meta name="carrear-version" content="1.0.2"></head><body>
+
+
+
+
+
+<script id="cr-config" src="js/01-cr-config.js"></script>
+<script id="cr-cliente" src="js/02-cr-cliente.js"></script>
+<link rel="stylesheet" id="cr-plan-css" href="css/02-cr-plan-css.css">
+
+<script id="cr-aisign" src="js/03-cr-aisign.js"></script>
+<title>CarrEar</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500;1,9..40,600&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap">
+<link rel="stylesheet" href="css/03-style.css">
+<div class="cr-shell">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="cr-mark-sym" viewBox="0 0 48 44"><path d="M7 37.5H23.5C30.5 37.5 35 33 35 26V10.5A27.5 27.5 0 0 0 7 37.5Z" fill="none" stroke="currentColor" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M33 17A20.5 20.5 0 0 0 14.5 36" fill="none" stroke="currentColor" stroke-opacity=".42" stroke-width="4" stroke-linecap="round"/><path d="M29.5 10.5L35 4.5L40.5 10.5" fill="none" stroke="#F2A93B" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/></symbol></defs></svg>
+<aside class="cr-side" aria-label="Navegación" id="cr-side">
+  <a class="cr-brand" href="#/inicio" aria-label="my CarrEar team — Inicio">
+    <svg class="cr-mark" aria-hidden="true"><use href="#cr-mark-sym"/></svg>
+    <span class="cr-word"><span class="cw-my">my</span><span class="cw-big">Carr<span class="cw-ear">Ear</span></span><span class="cw-team">team</span></span>
+  </a>
+  <div class="cr-nav-label">Tu espacio</div>
+  <nav class="viewtabs cr-nav" id="viewtabs">
+    <a class="viewtab" id="vt-home" href="#/inicio" title="Inicio — Tú y tu equipo"><i class="cr-navface cr-home-logo" aria-hidden="true"><svg viewBox="0 0 48 44"><use href="#cr-mark-sym"/></svg></i><span class="cr-nl"><span>Inicio</span><small>Tú diriges</small></span><span class="vt-count" id="vt-home-n"></span></a>
+    <a class="viewtab cr-nav-me" id="vt-perfil" href="#/perfil" title="Mi Perfil"><i class="cr-navface cr-me-ph" role="img" aria-label="Tu perfil"></i><span class="cr-nl"><span>Mi Perfil</span><small class="vt-me-name">Complétalo</small></span></a>
+    <div class="cr-agents" role="group" aria-label="Tu equipo">
+      <a class="viewtab" id="vt-asist" href="#/asistente" title="Agenda — My Personal Assistant"><i class="cr-navface ag-f-pa" aria-hidden="true"></i><span class="cr-nl"><span>Agenda</span><small>Personal Assistant</small></span></a>
+      <a class="viewtab active" id="vt-mesa" href="#/" title="Mails — My Chief of Staff"><i class="cr-navface ag-f-chief" aria-hidden="true"></i><span class="cr-nl"><span>Mails</span><small>Chief of Staff</small></span></a>
+      <a class="viewtab" id="vt-coach" href="#/coach" title="Coach — My Coach"><i class="cr-navface ag-f-coach" aria-hidden="true"></i><span class="cr-nl"><span>Coach</span><small>Career Coach</small></span><span class="vt-count" id="vt-coach-n"></span></a>
+      <a class="viewtab" id="vt-vac" href="#/vacantes" title="Vacantes — My Hunter"><i class="cr-navface ag-f-hunter" aria-hidden="true"></i><span class="cr-nl"><span>Vacantes</span><small>Hunter</small></span><span class="vt-count" id="vt-vac-count"></span></a>
+      <a class="viewtab" id="vt-lobby" href="#/lobbying" title="Deal Room — My Dealmaker"><i class="cr-navface ag-f-closer" aria-hidden="true"></i><span class="cr-nl"><span>Deal Room</span><small>Dealmaker</small></span><span class="vt-count" id="vt-lobby-count"></span></a>
+      <a class="viewtab" id="vt-marca" href="#/marca" title="Marca — My Brand Manager"><i class="cr-navface ag-f-brand" aria-hidden="true"></i><span class="cr-nl"><span>Marca</span><small>Brand Manager</small></span></a>
+    </div>
+    
+  </nav>
+  <script src="js/04-script.js"></script>
+  <div class="cr-side-bottom">
+    <div class="cr-plan"><strong>Una cosa a la vez.</strong><p>Tu equipo revisa tu correo, tus vacantes y tu agenda en segundo plano. Tú decides cada paso.</p><a href="#/asistente">Abrir la Agenda →</a></div>
+  </div>
+</aside>
+<main class="cr-main">
+  <header class="cr-topbar">
+    <div class="cr-crumb">Workspace &nbsp;/&nbsp; <b id="cr-crumb-b">Mails</b></div>
+    <div class="cr-top-right">
+      <a class="cr-plan" id="cr-plan" href="#/inicio" data-plan="basico"><span id="cr-plan-lab">Tu plan</span> <b id="cr-plan-name">Membresía</b></a>
+      <div class="runinfo" id="runinfo">
+        <div class="ri-off"><a href="#/inicio/paso-auto"><span class="dot"></span>Revisiones: sin activar</a></div>
+      </div>
+      <a class="cr-team" href="#/inicio" title="Tu equipo"><span class="cr-dots" aria-hidden="true"><i class="ag-f-coach"></i><i class="ag-f-chief"></i><i class="ag-f-hunter"></i><i class="ag-f-closer"></i><i class="ag-f-brand"></i><i class="ag-f-pa"></i></span><span>my CarrEar <em>team</em></span></a>
+      <div class="cr-lang" id="cr-lang" hidden><button type="button" class="cr-lang-btn" aria-haspopup="menu" aria-expanded="false"></button><div class="cr-lang-menu" role="menu" hidden></div></div>
+      <a class="cr-me" href="#/perfil" title="Tu perfil"><span class="cr-me-txt"><b>Tu perfil</b><small>Complétalo</small></span><i class="cr-me-ph" role="img" aria-label="Tu perfil"></i></a>
+    </div>
+  </header>
+<div class="wrap">
+
+  <header class="top cr-greet ag-card" id="cr-greet" data-agent="chief">
+    <div class="ag-face ag-f-chief" id="ag-face" role="img" aria-label="My Chief of Staff"><span class="ag-on" title="En turno"></span></div>
+    <div class="ag-body">
+      <div class="cr-eyebrow"><span id="cr-date"></span> · <span id="ag-screen">Mails</span></div>
+      <h1 id="ag-name"><em>My</em> Chief of Staff</h1>
+      <p class="ag-voice" id="ag-voice"></p>
+      <div class="ag-skills" id="ag-skills"></div>
+    </div>
+    <div class="ag-traits" id="ag-traits"></div>
+  </header>
+
+  <div id="view-home" hidden></div>
+  <div id="view-coach" hidden></div>
+  <div id="view-balance" hidden></div>
+  <div id="view-perfil" hidden></div>
+  <div id="view-marca" hidden></div>
+  <div id="view-grupos" hidden></div>
+
+  <div id="view-mesa">
+  
+  <section class="cos-talk" id="cos-talk" aria-label="Habla con tu Chief of Staff">
+    <a class="cos-talk-go" id="cos-talk-go" href="claude://claude.ai/new" target="_blank" rel="noopener"><i class="cos-talk-face ag-f-chief" aria-hidden="true"></i><span>Habla con tu Chief of Staff</span> ↗</a>
+    <input class="cos-talk-in" id="cos-talk-in" type="text" maxlength="600" placeholder="Opcional: escribe aquí tu petición o seguimiento" aria-label="Tu petición para la Chief of Staff (opcional)">
+  </section>
+  <script src="js/05-script.js"></script>
+  <section class="mailkpi" aria-labelledby="mk-h">
+    <div class="hunt-head">
+      <div><h2 id="mk-h">Mails</h2><div class="sub">Tu bandeja, cribada a las 08:30 y 13:30 CET</div></div>
+      <button type="button" class="mk-go" onclick="var h=document.getElementById('mq-h');if(h)h.scrollIntoView({behavior:'smooth',block:'start'});var i=document.getElementById('mq-in');if(i)setTimeout(function(){i.focus({preventScroll:true})},400)">Preguntar a tu correo ↓</button>
+    </div>
+    <div class="stats" id="stats">
+      <div class="stat urgent"><div class="n" id="s-action">–</div><div class="l">Acción pendiente</div></div>
+      <div class="stat"><div class="n" id="s-logistics">–</div><div class="l">Logística activa</div></div>
+      <div class="stat clean"><div class="n" id="s-clean">–</div><div class="l">Basura limpiada</div></div>
+      <div class="stat"><div class="n" id="s-streak">–</div><div class="l">Racha de bandeja sana</div></div>
+  </div>
+    <div class="cos-al" id="cos-al" aria-label="Tus alertas">
+      <div class="cos-al-tot"><b id="cos-al-n">–</b><span class="cos-al-l">alertas en total</span><span class="cos-al-sub" id="cos-al-sub"></span></div>
+      <a class="cos-al-k" href="#/lobbying" id="cos-al-vac"><b id="cos-al-vac-n">–</b><span class="cos-al-l">alertas en vacantes</span><span class="cos-al-go">ir →</span></a>
+      <a class="cos-al-k" href="#/lobbying/headhunters" id="cos-al-hh"><b id="cos-al-hh-n">–</b><span class="cos-al-l">en headhunters</span><span class="cos-al-go">ir →</span></a>
+    </div>
+  </section>
+
+  
+  <section class="panel tn" id="tn-panel" aria-labelledby="tn-h" hidden>
+    <div class="panel-head"><h2 id="tn-h">Tu equipo te necesita</h2><span class="count" id="tn-count">–</span></div>
+    <div class="panel-note">Tus agentes esperan tu opinión o una decisión. Cada botón abre el chat de ese agente con sus preguntas ya puestas.</div>
+    <div class="panel-body" id="tn-list"></div>
+  </section>
+
+  
+  <section class="panel hx" id="hx-panel" aria-labelledby="hx-h" hidden>
+    <div class="panel-head"><h2 id="hx-h">Peticiones entre agentes con problema</h2><span class="count" id="hx-count">–</span></div>
+    <div class="panel-note">Lo que un agente pidió a otro y no terminó bien. Ábrelo con Claire para resolverlo, o márcalo como hecho.</div>
+    <div class="panel-body" id="hx-list"></div>
+  </section>
+
+  <section class="panel td" id="td-panel" aria-labelledby="td-h">
+    <div class="panel-head">
+      <h2 id="td-h">Mis pendientes</h2>
+      <span class="count" id="count-todos">–</span>
+    </div>
+    <div class="panel-note">Tus tareas de Todoist: vencidas, de hoy y de la semana. Táchalas aquí o en tu móvil; las que ya hiciste (correo, invitación o WhatsApp enviados) se cierran solas.</div>
+    <div class="panel-body" id="list-todos"><div class="td-empty">Cargando tus pendientes…</div></div>
+  </section>
+
+  <section class="hunt" aria-labelledby="hunt-h">
+    <div class="hunt-head">
+      <div><h2 id="hunt-h">Job hunting</h2><div class="sub" id="hunt-sub">Cargando tus vacantes…</div></div>
+      <a class="hunt-go" href="#/vacantes">Ver vacantes →</a>
+    </div>
+    <div class="kpi-row" id="hunt-kpis"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="mq-h">
+      <div class="panel-head"><h2 id="mq-h">Pregúntale a tu correo</h2></div>
+      <div class="panel-note" style="margin-top:10px;">Busca en tu Gmail y en tu calendario y te contesta con la fecha y el enlace al correo. Solo lee: nunca envía, borra ni mueve nada.</div>
+      <div class="mq-body">
+        <div class="mq-msgs" id="mq-msgs" hidden aria-live="polite"></div>
+        <div class="mq-st" id="mq-st"></div>
+        <form class="mq-form" id="mq-form" autocomplete="off">
+          <textarea id="mq-in" rows="2" aria-label="Tu pregunta sobre tus correos" placeholder="Ej.: ¿me escribió Marc esta semana? ¿cuándo tengo que hacer el check-in?"></textarea>
+          <button class="mq-go" type="submit" id="mq-go">Preguntar</button>
+        </form>
+        <div class="mq-ex">
+          <button type="button" class="fchip" data-mq-ex="¿Qué facturas vencen este mes?">¿Qué facturas vencen este mes?</button>
+          <button type="button" class="fchip" data-mq-ex="¿Quién me escribió hoy que espera respuesta?">¿Quién espera respuesta?</button>
+          <button type="button" class="fchip" data-mq-ex="¿Qué fechas límite o pagos tengo en los próximos 14 días según mis correos?">Fechas límite de las próximas 2 semanas</button>
+        </div>
+      </div>
+    </section>
+
+  <div class="grid">
+    <div class="col-main">
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Acción requerida</h2>
+          <span class="count" id="count-action">0</span>
+        </div>
+        <div class="panel-body" id="list-action"></div>
+        <div id="list-action-auto" hidden></div>
+      </section>
+
+      <section class="panel" id="wa-panel" aria-labelledby="wa-h">
+        <div class="panel-head">
+          <h2 id="wa-h">WhatsApp y LinkedIn</h2>
+          <span class="count" id="count-wa">0</span>
+        </div>
+        <div class="panel-note">Mensajes importantes que siguen sin respuesta, según tus reglas de alertas.</div>
+        <div class="wa-auto" id="wa-auto">
+          <div class="wa-auto-txt"><b>Respuestas automáticas</b><span id="wa-auto-st">Comprobando…</span></div>
+          <button type="button" class="wa-sw" id="wa-auto-btn" role="switch" aria-checked="false" aria-labelledby="wa-auto-lbl" disabled><span class="wa-knob"></span></button>
+          <span id="wa-auto-lbl" hidden>Respuestas automáticas de WhatsApp</span>
+        </div>
+        <div class="bird-kpi off" id="bird-kpi" aria-live="polite">
+          <div class="bird-kpi-h"><b>Gasto en Bird</b><span id="bird-kpi-up">Se actualiza cada noche (23:30)</span></div>
+          <div class="bird-kpi-g">
+            <div class="bird-kpi-c"><div class="n" id="bk-dg">—</div><div class="l" id="bk-dl">Gasto del día</div></div>
+            <div class="bird-kpi-c"><div class="n" id="bk-mg">—</div><div class="l" id="bk-ml">Gasto del mes</div></div>
+          </div>
+          <div class="bird-kpi-off" id="bird-kpi-off">Bird no conectado</div>
+        </div>
+        <details class="wa-cfg" id="wa-cfg">
+          <summary><span class="car" aria-hidden="true">▶</span> ⚙️ Reglas de la respuesta automática <span class="wa-cfg-sum" id="wa-cfg-sum"></span></summary>
+          <div class="wa-cfg-body" id="wa-cfg-body">
+            <div class="wa-cfg-row"><label for="wc-min">Contestar si no respondo en</label><span><input type="number" id="wc-min" min="1" max="10" step="1"> min</span></div>
+            <fieldset class="wa-cfg-fs"><legend>¿A quién contesta?</legend>
+              <p class="wa-cfg-hint">Contesta a todo el grupo marcado. Excepción por persona: «no» en la columna K de tu hoja = nunca le contesta, aunque su grupo esté marcado. Si desmarcas un grupo, deja de contestar a todos los de ese grupo.</p>
+              <div class="wa-cfg-grid" id="wc-groups"></div>
+            </fieldset>
+            <fieldset class="wa-cfg-fs"><legend>Temas sensibles</legend>
+              <label class="wa-ck"><input type="checkbox" id="wc-sb"> No mandar ningún mensaje</label>
+              <label class="wa-ck"><input type="checkbox" id="wc-sp"> Avisarme al móvil (push)</label>
+              <label for="wc-ds" class="wa-cfg-l">Qué cuenta como sensible</label>
+              <textarea id="wc-ds" rows="2"></textarea>
+            </fieldset>
+            <fieldset class="wa-cfg-fs"><legend>Urgentes</legend>
+              <label class="wa-ck"><input type="checkbox" id="wc-ue"> Mandar un mensaje de espera («ya lo vi, te contesto ahorita»)</label>
+              <label class="wa-ck"><input type="checkbox" id="wc-up"> Avisarme al móvil (push)</label>
+              <label for="wc-du" class="wa-cfg-l">Qué cuenta como urgente</label>
+              <textarea id="wc-du" rows="2"></textarea>
+            </fieldset>
+            <label for="wc-rb" class="wa-cfg-l">Cómo contesta (las reglas con las que lo programamos; edítalas a tu gusto)</label>
+            <textarea id="wc-rb" rows="8"></textarea>
+            <p class="wa-cfg-hint">Fijas, no se pueden quitar: nunca inventa nada (planes, horarios, datos, compromisos) salvo decir que todo bien cuando te saludan; nunca entra en un tema sensible; nunca dice que es un asistente.</p>
+            <label for="wc-rx" class="wa-cfg-l">Reglas extra (en tus palabras)</label>
+            <textarea id="wc-rx" rows="2" placeholder="Ej.: a mi mamá nunca le digas que estoy ocupado · los fines de semana no contestes a profesionales · con mi pareja solo emojis de corazón"></textarea>
+            <div class="wa-cfg-end"><span class="wa-cfg-st" id="wc-st" aria-live="polite"></span><button type="button" class="mq-go" id="wc-save" disabled>Guardar reglas</button></div>
+          </div>
+        </details>
+        <div class="wa-lvl" id="wa-lvl">
+          <button type="button" class="wa-lvl-b" id="wa-use-btn">📊 Ver mi consumo</button>
+          <button type="button" class="wa-lvl-b" id="wa-down-btn">Bajar a nivel 1</button>
+          <a class="wa-lvl-a" href="#/inicio/whatsapp">Niveles y costos →</a>
+          <div class="wa-lvl-out" id="wa-lvl-out" aria-live="polite" hidden></div>
+        </div>
+        <div class="panel-body empty" id="list-wa">Cargando tus alertas de WhatsApp…</div>
+        <div class="wa-foot" id="wa-foot" hidden></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Reuniones</h2>
+          <span class="count" id="count-reuniones">0</span>
+        </div>
+        <div class="panel-note">recap de invitaciones, aceptaciones, rechazos, cancelaciones y cambios de reuniones que llegaron por correo en los últimos 5 días — solo el resumen, sin enlace al correo. Lo que pide tu sí/no, una cancelación o un cambio a aprobar además aparece en Acción requerida.</div>
+        <div class="panel-body" id="list-reuniones"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Logística de viajes y eventos</h2>
+          <span class="count" id="count-logistics">0</span>
+        </div>
+        <div class="panel-body" id="list-logistics"></div>
+      </section>
+
+    </div>
+
+    <div class="col-side">
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Promociones de interés</h2>
+        </div>
+        <div class="panel-body" id="list-promos"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Redes sociales</h2>
+          <span class="count" id="count-social">0</span>
+        </div>
+        <div class="panel-note">solicitudes de conexión, notificaciones y mensajes de tus redes sociales (LinkedIn y otras), resumidos — últimos 3 días, sin acceso directo al correo, abre la red social si quieres responder</div>
+        <div class="panel-body" id="list-social"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Sin categorizar</h2>
+      <span class="count" id="count-uncategorized">0</span>
+    </div>
+    <div class="panel-note">no encajaron en ninguna regla, así que se dejaron en tu bandeja — quítalos de esta lista con ✓ sin tocar el correo (se queda tal cual en tu bandeja), o mándalos a spam o a la papelera desde aquí si no los necesitas</div>
+    <div class="panel-body" id="list-uncategorized"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Limpieza reciente</h2>
+      <span class="count" id="count-cleaned">0</span>
+    </div>
+    <div class="panel-note">correos marcados como spam o movidos a la papelera, últimos 2 días hábiles</div>
+    <div class="panel-body" id="list-cleaned"></div>
+  </section>
+
+  <footer class="rules">
+    <div class="rules-acc">
+      <details class="rules-cat" data-cat="extra" open>
+        <summary><span class="rc-label"><span class="car">▶</span>✏️ Tus reglas extra</span><span class="rc-count" id="count-rules">0</span></summary>
+        <div class="rules-body">
+          <p>La revisión automática de las 08:30 y 13:30 las lee en cada revisión y mandan sobre las reglas de siempre (salvo enviar, contestar invitaciones o borrar para siempre, que nunca hace). Escríbelas en tus palabras, una por vez.</p>
+          <div class="tr-body">
+            <div id="tr-list"></div>
+            <textarea id="tr-in" rows="2" aria-label="Nueva regla para el triage" placeholder="Ej.: las newsletters de tiendas van a Promociones aunque parezca publicidad · los recibos del banco siempre a Logística"></textarea>
+            <div class="tr-end"><span class="tr-st" id="tr-st" aria-live="polite"></span><button class="mq-go" type="button" id="tr-add">Guardar regla</button></div>
+          </div>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="whatsapp">
+        <summary><span class="rc-label"><span class="car">▶</span>💬 WhatsApp: alertas y respuestas automáticas</span><span class="rc-count" id="count-wa-rules">—</span></summary>
+        <div class="rules-body">
+          <p><b>Respuesta automática (Make, en tiempo real):</b> para los grupos que marques en «⚙️ Reglas de la respuesta automática», salvo quien tenga «no» en la columna K de la pestaña WhatsApp de tu hoja «Digital Brain — Personas». Si pasan los minutos que elijas en «⚙️ Reglas de la respuesta automática» (panel WhatsApp) sin que contestes, responde con tu voz para esa persona: saludos y «¿cómo estás?» los contesta; si te piden algo (plan, fecha, dato, favor) manda un mensaje de espera y, si no está claro, pregunta si es urgente; nunca inventa nada. Temas sensibles (salud, dinero, malas noticias, conflicto, algo íntimo): no responde. Todo queda en la pestaña «Registro WhatsApp».</p>
+          <p><b>Push al móvil:</b> solo si el mensaje es urgente o sensible, por la app de Make en tu iPhone.</p>
+          <p><b>Revisión de la Chief of Staff:</b> cada 2 horas de 7:00 a 23:00 te avisa aquí arriba de lo importante que sigue sin respuesta, con borrador en tu voz. Lo que Make contestó con un mensaje de espera sigue contando como pendiente. Nunca envía nada por ti.</p>
+          <div id="wa-rules-live"></div>
+          <p class="wa-rules-links" id="wa-rules-links"><a href="#" target="_blank" rel="noopener">Elegir quién recibe respuesta automática (columna K) ↗</a></p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="accion">
+        <summary><span class="rc-label"><span class="car">▶</span>🚨 Acción requerida</span></summary>
+        <div class="rules-body">
+          <p>Acción requerida = alguien real te pide una respuesta, decisión, firma o pago concreto (incluye alertas de seguridad que piden confirmar una actividad) — se queda en tu bandeja y aquí tienes dos palomitas para cuando ya la resolviste: la ✓ la quita de esta lista, en Gmail le cambia la etiqueta "Acción Requerida" por "Acciones Realizadas" y la deja en tu bandeja de entrada; la 🗑 la quita de esta lista y borra el correo directamente.</p>
+          <p>Cuando dejé una respuesta sugerida lista como borrador (por ejemplo para un reclutador que pidió CV y/o documentos), vas a ver además el botón <b>✉️ Revisar borrador</b> — abre ese hilo directo en Gmail con el borrador ya armado, adjuntos incluidos, listo solo para que lo repases y le des enviar tú mismo; nunca lo mando yo automáticamente.</p>
+          <p>Cuando en cambio me faltó algo que solo tú puedes decidir, aclarar, o confirmar (un adjunto, una decisión, un dato que no tenía) vas a ver el botón <b>🗨️ Resolver</b> — abre un chat de Claude en modo Cowork con el contexto de ese correo ya cargado, te pregunta ahí mismo lo que haga falta, y en cuanto apruebas el texto (y los adjuntos, si aplica) deja el borrador listo en Gmail — igual que arriba, nunca lo envía solo.</p>
+          <p>Aquí solo entra lo que necesita una decisión, un dato o una acción tuya. Tu propia agenda (eventos, trayectos, vuelos) nunca es una alerta.</p>
+          <p>Si algo ya está hecho (la reunión ya está en tu calendario, otro agente ya lo procesó, la invitación ya se aceptó), tu Chief of Staff la cierra sola y la ves en <b>✓ Cerradas solas</b>, debajo de la lista.</p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="compras">
+        <summary><span class="rc-label"><span class="car">▶</span>🧾 Compras, recibos y reseñas</span></summary>
+        <div class="rules-body">
+          <p>Cualquier confirmación de compra o reservación (vuelos, eventos, hoteles, restaurantes, servicios, productos, suscripciones), así como solicitudes de reseña ("valora tu experiencia con...") y notificaciones de apps por correo (Todoist y similares), se archivan o se van a la papelera directo, sin aparecer en ningún lado del tablero.</p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="logistica">
+        <summary><span class="rc-label"><span class="car">▶</span>✈️ Logística de viajes y eventos</span></summary>
+        <div class="rules-body">
+          <p>Logística = check-in, cambios de vuelo o puerta, recordatorios de eventos y viajes en curso — se quedan en tu bandeja, solo los destaco aquí.</p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="reuniones">
+        <summary><span class="rc-label"><span class="car">▶</span>📅 Reuniones y calendario</span></summary>
+        <div class="rules-body">
+          <p>Reuniones: todo correo de calendario (invitaciones, aceptaciones, rechazos, respuestas tentativas, cancelaciones, cambios de hora y confirmaciones de Calendly y similares) se resume en una línea en el panel "Reuniones", con un resumen ejecutivo arriba, y se queda visible 5 días — sin enlace al correo.</p>
+          <p>Las aceptaciones y tentativas se archivan y no aparecen en ningún otro lado (ya no caen en Sin categorizar); las invitaciones que esperan tu sí o no, las cancelaciones, los rechazos y los cambios que tengas que aprobar van además a Acción requerida, porque probablemente toca responder o reagendar. Las invitaciones se contestan con «✅ ¿Estoy libre?»: al pulsarlo reviso tu agenda en ese horario y, si estás libre, la acepto en tu Google Calendar y listo (si solo choca con el GYM, lo muevo); si choca con otra reunión no respondo nada y te digo con qué choca. Nunca acepto ni rechazo una invitación sin que pulses el botón.</p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="vacantes">
+        <summary><span class="rc-label"><span class="car">▶</span>💼 Vacantes de LinkedIn y job hunting</span></summary>
+        <div class="rules-body">
+          <p>Las alertas de empleo de LinkedIn van a la pestaña <b>Vacantes</b>, con un % de match inicial automático (calculado contra tu documento "Digital Brain — Criterios de Match" en Google Drive) y se quedan ahí hasta que las descartes con la × o se archiven solas (14 días o más y menos de 50 %); el correo original se va a la papelera.</p>
+          <p>El botón IN abre la app de escritorio de Claude en tu Mac (esquema claude://) con el deep dive ya precargado: investiga la empresa, compara la vacante completa contra tu MAESTRO parte por parte, afina el % de match, te da una recomendación de aplicar o no, y si dices que sí, te deja el CV y la cover letter listos — solo te falta darle clic a "Cowork" antes de enviar el prompt. En modo Cowork esa sesión sí tiene el navegador con tu sesión de LinkedIn (si ya le importaste tus cookies una vez desde la configuración de Cowork) y la misma conexión que usa este tablero para guardar el resultado solo, sin que tengas que copiar ni pegar nada.</p>
+          <p>Si prefieres revisar varias vacantes de una sentada, marca la casilla de cada una (hasta 10 a la vez) y usa "🔍 deep dive del lote" — abre un solo chat que las investiga una por una, en la misma sesión de navegador y a ritmo humano, guardando cada resultado en cuanto termina esa vacante. Una vez que una vacante tiene resultado guardado, el botón "📄 ver análisis" lo muestra ahí mismo en la tarjeta (empresa, comparación, recomendación), y el IN se vuelve "↻ rehacer" por si quieres repetirlo. Si el link de IN no abre donde lo necesitas (por ejemplo porque claude:// no está registrado en ese dispositivo o navegador), "✎ editar" te deja escribir el % y el resumen directamente, sin depender de qué herramientas tenga la sesión del deep dive.</p>
+          <p>El botón "🎯 Mover al Deal Room" pasa la vacante a la pestaña Deal Room de esta misma página — es el mismo registro, con su % de match, su estatus de aplicación y su análisis, así que no hay nada que sincronizar — y abre su ficha; ahí están los contactos clave, el Lobby Score, las reuniones y el botón "let's influence!", y cada contacto muestra tu cercanía leída en vivo de tu hoja «Digital Brain — Personas» de Google Drive.</p>
+          <p>El botón "✅ Aplicar" (visible solo cuando ya hay deep dive guardado) abre, igual que IN, la app de escritorio en modo Cowork, pero con el "Digital Brain — Playbook Aplicación de Vacante": te enseña el CV y la cover letter para tu visto bueno, llena el formulario de LinkedIn a ritmo humano usando tu MAESTRO, solo te pregunta lo que de verdad importa (sueldo, fechas, visa, preguntas abiertas) y nunca lo que ya sabe, y en cuanto LinkedIn pide algo que huele a verificación anti-bot (captcha, código por SMS, "actividad inusual") se detiene y te dice exactamente qué clic te toca a ti. Sin excepción llega hasta la pantalla de revisión y se para ahí — el botón final de "Enviar solicitud" siempre lo aprietas tú, nunca la sesión. Mientras avanza va guardando el estatus en la tarjeta (preparando, esperando tu validación, llenando, necesita tu clic, lista para enviar, enviada) para que veas en qué va sin tener que abrir el chat. A diferencia del deep dive, este flujo nunca corre en lote — una vacante a la vez, contigo presente.</p>
+          <p>El mismo botón "➕ Agregar manualmente una vacante" sirve también para invitaciones/referidos sin link público: te pregunta primero si la vacante es pública, y si no lo es, te pide un documento (o lo que tengas) y los datos clave (puesto, a quién reporta, empresa, industria, retos, y quién es el contacto o headhunter que te invitó), guarda ese documento en Drive y hace el análisis ahí mismo. Estas quedan en el apartado "Directas", arriba de todo en la pestaña Vacantes — en vez de IN y la casilla de lote, un clic en el título abre una sesión de Cowork para seguir trabajándolas (generar o actualizar CV y cover letter, preparar la entrevista, sumar información nueva, o enviar el CV como borrador de correo al contacto — nunca se envía solo); en cuanto la marques como enviada, esa misma sesión te remite a la pestaña Deal Room para el seguimiento con las personas clave.</p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="redes">
+        <summary><span class="rc-label"><span class="car">▶</span>📱 Redes sociales</span></summary>
+        <div class="rules-body">
+          <p>Redes sociales: solicitudes de conexión/amistad, aceptaciones, notificaciones de uso (likes, comentarios, sugerencias, etc.) y mensajes/DM que te llegan por correo desde cualquier red social (LinkedIn y otras) se resumen en una sola línea cada uno en el panel "Redes sociales" — sin enlace al correo, solo el resumen — y se quedan visibles 3 días; el correo original se va a la papelera.</p>
+          <p>Anuncios de la propia plataforma (cambios, nuevas funciones, comunicados) no cuentan como notificación de uso normal, así que esos se dejan intactos en tu bandeja y caen en Sin categorizar como cualquier otro correo sin clasificar.</p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="promos">
+        <summary><span class="rc-label"><span class="car">▶</span>🛍️ Promociones de interés</span></summary>
+        <div class="rules-body">
+          <p>Promociones de interés (viajes, IA y productividad, conciertos, tecnología, cursos) se resumen aquí por 2 días hábiles y el correo se va a la papelera.</p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="limpieza">
+        <summary><span class="rc-label"><span class="car">▶</span>🧹 Limpieza automática</span></summary>
+        <div class="rules-body">
+          <p>Alertas de seguridad rutinarias, códigos de verificación de un solo uso y basura evidente se limpian directamente (spam o papelera, según el caso) y aparecen abajo en Limpieza reciente por 2 días hábiles.</p>
+        </div>
+      </details>
+      <details class="rules-cat" data-cat="sincategorizar">
+        <summary><span class="rc-label"><span class="car">▶</span>❓ Sin categorizar</span></summary>
+        <div class="rules-body">
+          <p>Lo que no encaja en ninguna regla se deja intacto en tu bandeja y aparece en Sin categorizar, donde puedes mandarlo tú a spam o a la papelera con un clic.</p>
+        </div>
+      </details>
+    </div>
+  </footer>
+  </div>
+
+  <div id="view-vac" hidden>
+    <section class="mailkpi vxkpi" aria-labelledby="vk-h">
+      <div class="hunt-head">
+        <div><h2 id="vk-h">Vacantes</h2><div class="sub">Todas tus vacantes, de todas las fuentes. Las directas van arriba; el resto se ordena por match × frescura. El color del borde dice cuántos días lleva publicada.</div></div>
+        <button type="button" class="mk-go" onclick="var f=document.getElementById('vx-filters');if(f)f.scrollIntoView({behavior:'smooth',block:'start'})">Ver la lista ↓</button>
+      </div>
+      <div class="kpi-row vx-kpis" id="vx-kpis"></div>
+    </section>
+
+    <div class="vx-grid">
+      <div class="col-main">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Vacantes</h2>
+            <span class="count" id="count-jobs">0</span>
+          </div>
+          <div class="top-action-bar" style="margin-top:14px;">
+            <a class="in-btn" id="ls-btn-top" href="#" target="_blank" rel="noopener" title="Abre un chat de Cowork que busca vacantes nuevas en LinkedIn Jobs con tus criterios, a ritmo humano, y las agrega a esta lista">🔎 Buscar vacantes en LinkedIn</a>
+            <a class="in-btn" id="manual-job-btn" href="#" target="_blank" rel="noopener" title="Abre un chat de Claude en modo Cowork — primero pregunta si la vacante es pública (te pide el link y hace el mismo deep dive que el botón IN) o si es una invitación/referido sin link público (te pide un documento y los datos que tengas, guarda contactos clave, y queda en el apartado 'Directas')">➕ Agregar manualmente una vacante</a>
+            <a class="in-btn" id="cv-create-btn" href="#" target="_blank" rel="noopener" title="Abre un chat de Claude en modo Cowork que te hace las preguntas correctas (vacante, formato a usar, etc.) y te genera un CV y/o cover letter usando tu CV MASTER y tu Career Brain — primero en Word para que lo revises y edites tú mismo, y solo cuando confirmes lo convierte a PDF">📄 Créame un CV y/o una cover letter</a>
+            <a class="in-btn" id="cv-format-btn" href="#" target="_blank" rel="noopener" title="Abre un chat de Claude en modo Cowork para subir (o recomendarte) un nuevo formato de CV, verificarlo a fondo y guardarlo en tu Google Drive para usarlo en futuros deep dives y aplicaciones">🎨 Actualizar el formato de tus CVs</a>
+            <span class="spacer"></span>
+            <a class="in-btn" id="career-interview-btn" href="#" target="_blank" rel="noopener" title="Abre un chat de Claude que te entrevista sobre tu experiencia y actualiza tu Career Brain (MAESTRO) — se usa después para el % de match, el deep dive y tus CV/cover letters">🧠 Actualizar mi experiencia</a>
+            <span class="vx-need" style="flex-basis:100%;font-size:12px;color:var(--text-2);">💻 Necesitas Claude en tu ordenador. En el móvil se abre en la web, con menos funciones.</span>
+          </div>
+          <form class="vx-search" id="vx-search" autocomplete="off">
+            <label for="vx-q" class="vx-q-lab">Búsqueda inteligente</label>
+            <div class="vx-q-row">
+              <input id="vx-q" type="search" placeholder="Pídelo como lo dirías: «empresas pequeñas de tecnología», «las que no me recomiendas», «de mi sector, publicadas esta semana»…">
+              <button class="vx-q-go" type="submit" id="vx-q-go">Buscar</button>
+            </div>
+            <div class="vx-q-hint" id="vx-q-hint" role="status" hidden>Escribe qué buscas</div>
+            <div class="vx-q-ex" id="vx-q-ex">
+              <button type="button" class="fchip" data-ex="Empresas pequeñas de tecnología">Empresas pequeñas de tecnología</button>
+              <button type="button" class="fchip" data-ex="Las que no me recomiendas">Las que no me recomiendas</button>
+              <button type="button" class="fchip" data-ex="De mi sector, publicadas esta semana, con equipo a cargo">De mi sector, esta semana</button>
+              <button type="button" class="fchip" data-ex="Roles internacionales o regionales en grandes corporativos">Internacionales en corporativos</button>
+            </div>
+          </form>
+          <div class="vx-filters" id="vx-filters"></div>
+          <div class="jobs-batch-bar vc-top" id="jobs-batch-bar" hidden style="margin-top:12px;">
+            <span class="vc-top-n"><b id="jobs-batch-count">0</b> seleccionadas <span class="vc-top-pre" id="jobs-batch-pre"></span></span>
+            <span class="spacer"></span>
+            <a class="vc-btn pri" id="jobs-batch-btn" href="#" target="_blank" rel="noopener" title="Abre un solo deep dive en la app de escritorio con las vacantes seleccionadas, una por una">Deep dive de las seleccionadas</a>
+            <button class="vc-btn" type="button" id="jobs-batch-trash" title="Eliminar del tablero las seleccionadas, con su motivo">Eliminar del tablero</button>
+            <button class="vc-link" type="button" id="jobs-batch-clear">Quitar selección</button>
+            <span class="vc-top-note">Máximo 10 deep dives por corrida.</span>
+            <span class="batch-warn" id="jobs-batch-warn" hidden></span>
+            <div class="batch-confirm" id="jobs-batch-confirm" hidden></div>
+          </div>
+          <div class="job-copy-box" id="jobs-batch-copybox" hidden style="margin:0 20px 14px;">
+            <p>Prompt del lote — cópialo y pégalo donde prefieras:</p>
+            <textarea id="jobs-batch-copytext" readonly rows="8"></textarea>
+            <div class="row-actions"><button type="button" id="jobs-batch-copy-close">Cerrar</button></div>
+          </div>
+          <div id="list-jobs"></div>
+        </section>
+      </div>
+
+      <div class="col-side">
+        <section class="panel hh-side" id="hh-panel">
+          <div class="panel-head">
+            <h2>Headhunters activos</h2>
+            <span class="count" id="hh-side-count"></span>
+          </div>
+          <div class="jb-body">
+            <div class="jb-why" id="hh-side-sum">Tus headhunters, en qué paso va cada uno y las vacantes que te han mandado.</div>
+            <a class="ls-go" id="hh-search-btn" href="#/lobbying" title="Tu Dealmaker busca y activa headhunters desde el Deal Room: radar por tiers según tus objetivos, alertas de a quién escribir y búsqueda nueva">🎯 Buscar headhunters → Deal Room</a>
+            <button type="button" class="jb-rec" id="hh-open-btn" hidden title="Abre tu directorio de headhunters: su hilo de mensajes, las vacantes que te han enviado y en qué paso del pipeline está cada una">👥 Ver mi actividad con headhunters</button>
+          </div>
+        </section>
+        <section class="panel jb-panel" id="jb-panel">
+          <div class="panel-head">
+            <h2>Bolsas de empleo</h2>
+            <span class="count" id="jb-count"></span>
+          </div>
+          <div id="jb-box"><div class="jb-body"><div class="jb-why">Cargando tus bolsas…</div></div></div>
+        </section>
+
+        <section class="panel ls-panel">
+          <div class="panel-head">
+            <h2>Búsqueda activa en LinkedIn</h2>
+          </div>
+          <div id="ls-box"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Criterios de match</h2>
+          </div>
+          <div id="list-criteria"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2>Frescura</h2></div>
+          <div class="panel-note" style="margin-top:8px;">Días desde que se publicó la vacante (o desde que llegó la alerta, si LinkedIn no da la fecha). A partir de 14 días está prácticamente vencida.</div>
+          <div class="legend">
+            <span><i style="background:var(--f0)"></i>0–1 d</span>
+            <span><i style="background:var(--f1)"></i>2–3 d</span>
+            <span><i style="background:var(--f2)"></i>4–6 d</span>
+            <span><i style="background:var(--f3)"></i>7–10 d</span>
+            <span><i style="background:var(--f4)"></i>11–13 d</span>
+            <span><i style="background:var(--f5)"></i>14 d o más</span>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2>Cómo usar esta lista</h2></div>
+          <div class="panel-note" style="margin-top:10px; line-height:1.6;"><span>Al abrir, quedan marcadas las 10 más prometedoras sin analizar. Arriba de la lista:</span> <b>Análisis a fondo de las seleccionadas</b> <span>(máximo 10 cada vez) o</span> <b>Eliminar del tablero</b> <span>con un mismo motivo para todas. En cada vacante,</span> <b>Analizar a fondo</b> <span>y después</span> <b>Aplicar</b><span>, que se detiene antes de enviar. El botón del</span> <b>Dealmaker</b> <span>la pasa al Deal Room cuando ya está analizada (las directas, siempre). La</span> <b>×</b> <span>la manda a la papelera; nada se borra y la recuperas en «Ver papelera».</span></div>
+        </section>
+      </div>
+    </div>
+  <div id="hh-modal-root"></div>
+  <div class="toast" id="hh-toast"></div>
+  <link rel="stylesheet" href="css/04-style.css">
+  </div>
+
+  <div id="view-lobby" hidden>
+    <div class="lwrap" id="lobby-app"><div class="empty">Cargando…</div></div>
+    <div id="modal-root"></div>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <div id="view-asist" hidden>
+    <div class="as-wrap" id="asist-app"><div class="ld-empty">Cargando…</div></div>
+    <div class="toast" id="as-toast"></div>
+  </div>
+
+</div>
+</main>
+</div>
+
+<script id="cr-i18n" src="js/06-cr-i18n.js"></script>
+<script id="cr-sheets" src="js/07-cr-sheets.js"></script>
+<script id="cr-personas-w" src="js/08-cr-personas-w.js"></script>
+
+<script id="cr-know" src="js/09-cr-know.js"></script>
+
+<link rel="stylesheet" id="cr-pp-css" href="css/05-cr-pp-css.css">
+
+<script id="cr-phone" src="js/10-cr-phone.js"></script>
+<script id="cr-voice" src="js/11-cr-voice.js"></script>
+<link rel="stylesheet" id="cr-voice-css" href="css/06-cr-voice-css.css">
+<script id="cr-jobtasks" src="js/12-cr-jobtasks.js"></script>
+
+<script src="js/13-script.js"></script>
+<script id="cr-route" src="js/14-cr-route.js"></script>
+<script id="cr-kpi-edit" src="js/15-cr-kpi-edit.js"></script>
+
+
+
+
+<link rel="stylesheet" id="cr-logo-a" href="css/07-cr-logo-a.css">
+<link rel="stylesheet" id="cr-me-css" href="css/08-cr-me-css.css">
+<link rel="stylesheet" id="cr-home-css" href="css/09-cr-home-css.css">
+<link rel="stylesheet" id="cr-feat-css" href="css/10-cr-feat-css.css">
+<script id="cr-feat" src="js/16-cr-feat.js"></script>
+
+<link rel="stylesheet" id="cr-home-p0122" href="css/11-cr-home-p0122.css">
+<script id="cr-home" src="js/17-cr-home.js"></script>
+<link rel="stylesheet" id="cr-lang-css" href="css/12-cr-lang-css.css">
+
+
+<link rel="stylesheet" id="cr-cw-css" href="css/13-cr-cw-css.css">
+<link rel="stylesheet" id="cr-coach-css" href="css/14-cr-coach-css.css">
+<link rel="stylesheet" id="cr-coach-faces" href="css/15-cr-coach-faces.css">
+<link rel="stylesheet" id="cr-mv-css" href="css/16-cr-mv-css.css">
+<script id="cr-stage" src="js/18-cr-stage.js"></script>
+<link rel="stylesheet" id="cr-stage-css" href="css/17-cr-stage-css.css">
+<link rel="stylesheet" id="cr-coach-v3-css" href="css/18-cr-coach-v3-css.css">
+<script id="cr-coach" src="js/19-cr-coach.js"></script>
+
+<link rel="stylesheet" id="cr-brand-face" href="css/19-cr-brand-face.css">
+<link rel="stylesheet" id="cr-bm-net-css" href="css/20-cr-bm-net-css.css">
+<link rel="stylesheet" id="cr-bm4-css" href="css/21-cr-bm4-css.css">
+<script id="cr-brand" src="js/20-cr-brand.js"></script>
+<link rel="stylesheet" id="cr-brand-v3-css" href="css/22-cr-brand-v3-css.css">
+
+
+
+
+
+
+
+<script id="cr-cw" src="js/21-cr-cw.js"></script>
+
+
+
+<link rel="stylesheet" id="vm-fi-css" href="css/23-vm-fi-css.css">
+<link rel="stylesheet" id="cr-nav-team-css" href="css/24-cr-nav-team-css.css">
+<link rel="stylesheet" id="vc-card-css" href="css/25-vc-card-css.css">
+<link rel="stylesheet" id="tj-css" href="css/26-tj-css.css">
+
+<link rel="stylesheet" id="cr-wa-css" href="css/27-cr-wa-css.css">
+<link rel="stylesheet" id="cr-p0260" href="css/28-cr-p0260.css">
+<script id="cr-wa" src="js/22-cr-wa.js"></script>
+<script id="cr-wa-auto" src="js/23-cr-wa-auto.js"></script>
+<script id="cr-bird-kpi" src="js/24-cr-bird-kpi.js"></script>
+<script id="cr-wa-lvl" src="js/25-cr-wa-lvl.js"></script>
+<script id="cr-wa-cfg" src="js/26-cr-wa-cfg.js"></script>
+<script id="cr-mesa-fold" src="js/27-cr-mesa-fold.js"></script>
+<script id="cr-todos" src="js/28-cr-todos.js"></script>
+<script id="cr-cos-alerts" src="js/29-cr-cos-alerts.js"></script>
+<link rel="stylesheet" id="cr-hhx-css" href="css/29-cr-hhx-css.css">
+<script id="cr-hh" src="js/30-cr-hh.js"></script>
+<link rel="stylesheet" id="hh-radar-css" href="css/30-hh-radar-css.css">
+<script src="js/31-script.js"></script>
+
+<link rel="stylesheet" id="cr-org-six" href="css/31-cr-org-six.css">
+
+<link rel="stylesheet" id="cr-hunter-css" href="css/32-cr-hunter-css.css">
+
+<script id="cr-hhx" src="js/32-cr-hhx.js"></script>
+<script id="cr-hunter" src="js/33-cr-hunter.js"></script>
+
+<link rel="stylesheet" id="cr-pro-css" href="css/33-cr-pro-css.css">
+<link rel="stylesheet" id="cr-closer-css" href="css/34-cr-closer-css.css">
+
+<script id="cr-closer" src="js/34-cr-closer.js"></script>
+
+<link rel="stylesheet" id="cr-balance-css" href="css/35-cr-balance-css.css">
+<script id="cr-balance" src="js/35-cr-balance.js"></script>
+
+<link rel="stylesheet" id="cr-chief-css" href="css/36-cr-chief-css.css">
+
+<script id="cr-chief" src="js/36-cr-chief.js"></script>
+
+<link rel="stylesheet" id="cr-hunter-css2" href="css/37-cr-hunter-css2.css">
+<script id="cr-hunter2" src="js/37-cr-hunter2.js"></script>
+
+<link rel="stylesheet" id="cr-pa-css" href="css/38-cr-pa-css.css">
+
+<link rel="stylesheet" id="cr-meettool-css" href="css/39-cr-meettool-css.css">
+<script id="cr-meettool" src="js/38-cr-meettool.js"></script>
+<script id="cr-pa" src="js/39-cr-pa.js"></script>
+
+<link rel="stylesheet" id="cr-files-css" href="css/40-cr-files-css.css">
+
+<script id="cr-files" src="js/40-cr-files.js"></script>
+<link rel="stylesheet" id="cr-modal-lock" href="css/41-cr-modal-lock.css">
+<script id="cr-agent-head" src="js/41-cr-agent-head.js"></script>
+<link rel="stylesheet" id="cr-agent-head-css" href="css/42-cr-agent-head-css.css">
+<script id="cr-macruns" src="js/42-cr-macruns.js"></script>
+<link rel="stylesheet" id="cr-macruns-css" href="css/43-cr-macruns-css.css">
+<script id="cr-fresh" src="js/43-cr-fresh.js"></script>
+<link rel="stylesheet" id="cr-fresh-css" href="css/44-cr-fresh-css.css">
+<script id="cr-modal-scroll" src="js/44-cr-modal-scroll.js"></script>
+
+<link rel="stylesheet" id="cr-projects-css" href="css/45-cr-projects-css.css">
+<script id="cr-projects" src="js/45-cr-projects.js"></script>
+
+<script id="cr-usage" src="js/46-cr-usage.js"></script>
+
+<link rel="stylesheet" href="css/46-style.css">
+<script id="cr-grupos" src="js/47-cr-grupos.js"></script>
+
+
+
+<link rel="stylesheet" id="cr-mobile" href="css/47-cr-mobile.css">
+<script id="cr-mobile-js" src="js/48-cr-mobile-js.js"></script>
+<link rel="stylesheet" id="cr-mobile2" href="css/48-cr-mobile2.css">
+<script id="cr-mobile2-js" src="js/49-cr-mobile2-js.js"></script>
+<link rel="stylesheet" href="css/49-style.css">
+<script src="js/50-script.js"></script>
+
+<link rel="stylesheet" id="cr-vacm-css" href="css/50-cr-vacm-css.css">
+<script id="cr-vacm" src="js/51-cr-vacm.js"></script>
+<script id="cr-handoff" src="js/52-cr-handoff.js"></script>
+
+
+
+
+
+<link rel="stylesheet" id="cr-biz-css" href="css/51-cr-biz-css.css">
+<div id="view-pmo" hidden></div>
+<script id="cr-business" src="js/53-cr-business.js"></script>
+
+<link rel="stylesheet" id="cr-telefono-css" href="css/52-cr-telefono-css.css">
+<script id="cr-telefono" src="js/54-cr-telefono.js"></script>
+<script src="gate.js"></script></body></html>

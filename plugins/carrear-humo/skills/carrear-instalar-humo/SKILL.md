@@ -103,6 +103,8 @@ Empieza tu respuesta con esta línea, tal cual: «⚙️ Tarea automática de Ca
 5. Termina con una sola línea: «Prueba de humo OK» o «Prueba de humo KO: <motivo>».
 ```
 
+Si la tarea se creó bien, escribe `install.claudePlan: pro` en la configuración (solo esa línea).
+
 Si no existe la herramienta de tareas programadas, o falla por permisos o por el plan de la cuenta: di «Paso 7: KO — <mensaje exacto>» y apúntalo en la bitácora (indica qué no permite el plan).
 - Si el motivo es el plan (cuenta Claude Free), dilo así, claro y sin presionar:
   «Tu cuenta es Claude Free. CarrEar funciona cuando tú escribes en el chat, pero las actividades que se repiten solas necesitan Claude Pro, porque en Free no existen las tareas programadas. Por ejemplo, sin Pro:
@@ -110,6 +112,7 @@ Si no existe la herramienta de tareas programadas, o falla por permisos o por el
   · Leo no revisa cada día tu agenda ni te avisa de choques.
   · Tu equipo no hace el seguimiento automático de correos sin respuesta.
   Además, en Free tienes menos mensajes al día. Si quieres esas actividades, puedes pasar a Claude Pro desde Ajustes › Plan; CarrEar no cambia tu plan.»
+- Si el motivo fue el plan, escribe `install.claudePlan: free` en la configuración (con el conector Google Docs, solo esa línea).
 - Si el motivo es otro, da al usuario los datos de arriba para crearla a mano (Tareas programadas › Nueva tarea), con el prompt listo para copiar.
 
 ## Paso 8 — Cierre

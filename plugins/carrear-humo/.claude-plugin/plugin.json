@@ -1,6 +1,6 @@
 {
   "name": "carrear-humo",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Prueba de humo de CarrEar: skill cascarón «carrear-hola» y mini-instalador «carrear-instalar-humo». No contiene datos de ninguna persona. Tramo 1 del piloto: Claire, Leo y Helena como cascarones que piden su método al conector CarrEar con licencia.",
   "author": {
     "name": "CarrEar"

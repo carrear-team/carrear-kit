@@ -18,7 +18,7 @@ const esc = (v: string) => String(v).replace(/[&<>"']/g, (c) => `&#${c.charCodeA
 const VERSION = '0.2.0';
 // El método (capa 1) NO está en este código ni en el repo: vive en el KV privado de Cloudflare (claves «metodo:<agente>»).
 const AGENTES = ['claire', 'leo', 'helena'];
-const METODO_VERSION = '0.1';
+const METODO_VERSION = '0.2';
 
 function page(title: string, body: string, status = 200, headers?: Headers) {
   const h = headers ?? new Headers();

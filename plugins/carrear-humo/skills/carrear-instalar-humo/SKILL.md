@@ -93,7 +93,7 @@ Di en dos líneas qué vas a crear y pide un «sí». Con el «sí», crea la ta
 - Prompt (pon los ids reales en lugar de `<configDocId>` y `<logDocId>`):
 
 ```
-⚙️ Tarea automática de CarrEar (kit de humo 0.4.1). Corre sin nadie delante: no preguntes nada.
+⚙️ Tarea automática de CarrEar (kit de humo 0.6.0). Corre sin nadie delante: no preguntes nada.
 0. Llama a la herramienta `licencia` del conector CarrEar. Si su estado no es «activa», apunta en la bitácora «TAREA · diaria · PARADA · acceso no activo» y termina con «Acceso no activo: tarea parada». No hagas nada más.
 Empieza tu respuesta con esta línea, tal cual: «⚙️ Tarea automática de CarrEar — esta conversación se reinicia en cada corrida. ¿Cambios? → 📌 Instalador — CarrEar».
 1. Con el conector Google Drive, abre el Google Doc con id <configDocId> («Digital Brain — Configuración»). Si el id falla, búscalo por título exacto. Solo léelo; no lo cambies.
@@ -103,10 +103,21 @@ Empieza tu respuesta con esta línea, tal cual: «⚙️ Tarea automática de Ca
 5. Termina con una sola línea: «Prueba de humo OK» o «Prueba de humo KO: <motivo>».
 ```
 
-Si no existe la herramienta de tareas programadas, o falla por permisos o por el plan de la cuenta: di «Paso 7: KO — <mensaje exacto>», apúntalo en la bitácora (indica qué no permite el plan) y da al usuario los datos de arriba para crearla a mano (Tareas programadas › Nueva tarea), con el prompt listo para copiar.
+Si no existe la herramienta de tareas programadas, o falla por permisos o por el plan de la cuenta: di «Paso 7: KO — <mensaje exacto>» y apúntalo en la bitácora (indica qué no permite el plan).
+- Si el motivo es el plan (cuenta Claude Free), dilo así, claro y sin presionar:
+  «Tu cuenta es Claude Free. CarrEar funciona cuando tú escribes en el chat, pero las actividades que se repiten solas necesitan Claude Pro, porque en Free no existen las tareas programadas. Por ejemplo, sin Pro:
+  · Claire no te prepara cada mañana lo que merece tu atención.
+  · Leo no revisa cada día tu agenda ni te avisa de choques.
+  · Tu equipo no hace el seguimiento automático de correos sin respuesta.
+  Además, en Free tienes menos mensajes al día. Si quieres esas actividades, puedes pasar a Claude Pro desde Ajustes › Plan; CarrEar no cambia tu plan.»
+- Si el motivo es otro, da al usuario los datos de arriba para crearla a mano (Tareas programadas › Nueva tarea), con el prompt listo para copiar.
 
 ## Paso 8 — Cierre
-Resume en 7 líneas: acceso (hasta cuándo), chat (proyecto y nombre), página CarrEar (enlace), carpeta «Digital Brain — {nombre}» (enlace), configuración (enlace), bitácora (enlace), tarea (nombre y estado) y tiempo total desde el paso 1. Después: «Para comprobar la tarea ya: abre la tarea y pulsa "Ejecutar ahora"; en menos de 5 min debe aparecer una línea TAREA en la bitácora y la conversación de la tarea debe empezar por la línea ⚙️». Recuerda: «Al terminar la prueba, pon la tarea en pausa». Añade: «La primera vez que hables con Claire, Leo o Helena, Claude te pedirá permiso para que CarrEar le dé su método de trabajo (\"Método de un agente CarrEar\"). Es seguro: solo lee y no ve tus datos. Puedes elegir \"Permitir siempre\" para que no vuelva a preguntar». Añade a la bitácora la línea de cierre con el tiempo total.
+Resume en 7 líneas: acceso (hasta cuándo), chat (proyecto y nombre), página CarrEar (enlace), carpeta «Digital Brain — {nombre}» (enlace), configuración (enlace), bitácora (enlace), tarea (nombre y estado) y tiempo total desde el paso 1. Después: «Para comprobar la tarea ya: abre la tarea y pulsa "Ejecutar ahora"; en menos de 5 min debe aparecer una línea TAREA en la bitácora y la conversación de la tarea debe empezar por la línea ⚙️». Recuerda: «Al terminar la prueba, pon la tarea en pausa». Añade este texto, tal cual (sin marcar ni recomendar ninguna opción):
+«Sobre los permisos de Claude: la primera vez que uses cada herramienta, Claude te preguntará si lo permite.
+· Para lo que solo lee (tu acceso a CarrEar, el método de Claire, Leo y Helena, leer tu correo, tu agenda y tu Drive) puedes elegir "Permitir siempre" o "Permitir una vez"; tú decides, y puedes cambiarlo cuando quieras en Ajustes.
+· Para lo que crea, mueve, borra o envía, Claude te preguntará cada vez, y antes tu agente te dirá en una línea qué va a tocar (título del evento, archivo o destinatario).
+· Claude tiene también un modo Auto: en él actúa sin pedirte confirmación, también al borrar o enviar. Es opción tuya; CarrEar no lo cambia ni lo recomienda, y la regla de tu equipo sigue igual: nada sale sin tu sí.» Añade a la bitácora la línea de cierre con el tiempo total.
 
 ## Nunca
 - Pedir, inventar ni escribir datos personales aparte del nombre de pila.

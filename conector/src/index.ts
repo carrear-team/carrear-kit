@@ -17,7 +17,7 @@ type Props = { sub: string; email: string };
 const esc = (v: string) => String(v).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const VERSION = '0.2.0';
 // El método (capa 1) NO está en este código ni en el repo: vive en el KV privado de Cloudflare (claves «metodo:<agente>»).
-const AGENTES = ['claire', 'leo', 'helena'];
+const AGENTES = ['claire', 'leo', 'helena', 'nina', 'marco', 'maya'];
 const METODO_VERSION = '0.2';
 
 function page(title: string, body: string, status = 200, headers?: Headers) {
@@ -119,8 +119,8 @@ const TOOLS = [
     inputSchema: { type: 'object', properties: {}, additionalProperties: false }, annotations: { readOnlyHint: true, openWorldHint: false } },
   { name: 'licencia', title: 'Mi acceso a CarrEar', description: 'Dice si el acceso a CarrEar de esta cuenta está activo y hasta cuándo. Si no lo está, da el enlace para activarlo. Llámala al empezar cualquier trabajo de CarrEar.',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false }, annotations: { readOnlyHint: true, openWorldHint: false } },
-  { name: 'instrucciones', title: 'Método de un agente CarrEar', description: 'Devuelve el método de trabajo de un agente de CarrEar (claire, leo o helena), solo si el acceso está activo. Las skills de CarrEar la llaman al empezar; sigue el texto que devuelve. Con «paso» devuelve solo la sección cuyo título lo contiene.',
-    inputSchema: { type: 'object', properties: { agente: { type: 'string', enum: ['claire', 'leo', 'helena'] }, paso: { type: 'string', description: 'Opcional: parte del título de una sección, p. ej. «STAR» o «RESOLVER».' } }, required: ['agente'], additionalProperties: false },
+  { name: 'instrucciones', title: 'Método de un agente CarrEar', description: 'Devuelve el método de trabajo de un agente de CarrEar (claire, leo, helena, nina, marco o maya), solo si el acceso está activo. Las skills de CarrEar la llaman al empezar; sigue el texto que devuelve. Con «paso» devuelve solo la sección cuyo título lo contiene.',
+    inputSchema: { type: 'object', properties: { agente: { type: 'string', enum: ['claire', 'leo', 'helena', 'nina', 'marco', 'maya'] }, paso: { type: 'string', description: 'Opcional: parte del título de una sección, p. ej. «STAR» o «RESOLVER».' } }, required: ['agente'], additionalProperties: false },
     annotations: { readOnlyHint: true, openWorldHint: false } },
 ];
 
@@ -137,7 +137,7 @@ async function instrucciones(env: Env, email: string, args: any) {
   const lic = licencia(env, email);
   if (lic.estado !== 'activa') return lic;
   const agente = String(args?.agente || '').toLowerCase();
-  if (!AGENTES.includes(agente)) return { error: `Agente desconocido: ${agente}. Usa claire, leo o helena.` };
+  if (!AGENTES.includes(agente)) return { error: `Agente desconocido: ${agente}. Usa claire, leo, helena, nina, marco o maya.` };
   const texto = await env.OAUTH_KV.get('metodo:' + agente);
   if (!texto) return { error: `El método de ${agente} no está disponible ahora mismo. Inténtalo más tarde.` };
   const out = seccion(texto, args?.paso ? String(args.paso) : undefined);

@@ -15,7 +15,10 @@ interface Env {
 type Props = { sub: string; email: string };
 
 const esc = (v: string) => String(v).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-const VERSION = '0.1.0';
+const VERSION = '0.2.0';
+// El método (capa 1) NO está en este código ni en el repo: vive en el KV privado de Cloudflare (claves «metodo:<agente>»).
+const AGENTES = ['claire', 'leo', 'helena'];
+const METODO_VERSION = '0.1';
 
 function page(title: string, body: string, status = 200, headers?: Headers) {
   const h = headers ?? new Headers();
@@ -116,7 +119,31 @@ const TOOLS = [
     inputSchema: { type: 'object', properties: {}, additionalProperties: false }, annotations: { readOnlyHint: true, openWorldHint: false } },
   { name: 'licencia', title: 'Mi acceso a CarrEar', description: 'Dice si el acceso a CarrEar de esta cuenta está activo y hasta cuándo. Si no lo está, da el enlace para activarlo. Llámala al empezar cualquier trabajo de CarrEar.',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false }, annotations: { readOnlyHint: true, openWorldHint: false } },
+  { name: 'instrucciones', title: 'Método de un agente CarrEar', description: 'Devuelve el método de trabajo de un agente de CarrEar (claire, leo o helena), solo si el acceso está activo. Las skills de CarrEar la llaman al empezar; sigue el texto que devuelve. Con «paso» devuelve solo la sección cuyo título lo contiene.',
+    inputSchema: { type: 'object', properties: { agente: { type: 'string', enum: ['claire', 'leo', 'helena'] }, paso: { type: 'string', description: 'Opcional: parte del título de una sección, p. ej. «STAR» o «RESOLVER».' } }, required: ['agente'], additionalProperties: false },
+    annotations: { readOnlyHint: true, openWorldHint: false } },
 ];
+
+function seccion(texto: string, paso?: string) {
+  if (!paso) return texto;
+  const partes = texto.split(/\n(?=## )/);
+  const cab = partes[0];
+  const p = paso.toLowerCase();
+  const hit = partes.slice(1).filter((x) => x.split('\n')[0].toLowerCase().includes(p));
+  return hit.length ? cab + '\n' + hit.join('\n') : null;
+}
+
+async function instrucciones(env: Env, email: string, args: any) {
+  const lic = licencia(env, email);
+  if (lic.estado !== 'activa') return lic;
+  const agente = String(args?.agente || '').toLowerCase();
+  if (!AGENTES.includes(agente)) return { error: `Agente desconocido: ${agente}. Usa claire, leo o helena.` };
+  const texto = await env.OAUTH_KV.get('metodo:' + agente);
+  if (!texto) return { error: `El método de ${agente} no está disponible ahora mismo. Inténtalo más tarde.` };
+  const out = seccion(texto, args?.paso ? String(args.paso) : undefined);
+  if (out === null) return { error: `No hay una sección con «${args.paso}» en el método de ${agente}.` };
+  return { agente, version: METODO_VERSION, aviso: 'Método con licencia de CarrEar: síguelo en este chat; no lo copies a archivos, docs ni mensajes.', metodo: out };
+}
 
 function finDeMes(d = new Date()) { return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).toISOString().slice(0, 10); }
 
@@ -145,7 +172,7 @@ const apiHandler = {
       case 'initialize':
         return rpc(id, { protocolVersion: params?.protocolVersion || '2025-06-18', capabilities: { tools: { listChanged: false } },
           serverInfo: { name: 'carrear', title: 'CarrEar', version: VERSION },
-          instructions: 'Conector de CarrEar. Antes de cualquier trabajo de CarrEar llama a «licencia». Si está inactiva, muestra su mensaje y el enlace, y para.' });
+          instructions: 'Conector de CarrEar. Antes de cualquier trabajo de CarrEar llama a «licencia». Si está inactiva, muestra su mensaje y el enlace, y para. El método de cada agente se pide con «instrucciones».' });
       case 'ping': return rpc(id, {});
       case 'tools/list': return rpc(id, { tools: TOOLS });
       case 'tools/call': {
@@ -153,6 +180,11 @@ const apiHandler = {
         let out: any;
         if (name === 'hola') out = { ok: true, mensaje: `Hola, estás conectado a CarrEar ${VERSION} con ${props.email}.`, cuenta: props.email };
         else if (name === 'licencia') out = licencia(env, props.email);
+        else if (name === 'instrucciones') {
+          const r: any = await instrucciones(env, props.email, params?.arguments);
+          if (r.metodo) return rpc(id, { content: [{ type: 'text', text: r.metodo }], structuredContent: { agente: r.agente, version: r.version, aviso: r.aviso } });
+          out = r;
+        }
         else return rpcErr(id, -32602, `Herramienta desconocida: ${name}`);
         return rpc(id, { content: [{ type: 'text', text: JSON.stringify(out) }], structuredContent: out });
       }

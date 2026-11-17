@@ -73,6 +73,7 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 - Si ya publicaste esta página antes en esta cuenta (lo dice el usuario o lo ves en el chat), vuelve a publicar en **el mismo enlace** para que no pierda su base.
 - Dile: «Abre tu página CarrEar y pulsa Continuar en la ventana de permisos (una sola vez). Arriba debe decir "Acceso activo hasta …"». Espera su «hecho».
 - Apunta en la bitácora: versión, enlace de la página y si vio «Acceso activo».
+- Escribe el enlace de la página en el doc de configuración, línea `boardUrl:` (con el conector Google Docs; cambia solo esa línea). Las skills lo usan para crear fichas y pendientes en la página.
 
 ## Paso 6 — Instrucciones del proyecto «Digital Brain»
 Las skills leen los ids desde dos sitios fijos: este doc de configuración y las instrucciones del proyecto. Tú no puedes editar las instrucciones del proyecto: dale al usuario este bloque listo para copiar (con los ids reales) y dile dónde pegarlo: «Proyecto Digital Brain › Instrucciones › Editar › pega al final › Guardar».

@@ -66,17 +66,15 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 - Guarda su id: es `configDocId`. Enseña el enlace al doc.
 
 ## Paso 5b — Tu página CarrEar (completa)
-- Lee `archivos-pagina.json` (carpeta de esta skill): trae `version`, `maestro` y `files` (cada ruta con su origen `{artifact, path}`).
 - Antes de publicar, comprueba que Google Sheets está conectado (la página lo usa para tus personas y alertas). Si no: «Conecta Google Sheets en Ajustes › Conectores y dime "hecho"» y espera.
 - Si la herramienta de publicar no acepta la ruta de la carpeta de la skill, no la copies con un comando (pide permisos de más): lee `carrear.html` con tu herramienta de lectura y escríbelo tal cual, sin cambiar nada, con tu herramienta de crear archivos en tu carpeta de trabajo; publica esa copia.
-- Publica `carrear.html` (carpeta de esta skill) como artefacto nuevo, **exactamente como está, sin cambiar ni una letra**, pasando en `files` el objeto `files` de ese JSON tal cual (no subas esos archivos desde disco: la plataforma los copia del maestro de CarrEar en el servidor). Capacidades:
-  `{"db": {}, "sample": {}, "mcp": {"servers": [{"server": "carrear", "tools": ["licencia"]}, {"server": "Gmail", "tools": ["search_threads", "get_thread", "label_thread", "unlabel_thread", "trash_thread", "mark_thread_spam", "create_draft"]}, {"server": "Google Calendar", "tools": ["list_events", "create_event", "update_event", "get_event", "delete_event", "respond_to_event"]}, {"server": "Google Drive", "tools": ["search_files", "read_file_content", "download_file_content", "create_file", "update_file"]}, {"server": "Google Sheets", "tools": ["get_values", "update_values", "append_values"]}]}}`
+- Publica `carrear.html` (carpeta de esta skill) como artefacto nuevo, **exactamente como está, sin cambiar ni una letra y sin archivos adicionales** (nada en `files`: el código de la página lo descarga ella misma del conector CarrEar al abrirse, solo con licencia activa). Capacidades:
+  `{"db": {}, "sample": {}, "mcp": {"servers": [{"server": "carrear", "tools": ["licencia", "pagina"]}, {"server": "Gmail", "tools": ["search_threads", "get_thread", "label_thread", "unlabel_thread", "trash_thread", "mark_thread_spam", "create_draft"]}, {"server": "Google Calendar", "tools": ["list_events", "create_event", "update_event", "get_event", "delete_event", "respond_to_event"]}, {"server": "Google Drive", "tools": ["search_files", "read_file_content", "download_file_content", "create_file", "update_file"]}, {"server": "Google Sheets", "tools": ["get_values", "update_values", "append_values"]}]}}`
   Si un conector no existe en la cuenta, déjalo igual en la lista: la página lo muestra como «Sin conectar».
   WhatsApp (Make + Bird) y tareas con Siri (Todoist) son opcionales y no van en esta instalación: si el usuario los pide, dile que es un módulo aparte que se activa después («activa WhatsApp» / «activa Todoist»).
-- La primera vez, Claude pregunta si permites copiar del artefacto de CarrEar (otra organización). Dile: «Acepta: es el código de tu página, sin datos de nadie». Si la herramienta pide reintentar para hacer esa pregunta, reintenta la misma publicación.
 - Si la publicación falla de otra forma: «Paso 5b: KO — <error exacto>», publica en su lugar `carrear-piloto.html` como página provisional (mismas capacidades) y apúntalo en la bitácora.
-- Si ya publicaste la página antes en esta cuenta, vuelve a publicar en **el mismo enlace** para que no pierda su base.
-- Dile: «Abre tu página CarrEar y pulsa Continuar en la ventana de permisos (una sola vez). Si ves "Tu acceso a CarrEar no está activo", avísame». Espera su «hecho».
+- Si ya publicaste la página antes en esta cuenta, vuelve a publicar en **el mismo enlace** para que no pierda su base. Las actualizaciones del código llegan solas: no hace falta republicar para eso.
+- Dile: «Abre tu página CarrEar y pulsa Continuar en la ventana de permisos (una sola vez). La primera vez tarda unos segundos en descargarse; después abre al instante. Si ves "Tu acceso a CarrEar no está activo", avísame». Espera su «hecho».
 - Apunta en la bitácora: versión, enlace y si la página abrió sin el aviso de acceso.
 - Escribe el enlace en el doc de configuración, línea `boardUrl:` (conector Google Docs; solo esa línea).
 

@@ -16,7 +16,7 @@ interface Env {
 type Props = { sub: string; email: string };
 
 const esc = (v: string) => String(v).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-const VERSION = '0.2.1';
+const VERSION = '0.2.2';
 // El método (capa 1) NO está en este código ni en el repo: vive en el KV privado de Cloudflare (claves «metodo:<agente>»).
 const AGENTES = ['claire', 'leo', 'helena', 'nina', 'marco', 'maya'];
 const METODO_VERSION = '0.2';
@@ -125,9 +125,15 @@ const TOOLS = [
     annotations: { readOnlyHint: true, openWorldHint: false } },
 ];
 
+// Secciones largas que solo se sirven a petición (paso): el catálogo de reglas.
+const BAJO_DEMANDA = /^## catálogo de reglas/i;
+
 function seccion(texto: string, paso?: string) {
-  if (!paso) return texto;
   const partes = texto.split(/\n(?=## )/);
+  if (!paso) {
+    const fuera = partes.filter((x, i) => i === 0 || !BAJO_DEMANDA.test(x.split('\n')[0]));
+    return fuera.join('\n');
+  }
   const cab = partes[0];
   const p = paso.toLowerCase();
   const hit = partes.slice(1).filter((x) => x.split('\n')[0].toLowerCase().includes(p));

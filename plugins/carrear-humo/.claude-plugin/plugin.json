@@ -1,6 +1,6 @@
 {
   "name": "carrear-humo",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "description": "Prueba de humo de CarrEar: skill cascarón «carrear-hola» y mini-instalador «carrear-instalar-humo». No contiene datos de ninguna persona. Los 6 agentes (Claire, Leo, Helena, Nina, Marco y Maya) como cascarones que piden su método al conector CarrEar con licencia.",
   "author": {
     "name": "CarrEar"

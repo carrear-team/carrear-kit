@@ -88,6 +88,7 @@ Nada más: ni correo, ni teléfono, ni familia. «Paso 5c: OK» cuando la escrit
 ## Paso 5d — Un chat fijo por agente
 Cargar un agente en un chat nuevo tarda; por eso cada agente vive en su propio chat fijado. Dile, en un solo mensaje:
 «Vamos a dejar a tu equipo cada uno en su chat (2 minutos). Dentro del proyecto Digital Brain, para cada agente: abre un chat nuevo, escribe solo su nombre (Claire, Leo, Helena, Nina, Marco o Maya) y envíalo; luego ⋮ › Renombrar → "📌 <Nombre>", y fíjalo si tu app lo permite. Después pégame aquí los 6 enlaces (o los que tengas).»
+- Avísale: «La primera vez que hables con cada agente, hará su puesta en marcha: te presenta sus reglas (las recomendadas ya marcadas) y te propone sus tareas automáticas. Son 5-10 minutos por agente; empieza por Claire».
 - Con los enlaces que pegue (solo los que empiezan por `https://claude.ai/chat/`), haz `update` de `dashboard/userConfig` con `{"chats": {"claire": "…", "leo": "…", …}}`.
 - Explícale: «En tu página, abajo a la derecha, verás un botón por agente que abre su chat. Cuando la página te proponga pedirle algo a un agente, copiará el mensaje y abrirá su chat: solo pégalo. La página sigue siendo para ver; las peticiones a tu equipo, en su chat».
 - Si no quiere ahora: «Paso 5d: pendiente» y sigue; se puede hacer luego diciendo «configura mis chats».

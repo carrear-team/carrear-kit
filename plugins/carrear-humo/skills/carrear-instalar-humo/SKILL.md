@@ -113,7 +113,7 @@ Después guía, paso a paso, **solo** las opciones elegidas, una por una. Cada p
 - **Teléfono**
   · iPhone (Safari): botón Compartir › Añadir a pantalla de inicio › «CarrEar» › Añadir.
   · Android (Chrome): menú ⋮ › Añadir a pantalla de inicio › «CarrEar» › Añadir.
-  · En el teléfono, la página es sobre todo para ver (mensajes importantes, WhatsApp, procesos, indicadores); para pedirle cosas a tu equipo, usa los chats fijos en la app de Claude.
+  · En el teléfono la página funciona igual que en la computadora, salvo lo que necesita el navegador Chrome de tu computadora (por ejemplo, revisar LinkedIn). Para pedidos complejos, como mover tu agenda o preparar un mensaje, es más potente hablar directo con tu agente en su chat fijo (por ejemplo, Leo).
 - **Fijada en Claude**: con su sí, usa la herramienta de artefactos con la acción de fijar (pin) sobre <boardUrl>. Si no la tienes: «En la página, menú del título › Fijar».
 Apunta en la bitácora qué opciones eligió y cuáles quedaron hechas. «Paso 5e: OK».
 

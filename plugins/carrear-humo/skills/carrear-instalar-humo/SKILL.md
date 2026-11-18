@@ -92,6 +92,31 @@ Cargar un agente en un chat nuevo tarda; por eso cada agente vive en su propio c
 - Explícale: «En tu página, abajo a la derecha, verás un botón por agente que abre su chat. Cuando la página te proponga pedirle algo a un agente, copiará el mensaje y abrirá su chat: solo pégalo. La página sigue siendo para ver; las peticiones a tu equipo, en su chat».
 - Si no quiere ahora: «Paso 5d: pendiente» y sigue; se puede hacer luego diciendo «configura mis chats».
 
+## Paso 5e — Cómo quieres abrir tu página
+(Haz también solo este paso si el usuario pregunta después «¿cómo abro mi página?» o «quiero CarrEar como app».)
+Primero explícale, en 3 líneas:
+«Tu página CarrEar es una liga privada: solo se abre con tu cuenta de Claude. Aunque alguien tenga la liga, no puede verla si tú no le das acceso desde Compartir.
+Nunca la pongas en "Cualquiera con la liga": tu equipo guarda ahí datos tuyos.
+Para no tener que buscarla cada vez entre tus artefactos, elige cómo quieres abrirla (puedes elegir varias).»
+Pregunta con opciones (selección múltiple; en un chat sin botones, lista numerada):
+1. **Como app en tu computadora** (ventana propia, icono en el Dock o la barra de tareas).
+2. **Favorito en tu navegador.**
+3. **Icono en la pantalla de inicio de tu teléfono.**
+4. **Fijada en la barra lateral de Claude.**
+Después guía, paso a paso, **solo** las opciones elegidas, una por una. Cada paso empieza con «Abre tu página: <boardUrl>». Pregunta su sistema y navegador si no lo sabes. Espera su «hecho» antes de pasar a la siguiente.
+- **App en la computadora**
+  · Chrome (Windows o Mac): menú ⋮ › Transmitir, guardar y compartir › Instalar la página como app › nombre «CarrEar» › Instalar. Se abre en su propia ventana; para tenerla a mano, haz clic derecho en su icono › Anclar a la barra de tareas (Windows) o Mantener en el Dock (Mac).
+  · Edge (Windows): menú ⋯ › Aplicaciones › Instalar este sitio como una aplicación › «CarrEar» › Instalar.
+  · Safari (Mac): Archivo › Añadir al Dock › «CarrEar».
+  · La primera vez, inicia sesión en Claude dentro de esa ventana con tu misma cuenta.
+- **Favorito**: estrella ☆ en la barra de direcciones (o Ctrl/Cmd + D) › nombre «CarrEar» › carpeta Barra de favoritos.
+- **Teléfono**
+  · iPhone (Safari): botón Compartir › Añadir a pantalla de inicio › «CarrEar» › Añadir.
+  · Android (Chrome): menú ⋮ › Añadir a pantalla de inicio › «CarrEar» › Añadir.
+  · En el teléfono, la página es sobre todo para ver (mensajes importantes, WhatsApp, procesos, indicadores); para pedirle cosas a tu equipo, usa los chats fijos en la app de Claude.
+- **Fijada en Claude**: con su sí, usa la herramienta de artefactos con la acción de fijar (pin) sobre <boardUrl>. Si no la tienes: «En la página, menú del título › Fijar».
+Apunta en la bitácora qué opciones eligió y cuáles quedaron hechas. «Paso 5e: OK».
+
 ## Paso 6 — Instrucciones del proyecto «Digital Brain»
 Las skills leen los ids desde dos sitios fijos: este doc de configuración y las instrucciones del proyecto. Tú no puedes editar las instrucciones del proyecto: dale al usuario este bloque listo para copiar (con los ids reales) y dile dónde pegarlo: «Proyecto Digital Brain › Instrucciones › Editar › pega al final › Guardar».
 ```

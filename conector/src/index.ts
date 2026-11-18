@@ -16,7 +16,7 @@ interface Env {
 type Props = { sub: string; email: string };
 
 const esc = (v: string) => String(v).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-const VERSION = '0.2.2';
+const VERSION = '0.3.0';
 // El método (capa 1) NO está en este código ni en el repo: vive en el KV privado de Cloudflare (claves «metodo:<agente>»).
 const AGENTES = ['claire', 'leo', 'helena', 'nina', 'marco', 'maya'];
 const METODO_VERSION = '0.2';
@@ -123,7 +123,24 @@ const TOOLS = [
   { name: 'instrucciones', title: 'Método de un agente CarrEar', description: 'Devuelve el método de trabajo de un agente de CarrEar (claire, leo, helena, nina, marco o maya), solo si el acceso está activo. Las skills de CarrEar la llaman al empezar; sigue el texto que devuelve. Con «paso» devuelve solo la sección cuyo título lo contiene.',
     inputSchema: { type: 'object', properties: { agente: { type: 'string', enum: ['claire', 'leo', 'helena', 'nina', 'marco', 'maya'] }, paso: { type: 'string', description: 'Opcional: parte del título de una sección, p. ej. «STAR» o «RESOLVER».' } }, required: ['agente'], additionalProperties: false },
     annotations: { readOnlyHint: true, openWorldHint: false } },
+  { name: 'pagina', title: 'Código de mi página CarrEar', description: 'Entrega el código de la página CarrEar del usuario, por partes, solo si el acceso está activo. Lo llama la propia página al abrirse; no hace falta llamarla desde un chat.',
+    inputSchema: { type: 'object', properties: { parte: { type: 'integer', minimum: 0, description: 'Número de parte (desde 0). Sin él devuelve solo la versión y cuántas partes hay.' } }, additionalProperties: false },
+    annotations: { readOnlyHint: true, openWorldHint: false } },
 ];
+
+// Código de la página (capa 2): vive en el KV («pagina:actual» = {version, partes}; «pagina:<version>:<n>» = texto), nunca en el repo.
+async function pagina(env: Env, email: string, args: any) {
+  const lic = licencia(env, email);
+  if (lic.estado !== 'activa') return lic;
+  const man = await env.OAUTH_KV.get('pagina:actual', 'json') as any;
+  if (!man || !man.version) return { error: 'El código de la página no está disponible ahora mismo. Inténtalo más tarde.' };
+  if (args?.parte === undefined || args?.parte === null) return { version: man.version, partes: man.partes, sha: man.sha || '' };
+  const n = Number(args.parte);
+  if (!Number.isInteger(n) || n < 0 || n >= man.partes) return { error: `Parte fuera de rango: ${args.parte}` };
+  const texto = await env.OAUTH_KV.get(`pagina:${man.version}:${n}`);
+  if (texto === null) return { error: 'Falta una parte del código. Inténtalo más tarde.' };
+  return { version: man.version, partes: man.partes, parte: n, texto };
+}
 
 // Secciones largas que solo se sirven a petición (paso): el catálogo de reglas.
 const BAJO_DEMANDA = /^## catálogo de reglas/i;
@@ -203,7 +220,9 @@ const apiHandler = {
           if (r.metodo) return rpc(id, { content: [{ type: 'text', text: r.metodo }], structuredContent: { agente: r.agente, version: r.version, aviso: r.aviso } });
           out = r;
         }
+        else if (name === 'pagina') out = await pagina(env, props.email, params?.arguments);
         else return rpcErr(id, -32602, `Herramienta desconocida: ${name}`);
+        if (name === 'pagina' && out && out.texto !== undefined) return rpc(id, { content: [{ type: 'text', text: `Parte ${out.parte + 1} de ${out.partes} (versión ${out.version}).` }], structuredContent: out });
         return rpc(id, { content: [{ type: 'text', text: JSON.stringify(out) }], structuredContent: out });
       }
       default: return rpcErr(id, -32601, `Método no soportado: ${method}`);

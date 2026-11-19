@@ -85,6 +85,30 @@ async function hmacHex(secret: string, msg: string) {
 }
 function igual(a: string, b: string) { if (a.length !== b.length) return false; let x = 0; for (let i = 0; i < a.length; i++) x |= a.charCodeAt(i) ^ b.charCodeAt(i); return x === 0; }
 
+// Portal «Mi cuenta»: se crea por API la primera vez (cancelar, cambiar tarjeta, ver facturas).
+async function portalConfig(env: WebEnv, base: string) {
+  const k = 'stripe:portal:' + String(env.STRIPE_SECRET_KEY || '').slice(0, 16);
+  const id = await env.OAUTH_KV.get(k);
+  if (id) return id;
+  const c = await stripe(env, 'POST', 'billing_portal/configurations', form({
+    'business_profile[headline]': 'My CarrEar team · tu suscripción',
+    'default_return_url': base + '/empezar',
+    'features[invoice_history][enabled]': 'true',
+    'features[payment_method_update][enabled]': 'true',
+    'features[customer_update][enabled]': 'true',
+    'features[customer_update][allowed_updates][0]': 'email',
+    'features[subscription_cancel][enabled]': 'true',
+    'features[subscription_cancel][mode]': 'at_period_end',
+    'features[subscription_cancel][cancellation_reason][enabled]': 'true',
+    'features[subscription_cancel][cancellation_reason][options][0]': 'too_expensive',
+    'features[subscription_cancel][cancellation_reason][options][1]': 'missing_features',
+    'features[subscription_cancel][cancellation_reason][options][2]': 'unused',
+    'features[subscription_cancel][cancellation_reason][options][3]': 'other',
+  }));
+  await env.OAUTH_KV.put(k, c.id);
+  return c.id as string;
+}
+
 // ---------- Páginas ----------
 const CSS = `:root{--ink:#18234f;--mut:#5c6584;--line:#e3e6ef;--bg:#f6f5f1;--card:#fff;--acc:#e8a04a;--acc2:#c97e2a;--ok:#2f8f6a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Inter",system-ui,-apple-system,sans-serif}
@@ -228,7 +252,7 @@ export async function webRoute(req: Request, env: WebEnv, url: URL): Promise<Res
       const l = await leerLic(env, email);
       if (!l?.customerId) return Response.redirect(base + '/empezar?e=' + encodeURIComponent(`No encontramos una suscripción para ${email}.`), 302);
       try {
-        const s = await stripe(env, 'POST', 'billing_portal/sessions', form({ customer: l.customerId, return_url: base + '/empezar', locale: 'es' }));
+        const s = await stripe(env, 'POST', 'billing_portal/sessions', form({ customer: l.customerId, return_url: base + '/empezar', locale: 'es', configuration: await portalConfig(env, base) }));
         return Response.redirect(s.url, 303);
       } catch (e: any) { return html('Mi cuenta', `<h1>Mi cuenta</h1><div class="aviso">No se pudo abrir tu cuenta: ${esc(e.message)}</div>`, 502); }
     }

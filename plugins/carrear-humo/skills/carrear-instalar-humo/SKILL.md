@@ -22,7 +22,7 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 - Busca la herramienta `licencia` del conector CarrEar (si está diferida, cárgala) y llámala.
 - Si no existe el conector: «Paso 0: KO — falta la conexión CarrEar. Ve a Personalizar › Plug-ins › Carrear humo › Conectores › Conectar y vuelve a escribir "Instala CarrEar"». Para.
 - Si `estado` no es `activa`: enseña su `mensaje` y su `enlacePago` y para. No sigas con ningún paso.
-- Si es `activa`: «Paso 0: OK — acceso activo hasta <hasta>».
+- Si es `activa`: «Paso 0: OK — acceso activo hasta <hasta>». Guarda `addons` (lista; vacía = solo Membresía) y `upgradeUrl` de la respuesta: van a la configuración en los pasos 5 y 5c.
 
 ## Paso 1 — Proyecto «Digital Brain» y nombre del chat
 - Comprueba si este chat está dentro de un proyecto cuyo nombre empieza por «Digital Brain» (p. ej. «Digital Brain · PRUEBA») (lo ves en tu contexto: instrucciones o archivos del proyecto). Si no lo sabes, pregúntalo con un sí/no.
@@ -33,7 +33,8 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 - Busca las herramientas del conector Google Drive (por ejemplo `search_files` y `create_file`). Si están diferidas, cárgalas.
 - Si no hay conector de Drive: «Paso 2: KO — falta el conector Google Drive. Actívalo en Ajustes › Conectores y vuelve a escribir "Instala CarrEar"». Para.
 - Busca también las herramientas del conector Google Docs (las que editan un doc, por ejemplo `update_doc`). Si no está: «Paso 2: KO — falta el conector Google Docs (sirve para que tu equipo apunte cosas en tus documentos). Actívalo en Personalizar › Conectores › Google Docs › Conectar y vuelve a escribir "Instala CarrEar"». Para.
-- Pregunta: «¿Cómo te llamas? Solo tu nombre de pila; lo uso para el nombre de tu carpeta». Guárdalo como `{nombre}`.
+- Pregunta en un solo mensaje: «¿Cómo te llamas (solo tu nombre de pila) y en qué ciudad vives? El nombre es para tu carpeta; la ciudad, para que tu equipo te agende a tu hora». Guarda `{nombre}` y `{ciudad}`.
+- Con la ciudad, pon su zona horaria IANA (París → `Europe/Paris`, Madrid → `Europe/Madrid`, Ciudad de México → `America/Mexico_City`…) como `{timezone}`. Nunca la adivines por el navegador ni por el idioma. Si la ciudad es ambigua o no la reconoces, pregunta el país; si sigue sin estar clara, confírmala con un sí/no («¿Tu hora es la de <zona>?»).
 
 ## Paso 3 — Bitácora de pruebas (solo para la prueba)
 - Busca en la raíz de Mi unidad una carpeta llamada exactamente `CarrEar · Bitácora de pruebas` (no en la papelera). Si no existe, créala (`application/vnd.google-apps.folder`).
@@ -58,7 +59,8 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 - Si no existe, créalo como Google Doc con el texto de `plantilla-configuracion.txt` (en la carpeta de esta skill), sustituyendo:
   - `{installedAt}` → fecha y hora actuales en ISO 8601 (UTC);
   - `{nombre}` → el nombre de pila;
-  - `{timezone}` → la zona horaria del usuario si la sabes (navegador o cuenta), si no `—`;
+  - `{timezone}` → la zona del paso 2 (p. ej. `Europe/Paris`); `user.city` → `{ciudad}`;
+  - `license.addons: —` → los `addons` del paso 0 separados por « | » (vacío = `—`); `license.upgradeUrl: —` → su `upgradeUrl`;
   - `{rootFolderId}`, `{f_perfil}`, `{f_personas}`, `{f_vacantes}`, `{f_marca}`, `{f_proyectos}`, `{f_documentos}` → los ids del paso 4;
   - `{logDocId}` → id de la bitácora;
   - `{configDocId}` → `—` al crear; si la herramienta permite editar después, pon el id del doc.
@@ -80,8 +82,8 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 
 ## Paso 5c — Configuración de la página
 Con la herramienta de base de datos de artefactos (ArtifactData; si está diferida, cárgala) escribe en la página del paso 5b la colección `dashboard`, documento `userConfig` (si ya existe, léelo y usa `update` con su versión; nunca borres campos):
-`{"boardUrl": "<enlace de la página>", "user": {"firstName": "<nombre>", "timezone": "<zona o vacío>"}, "drive": {"rootFolderId": "<rootFolderId>", "rootFolderName": "Digital Brain — <nombre>", "folders": {"vacantes": "<id Vacantes>", "misDatos": "<id Perfil y carrera>"}}, "claude": {"projectId": "<id del proyecto si lo ves, si no vacío>"}, "chats": {}}`
-Nada más: ni correo, ni teléfono, ni familia. «Paso 5c: OK» cuando la escritura confirme versión.
+`{"boardUrl": "<enlace de la página>", "user": {"firstName": "<nombre>", "city": "<ciudad>", "timezone": "<zona IANA del paso 2>"}, "license": {"addons": [<addons del paso 0>], "upgradeUrl": "<upgradeUrl>"}, "drive": {"rootFolderId": "<rootFolderId>", "rootFolderName": "Digital Brain — <nombre>", "folders": {"vacantes": "<id Vacantes>", "misDatos": "<id Perfil y carrera>"}}, "claude": {"projectId": "<id del proyecto si lo ves, si no vacío>"}, "chats": {}}`
+Nada más: ni correo, ni teléfono, ni familia. Comprueba leyendo el documento que `user.timezone` es la del paso 2 y que `license.addons` coincide con la licencia; si no, corrígelo con `update`. «Paso 5c: OK» cuando la lectura lo confirme.
 
 ## Paso 5d — Un chat fijo por agente
 Cargar un agente en un chat nuevo tarda; por eso cada agente vive en su propio chat fijado. Dile, en un solo mensaje:

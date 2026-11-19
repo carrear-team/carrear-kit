@@ -20,7 +20,7 @@ Si la bitácora aún no existe o no se puede escribir, sigue y dilo en el chat.
 
 ## Paso 0 — Tu acceso a CarrEar
 - Busca la herramienta `licencia` del conector CarrEar (si está diferida, cárgala) y llámala.
-- Si no existe el conector: «Paso 0: KO — falta la conexión CarrEar. Ve a Personalizar › Plug-ins › Carrear humo › Conectores › Conectar y vuelve a escribir "Instala CarrEar"». Para.
+- Si no existe el conector: «Paso 0: KO — falta la conexión CarrEar. Ve a Personalizar › Plugins › CarrEar › Conectores › carrear › Conectar y vuelve a escribir "Instala CarrEar"». Para.
 - Si `estado` no es `activa`: enseña su `mensaje` y su `enlacePago` y para. No sigas con ningún paso.
 - Si es `activa`: «Paso 0: OK — acceso activo hasta <hasta>». Guarda `addons` (lista; vacía = solo Membresía) y `upgradeUrl` de la respuesta: van a la configuración en los pasos 5 y 5c.
 

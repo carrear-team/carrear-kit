@@ -4,15 +4,15 @@
     "name": "CarrEar"
   },
   "metadata": {
-    "description": "Marketplace de CarrEar. Versión de prueba de humo: solo cascarones, sin datos de nadie.",
-    "version": "1.0.1"
+    "description": "Marketplace de CarrEar (versión de prueba): solo cascarones, sin datos de nadie.",
+    "version": "1.1.0"
   },
   "plugins": [
     {
-      "name": "carrear-humo",
+      "name": "carrear",
       "source": "./plugins/carrear-humo",
-      "description": "Kit de prueba de CarrEar: un cascarón que explica qué es CarrEar y un mini-instalador que sigue el onboarding de cliente: proyecto «Digital Brain» y chat «📌 Instalador — CarrEar», carpeta «Digital Brain — <Nombre>» con 6 subcarpetas, ficha de configuración, bitácora de pruebas aparte y tarea «⚙️» de prueba. Los 6 agentes (Claire, Leo, Helena, Nina, Marco y Maya) como cascarones que piden su método al conector CarrEar con licencia.",
-      "version": "1.0.1",
+      "description": "CarrEar: tu equipo de carrera (Claire, Leo, Helena, Nina, Marco y Maya) y su instalador. Instala y escribe «Instala CarrEar» en un chat de tu proyecto «Digital Brain». El método de cada agente llega del conector CarrEar con tu suscripción activa.",
+      "version": "1.1.0",
       "category": "productivity"
     }
   ]

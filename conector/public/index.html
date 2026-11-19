@@ -1,0 +1,879 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>my CarrEar · your personal AI team</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Your career now has a team. Seven AI agents for your job search, your growth and your day, inside your own Claude.">
+<style>
+@font-face{font-family:'Manrope';font-weight:600;font-display:swap;src:url(fonts/manrope-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-weight:700;font-display:swap;src:url(fonts/manrope-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-weight:800;font-display:swap;src:url(fonts/manrope-latin-800-normal.woff2) format('woff2')}
+@font-face{font-family:'Instrument Sans';font-weight:400;font-display:swap;src:url(fonts/instrument-sans-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Instrument Sans';font-weight:500;font-display:swap;src:url(fonts/instrument-sans-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Instrument Sans';font-weight:600;font-display:swap;src:url(fonts/instrument-sans-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Instrument Sans';font-weight:700;font-display:swap;src:url(fonts/instrument-sans-latin-700-normal.woff2) format('woff2')}
+/* One guided tour. A single cool ground, navy ink, amber only for actions.
+   The memorable thing: the seven agents live on a fixed stage and re-arrange themselves for every chapter. */
+:root{
+  color-scheme:light;
+  --mist:#edf0f7; --surface:#ffffff; --tint:#e2e6f2; --line:#d3d9ea;
+  --ink:#121a3d; --ink-soft:#4a5378; --mute:#737c9f;
+  --amber:#f2a93b; --amber-ink:#2a1a02;
+  --display:"Manrope","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Instrument Sans","Helvetica Neue",Arial,system-ui,sans-serif;
+  --c-nina:#3d6fe8; --c-marco:#d4802f; --c-helena:#8b6cc9; --c-claire:#3f9a74; --c-leo:#4f78c4; --c-maya:#d2653a; --c-ravi:#b8475f;
+  --bar:64px; --ease:cubic-bezier(.65,0,.25,1);
+}
+*{box-sizing:border-box}
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--mist);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.025em;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:10px}
+.gut{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+/* header + progress */
+.bar{position:fixed;inset:0 0 auto;z-index:30;padding-top:env(safe-area-inset-top,0px);background:color-mix(in srgb,var(--mist) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.bar-in{height:var(--bar);display:flex;align-items:center;gap:20px}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex:none}
+.mark b{font:800 18px var(--display);letter-spacing:-.02em;white-space:nowrap;display:block}
+.mark small{display:block;font:600 11.5px var(--body);color:var(--mute);letter-spacing:.01em}
+.mark b i,.hero-brand b i{font-style:normal;font-weight:600;color:var(--mute);margin-right:1px}.mark b em,.hero-brand b em{font-style:normal;color:#d98a12}
+.steps-nav{flex:1;display:flex;gap:6px;min-width:0;justify-content:center}
+.steps-nav button{border:0;background:none;cursor:pointer;padding:6px 4px 8px;display:flex;flex-direction:column;gap:6px;align-items:stretch;min-width:0;flex:1;max-width:120px;color:var(--mute);font:600 12.5px var(--body);text-align:left}
+.steps-nav i{display:block;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--amber) var(--p,0%),var(--line) 0)}
+.steps-nav button[aria-current="step"]{color:var(--ink)}
+.steps-nav span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{display:flex;align-items:center;gap:10px;flex:none}
+.lang{display:flex;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.lang button{border:0;background:none;cursor:pointer;padding:6px 10px;font:600 12.5px var(--body);color:var(--mute);border-radius:999px}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;cursor:pointer;text-decoration:none;border-radius:999px;padding:14px 24px;font:600 15.5px var(--body);background:var(--amber);color:var(--amber-ink);transition:transform .2s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn.quiet{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.sm{padding:9px 16px;font-size:14px}
+@media (max-width:1100px){.steps-nav span{display:none}.steps-nav button{max-width:36px}}
+@media (max-width:640px){.bar .btn{display:none}.bar #meetBtn{padding:4px 10px 4px 4px;font-size:13px;gap:7px}.mc-faces img:nth-child(n+3),.mc-play{display:none}.mark small{font-size:10px}.bar-in{gap:12px;position:relative}.steps-nav{position:absolute;left:0;right:0;bottom:0;gap:4px}.steps-nav button{max-width:none;padding:0 0 6px}}
+
+/* fixed stage with the cast */
+.stage{position:fixed;z-index:1;top:0;right:0;width:50vw;height:100svh;display:flex;align-items:center;justify-content:center;padding-top:var(--bar);pointer-events:none}
+.cast{position:relative;width:min(40vw,74svh);aspect-ratio:1}
+.cast::before{content:"";position:absolute;inset:6%;border-radius:50%;border:1.5px dashed var(--line);transition:opacity .8s var(--ease),transform .9s var(--ease)}
+.cast .path{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s}
+.cast[data-ch="3"] .path{opacity:1}
+.cast[data-ch="3"]::before,.cast[data-ch="4"]::before,.cast[data-ch="6"]::before{opacity:0;transform:scale(.6)}
+.face{position:absolute;left:50%;top:50%;width:19%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;will-change:left,top,transform}
+.cast.anim .face{transition:left .7s var(--ease),top .7s var(--ease),transform .7s var(--ease),opacity .5s,filter .5s}
+.face .ph{width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--tint);box-shadow:0 0 0 3px var(--mist),0 0 0 6px var(--c)}
+.face img{width:100%;height:100%;object-fit:cover}
+.face b{font:700 clamp(11px,1.05vw,14px) var(--display);white-space:nowrap}
+.core{position:absolute;left:50%;top:50%;width:32%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--ink);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6%;box-shadow:0 0 0 8px color-mix(in srgb,var(--amber) 35%,transparent);transition:transform .9s var(--ease),opacity .6s,width .9s var(--ease)}
+.core b{font:800 clamp(18px,2.4vw,34px)/1.05 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.core b.long{font-size:clamp(13px,1.45vw,20px);line-height:1.15}
+.core small{font-size:clamp(10px,.95vw,13px);color:#c6cce6;margin-top:4px;line-height:1.25}
+.core.off{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+
+/* chapters */
+main{position:relative;z-index:2}
+.ch{min-height:100svh;height:100svh;scroll-snap-align:start;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding-top:var(--bar)}
+.panel{display:flex;flex-direction:column;justify-content:center;gap:22px;padding-block:24px;max-width:640px;margin-left:auto;width:100%;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:32px}
+.ch h1{font-size:clamp(48px,6vw,96px);line-height:.92;letter-spacing:-.035em;font-weight:800}
+.ch h2{font-size:clamp(32px,3.6vw,52px);line-height:1.02;font-weight:800}
+.lede{font-size:clamp(17px,1.4vw,20px);color:var(--ink-soft);max-width:34em}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.fine{font-size:14px;color:var(--mute)}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+#c1 .panel > *{animation:rise .9s cubic-bezier(.16,1,.3,1) both}#c1 .panel > :nth-child(2){animation-delay:.08s}#c1 .panel > :nth-child(3){animation-delay:.16s}#c1 .panel > :nth-child(4){animation-delay:.24s}
+.cast{animation:pop 1.1s cubic-bezier(.16,1,.3,1) .1s both}
+
+
+/* hero film */
+#c1 .panel{margin-left:0;max-width:600px}
+.hero-film{display:flex;align-items:center;justify-content:flex-end;padding:24px clamp(24px,4vw,64px)}
+.hf{position:relative;height:min(72svh,740px);aspect-ratio:9/16;border-radius:28px;overflow:hidden;background:#000;box-shadow:0 40px 90px -40px rgba(18,26,61,.6);animation:rise 1s cubic-bezier(.16,1,.3,1) both}
+.hf video{display:block;width:100%;height:100%;object-fit:cover}
+.hf-play{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;border:0;cursor:pointer;padding:12px 20px 12px 12px;border-radius:999px;background:var(--amber);color:var(--amber-ink);font:600 15px var(--body);white-space:nowrap;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);transition:transform .2s var(--ease)}
+.hf-play:hover{transform:translateX(-50%) scale(1.04)}
+.hf-play span{width:36px;height:36px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;padding-left:2px}
+.stage{transition:opacity .4s}
+[hidden]{display:none!important}
+.cast[data-ch="1"]::before{opacity:0}
+
+/* ch2 chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:0;cursor:pointer;padding:10px 16px;border-radius:999px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);font:600 15px var(--body);color:var(--ink-soft)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;box-shadow:none}
+.answer{padding:20px 22px;border-radius:20px;background:var(--surface)}
+.answer h3{font-size:21px;margin-bottom:10px}
+.answer ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.answer li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:center;color:var(--ink-soft);font-size:15.5px}
+.answer li img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+.answer li b{color:var(--ink)}
+
+/* ch3 demo */
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{display:flex;align-items:center;gap:8px;border:0;cursor:pointer;padding:5px 14px 5px 5px;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1.5px var(--line);font:600 14.5px var(--body)}
+.tab img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+.tab[aria-selected="true"]{background:var(--surface);box-shadow:inset 0 0 0 2px var(--c)}
+.screen{border-radius:18px;background:var(--surface);overflow:hidden;box-shadow:0 24px 60px -36px rgba(18,26,61,.45)}
+.url{padding:10px 16px;font-size:12.5px;color:var(--mute);border-bottom:1px solid var(--line)}
+.pane{padding:6px 18px 14px;min-height:236px}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item p{font-size:14.5px}
+.item small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.ok{border:0;cursor:pointer;padding:8px 13px;border-radius:999px;background:var(--ink);color:#fff;font:600 12.5px var(--body);white-space:nowrap}
+.ok.done{background:var(--tint);color:var(--ink)}
+.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:10px}
+.day{border-radius:10px;background:var(--mist);padding:8px;min-height:96px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.day h4{margin:0;font:700 12px var(--body);color:var(--mute)}
+.ev{font-size:12px;line-height:1.25;padding:5px 6px;border-radius:7px;background:var(--surface);overflow-wrap:anywhere}
+.ev.warn{box-shadow:inset 0 0 0 1.5px var(--amber)}
+.ev.done{box-shadow:inset 0 0 0 1.5px var(--c-claire);background:#e6f4ec;font-weight:600}
+.alert{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:12px;padding:10px 12px;border-radius:12px;background:#fdf1dd;font-size:14px}
+.gantt{display:grid;gap:10px;margin-top:12px}
+.g{display:grid;grid-template-columns:140px minmax(0,1fr);gap:10px;align-items:center;font-size:14px}
+.track{position:relative;height:18px;border-radius:999px;background:var(--mist)}
+.track i{position:absolute;top:0;bottom:0;border-radius:999px;background:var(--line)}
+.track i.done{background:var(--ink-soft)}
+.track i.next{background:var(--amber)}
+
+/* relay */
+.relay{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:r}
+.relay li{counter-increment:r;display:grid;grid-template-columns:46px minmax(0,1fr);gap:14px;align-items:center;padding:10px 14px;border-radius:16px;background:var(--surface)}
+.relay .av{position:relative;width:46px;height:46px}
+.relay .av img{width:46px;height:46px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2.5px var(--c)}
+.relay .av::after{content:counter(r);position:absolute;right:-6px;bottom:-4px;width:20px;height:20px;border-radius:50%;background:var(--amber);color:var(--amber-ink);font:800 11px var(--display);display:flex;align-items:center;justify-content:center}
+.relay p{font-size:15px;color:var(--ink-soft)}
+.relay b{color:var(--ink)}
+/* film dialog */
+dialog.film{padding:0;border:0;background:#000;border-radius:22px;overflow:visible;max-width:none;max-height:none}
+dialog.film::backdrop{background:rgba(12,18,48,.8);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+dialog.film video{display:block;border-radius:22px;height:min(84svh,1100px);width:auto;max-width:92vw;object-fit:contain;background:#000}
+dialog.film .m-x{position:absolute;top:-14px;right:-14px;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.m-film{grid-column:1/-1}
+.m-film video{display:block;width:100%;max-height:62svh;border-radius:20px;background:#000}
+.m-tab.film{background:var(--ink);color:#fff;box-shadow:none}
+.m-tab.film[aria-selected="true"]{background:var(--amber);color:var(--amber-ink)}
+
+/* ch4 comparison */
+.vs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-radius:20px;overflow:hidden;background:var(--surface)}
+.vs > div{padding:14px 18px;font-size:15px;border-top:1px solid var(--line)}
+.vs .h{font:700 14px var(--body);border-top:0;padding-top:16px}
+.vs .them{color:var(--mute)}
+.vs .us{color:var(--ink);background:color-mix(in srgb,var(--amber) 12%,var(--surface))}
+.quote{font:700 clamp(19px,1.7vw,24px)/1.3 var(--display);color:var(--ink);max-width:28em}
+
+/* ch5 steps */
+.plan{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+.plan li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;align-items:start;padding:16px 18px;border-radius:18px;background:var(--surface)}
+.plan li::before{content:counter(s);width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;font:800 18px var(--display);display:flex;align-items:center;justify-content:center}
+.plan b{display:block;font:700 18px var(--display)}
+.plan span{color:var(--ink-soft);font-size:15px}
+
+/* ch6 configurator */
+.opts{display:grid;gap:8px}
+.opt{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 16px;border-radius:16px;background:var(--surface);cursor:pointer;box-shadow:inset 0 0 0 1.5px transparent;transition:box-shadow .2s}
+.opt:has(input:checked){box-shadow:inset 0 0 0 1.5px var(--ink)}
+.opt.base{cursor:default}
+.opt input{width:20px;height:20px;accent-color:var(--ink);margin:0}
+.opt b{display:block;font-size:15.5px}
+.opt small{display:block;color:var(--mute);font-size:13.5px;line-height:1.35}
+.price{font:800 18px var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sum{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:16px 18px;border-radius:18px;background:var(--ink);color:#fff}
+.sum .t{font:800 30px var(--display);font-variant-numeric:tabular-nums}
+.sum small{display:block;color:#c6cce6;font-size:13px}
+.proto{padding:12px 14px;border-radius:12px;background:#fdf1dd;font-size:14px}
+
+/* ch7 */
+.faq{display:grid;gap:6px}
+.faq details{border-radius:14px;background:var(--surface);padding:12px 16px}
+.faq summary{cursor:pointer;font-weight:600;font-size:15.5px}
+.faq p{margin-top:8px;color:var(--ink-soft);font-size:15px}
+footer{font-size:13px;color:var(--mute)}
+footer a{color:var(--ink)}
+
+/* meet your agents */
+
+/* meet your agents: header call to action */
+.meet-cta{position:relative;display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;padding:5px 8px 5px 5px;border-radius:999px;background:var(--ink);color:#fff;font:700 14px var(--body);white-space:nowrap;box-shadow:0 10px 26px -12px rgba(18,26,61,.7);transition:transform .2s var(--ease)}
+.meet-cta::before{content:"";position:absolute;inset:-3px;border-radius:inherit;border:2px solid var(--amber);opacity:0;animation:ring 2.6s ease-out infinite}
+@keyframes ring{0%{opacity:.9;transform:scale(.96)}70%,100%{opacity:0;transform:scale(1.12)}}
+.meet-cta:hover{transform:translateY(-2px)}
+.mc-faces{display:flex}
+.mc-faces img{width:28px;height:28px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--ink)}
+.mc-faces img+img{margin-left:-9px}
+.mc-play{width:26px;height:26px;border-radius:50%;background:var(--amber);color:var(--amber-ink);font-style:normal;font-size:10px;display:flex;align-items:center;justify-content:center;padding-left:2px}
+/* big play on photos and the team film */
+.m-film{position:relative;border-radius:22px;overflow:hidden;background:#000;aspect-ratio:16/9;max-height:64svh;margin-inline:auto;width:min(100%,calc(64svh * 16 / 9))}
+.m-film img,.m-film video{display:block;width:100%;height:100%;object-fit:cover}
+.bigplay{position:absolute;inset:0;border:0;padding:0;cursor:pointer;background:linear-gradient(to top,rgba(12,18,48,.55),transparent 55%);display:flex;align-items:center;justify-content:center}
+.bigplay span{width:clamp(64px,8vw,96px);aspect-ratio:1;border-radius:50%;background:var(--amber);color:var(--amber-ink);display:flex;align-items:center;justify-content:center;font-size:clamp(20px,2.4vw,30px);padding-left:5px;box-shadow:0 0 0 10px color-mix(in srgb,var(--amber) 30%,transparent),0 20px 40px -10px rgba(0,0,0,.5);transition:transform .25s var(--ease)}
+.bigplay:hover span{transform:scale(1.08)}
+.bigplay b{position:absolute;left:24px;bottom:20px;color:#fff;font:800 clamp(18px,2vw,26px) var(--display);letter-spacing:-.02em}
+.m-photo{position:relative}
+.m-photo video{width:100%;height:100%;object-fit:cover;object-position:var(--op,50%) 50%;background:#000}
+.m-photo .bigplay b{font-size:16px;left:18px;bottom:16px}
+dialog#meet{width:min(1180px,calc(100vw - 24px));height:min(860px,calc(100svh - 24px));max-width:none;max-height:none;padding:0;border:0;border-radius:28px;background:var(--mist);color:var(--ink);box-shadow:0 40px 120px -40px rgba(18,26,61,.6)}
+dialog#meet::backdrop{background:rgba(18,26,61,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+dialog#meet[open]{animation:rise .5s cubic-bezier(.16,1,.3,1)}
+.m-in{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.m-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 28px 6px}
+.m-top h2{font-size:clamp(26px,2.6vw,38px)}
+.m-x{border:0;background:var(--surface);width:44px;height:44px;border-radius:50%;font-size:22px;line-height:1;cursor:pointer;flex:none}
+.m-tabs{display:flex;gap:8px;padding:10px 28px 18px;overflow-x:auto;scrollbar-width:none}
+.m-tabs::-webkit-scrollbar{display:none}
+.m-tab{flex:none;display:flex;align-items:center;gap:8px;border:0;cursor:pointer;padding:5px 15px 5px 5px;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1.5px var(--line);font:600 14.5px var(--body)}
+.m-tab img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+.m-tab[aria-selected="true"]{background:var(--surface);box-shadow:inset 0 0 0 2px var(--c)}
+.m-body{overflow:auto;padding:0 28px 32px;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:36px;align-items:start;overscroll-behavior:contain}
+.m-photo{position:sticky;top:0;border-radius:24px;overflow:hidden;aspect-ratio:4/5;background:var(--tint);border:4px solid var(--c)}
+.m-photo img{width:100%;height:100%;object-fit:cover}
+.m-txt{display:flex;flex-direction:column;gap:18px;padding-top:6px}
+.m-role{font-weight:700;color:var(--c);font-size:16px}
+.m-name{font:800 clamp(44px,5vw,72px)/.95 var(--display);letter-spacing:-.03em}
+.m-words{font:700 clamp(22px,2.2vw,30px)/1.2 var(--display);color:var(--ink-soft)}
+.m-sec h4{margin:0 0 10px;font:700 15px var(--body);color:var(--mute)}
+.m-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.m-list li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:10px;font-size:16px;color:var(--ink)}
+.m-list li::before{content:"";width:8px;height:8px;margin-top:9px;border-radius:2px;background:var(--c);transform:rotate(45deg)}
+.m-cases{display:grid;gap:8px}
+.m-case{background:var(--surface);border-radius:16px;padding:14px 16px;font-size:15.5px;color:var(--ink-soft)}
+@media (max-width:760px){.m-top{padding:16px 16px 4px}.m-tabs{padding:8px 16px 14px}.m-body{grid-template-columns:minmax(0,1fr);gap:18px;padding:0 16px 24px}.m-photo{position:relative;aspect-ratio:auto;width:200px;height:200px}.m-photo.playing{width:100%;height:auto;aspect-ratio:16/9}.m-photo .bigplay span{width:56px}}
+.hero-brand{display:none;margin:0 0 10px}.hero-brand b{display:block;font:800 22px var(--display);letter-spacing:-.02em}.hero-brand small{display:block;font:600 12px var(--body);color:var(--mute)}
+@media (max-width:440px){.hero-brand{display:block}.mark span{display:none}.lang button{padding:6px 8px}}
+
+/* mobile: cast becomes a fixed strip under the bar, chapters flow below it */
+
+/* hero scene around the film */
+.hf-scene{position:relative;padding:3svh clamp(70px,7vw,120px);display:flex;align-items:center;justify-content:center}
+.hf-glow{position:absolute;inset:-6% -4%;border-radius:48% 52% 46% 54%/50% 44% 56% 50%;background:radial-gradient(60% 55% at 50% 45%,color-mix(in srgb,var(--amber) 30%,transparent),transparent 70%),radial-gradient(1.2px 1.2px at 1px 1px,color-mix(in srgb,var(--ink) 22%,transparent) 99%,transparent) 0 0/18px 18px;-webkit-mask:radial-gradient(closest-side,#000 55%,transparent);mask:radial-gradient(closest-side,#000 55%,transparent);pointer-events:none}
+.hf-orbit{position:absolute;left:50%;top:50%;width:min(118%,calc(76svh * .95));aspect-ratio:1;transform:translate(-50%,-50%);animation:spin 90s linear infinite;pointer-events:none}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.hf-faces{position:absolute;inset:0;pointer-events:none}
+.hf-faces span{position:absolute;width:clamp(44px,4.2vw,64px);aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--c),0 14px 30px -14px rgba(18,26,61,.5);transform:translate(-50%,-50%);animation:bob 6s ease-in-out infinite,rise .9s cubic-bezier(.16,1,.3,1) both}
+.hf-faces img{width:100%;height:100%;object-fit:cover}
+@keyframes bob{50%{translate:0 -8px}}
+.hf{z-index:1}
+.hf-card{position:absolute;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:16px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 18px 40px -18px rgba(18,26,61,.45),inset 0 0 0 1px rgba(18,26,61,.06);max-width:230px;animation:rise 1s cubic-bezier(.16,1,.3,1) both}
+.hf-card img{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:none}
+.hf-card b{display:block;font:700 13px var(--display)}
+.hf-card i{display:block;font:500 12.5px/1.3 var(--body);font-style:normal;color:var(--ink-soft)}
+.hf-card.a{left:0;top:50%;animation-delay:.7s}
+.hf-card.b{right:-2%;bottom:17%;animation-delay:1.1s}
+.hf-card::after{content:"";position:absolute;right:10px;top:10px;width:7px;height:7px;border-radius:50%;background:#3f9a74;box-shadow:0 0 0 3px color-mix(in srgb,#3f9a74 25%,transparent)}
+.hf-card{transition:opacity .5s}.playing .hf-card{opacity:0}
+
+/* chapter separators: a relay line that draws itself when the chapter arrives */
+.ch{position:relative}
+.sep{position:absolute;z-index:3;left:max(24px,env(safe-area-inset-left,0px));right:calc(50vw + 8px);top:calc(var(--bar) + 14px);display:flex;align-items:center;gap:14px;pointer-events:none}
+.sep .sn{font:800 13px var(--display);color:var(--amber-ink);background:var(--amber);border-radius:999px;padding:4px 9px;font-variant-numeric:tabular-nums}
+.sep .sl{font:600 13px var(--body);color:var(--ink-soft);white-space:nowrap}
+.sep .ln{position:relative;flex:1;height:2px;border-radius:2px;background:var(--line);overflow:visible}
+.sep .ln::before{content:"";position:absolute;inset:0;border-radius:2px;background:linear-gradient(90deg,var(--amber),var(--c-nina) 30%,var(--c-helena) 55%,var(--c-claire) 80%,var(--c-ravi));transform:scaleX(0);transform-origin:left;transition:transform 1.4s cubic-bezier(.16,1,.3,1) .1s}
+.sep .ln b{position:absolute;top:50%;left:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px color-mix(in srgb,var(--amber) 30%,transparent),0 0 18px 4px color-mix(in srgb,var(--amber) 55%,transparent);opacity:0;transition:left 1.4s cubic-bezier(.16,1,.3,1) .1s,opacity .3s}
+.sep .dots{display:flex;gap:5px}
+.sep .dots i{width:7px;height:7px;border-radius:50%;background:var(--c);opacity:.25;transform:scale(.6);transition:opacity .4s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.seen .sep .ln::before{transform:scaleX(1)}
+.seen .sep .ln b{left:100%;opacity:1}
+.seen .sep .dots i{opacity:1;transform:none}
+@media (max-width:860px){
+  .hf-scene{padding:18px 54px;width:100%}
+  .hf-orbit{width:min(130%,560px)}
+  .hf-faces span{width:42px}
+  .hf-card{max-width:190px;padding:8px 10px 8px 8px}
+  .hf-card img{width:28px;height:28px}
+  .hf-card.a{left:-4px;top:48%}.hf-card.b{right:-4px;bottom:16%}
+  .sep{top:calc(var(--bar) + 30svh + 8px);right:max(20px,env(safe-area-inset-right,0px));left:max(20px,env(safe-area-inset-left,0px))}
+  .ch:not(#c1) .panel{padding-top:52px}
+  .hf-faces{inset:0 6px}
+  .sep .sl{display:none}
+}
+@media (max-width:460px){.hf-card{display:none}.hf-scene{padding:14px 30px}.hf-faces span{width:38px}}
+@media (max-width:860px){
+  .stage{width:100%;height:calc(var(--bar) + env(safe-area-inset-top,0px) + 30svh);padding-top:calc(var(--bar) + env(safe-area-inset-top,0px));background:var(--mist);z-index:20}
+  .cast{width:min(29svh,86vw)}
+  .face b{display:none}
+  .core small{display:none}
+  .ch{grid-template-columns:minmax(0,1fr);height:auto;padding-top:calc(var(--bar) + 30svh)}
+  .panel{margin:0;max-width:none;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:24px 56px;justify-content:flex-start}
+  .ch h1{font-size:clamp(38px,10vw,56px)}
+  .at-hero .stage{opacity:0;pointer-events:none}
+  #c1{padding-top:var(--bar)}
+  .hero-film{justify-content:center;padding:20px 20px 0}
+  .hf{height:auto;width:min(68vw,300px)}
+  .g{grid-template-columns:100px minmax(0,1fr)}
+}
+@media (max-width:460px){.vs{grid-template-columns:minmax(0,1fr)}.vs .h.us{display:none}.vs .us{border-top:0}.opt{grid-template-columns:auto minmax(0,1fr)}.opt .price{grid-column:2}.week{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){*,*::before{transition:none!important;animation:none!important}}
+
+/* requirements box (price chapter + join dialog) */
+.req{padding:14px 16px;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--amber)}
+.req h3{font:700 16px var(--display);margin-bottom:8px}
+.req ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.req li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;font-size:14.5px;color:var(--ink-soft);line-height:1.4}
+.req li::before{content:"✓";color:#3f9a74;font-weight:700}
+.req li b{color:var(--ink)}
+@media (max-width:860px){.req li{font-size:14px}}
+.req-s{display:flex;flex-wrap:wrap;gap:6px 14px;font:600 14px var(--body);color:var(--ink)}
+.req-s span{white-space:nowrap}
+#c7{height:auto;min-height:100svh}
+/* join dialog */
+dialog#join{width:min(720px,calc(100vw - 24px));max-height:calc(100svh - 24px);padding:0;border:0;border-radius:24px;background:var(--mist);color:var(--ink);box-shadow:0 40px 120px -40px rgba(18,26,61,.6)}
+dialog#join::backdrop{background:rgba(18,26,61,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.j-in{padding:24px 26px 26px;display:grid;gap:16px;overflow:auto;max-height:calc(100svh - 24px)}
+.j-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.j-top h2{font-size:clamp(24px,3vw,32px);line-height:1.05}
+.j-q{display:grid;gap:8px}
+.j-q > b{font:700 15.5px var(--body)}
+.j-opts{display:flex;flex-wrap:wrap;gap:8px}
+.j-opts label{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);font:600 14.5px var(--body);cursor:pointer}
+.j-opts label:has(input:checked){box-shadow:inset 0 0 0 2px var(--ink)}
+.j-opts input{accent-color:var(--ink);margin:0}
+.j-checks{display:grid;gap:8px}
+.j-checks label{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;padding:10px 14px;border-radius:14px;background:var(--surface);font-size:14.5px;color:var(--ink-soft);cursor:pointer}
+.j-checks input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--ink)}
+.j-checks b{color:var(--ink)}
+.j-sum{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border-radius:16px;background:var(--ink);color:#fff}
+.j-sum small{display:block;color:#c6cce6;font-size:13px}
+.j-sum b{font:800 22px var(--display)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.gbtn{display:inline-flex;align-items:center;gap:10px}
+.gbtn svg{flex:none}
+.pilot{padding:10px 14px;border-radius:12px;background:#fdf1dd;font-size:14px}
+/* thanks view */
+#thanks{position:fixed;inset:0;z-index:60;background:var(--mist);overflow:auto}
+.t-in{max-width:880px;margin:0 auto;padding:calc(var(--bar) + 16px) 20px 56px;display:grid;gap:18px}
+.t-in h1{font:800 clamp(30px,4.4vw,48px)/1.02 var(--display);letter-spacing:-.03em}
+.t-acc{color:var(--ink-soft);font-size:16.5px}
+.t-acc b{color:var(--ink)}
+.t-vid{border-radius:20px;overflow:hidden;background:#000;aspect-ratio:16/9}
+.t-vid video{display:block;width:100%;height:100%}
+.t-steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:t}
+.t-steps li{counter-increment:t;display:grid;grid-template-columns:40px minmax(0,1fr);gap:14px;padding:16px 18px;border-radius:18px;background:var(--surface)}
+.t-steps li::before{content:counter(t);width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;font:800 17px var(--display);display:flex;align-items:center;justify-content:center}
+.t-steps li.ok::before{content:"✓";background:#3f9a74}
+.t-steps b{display:block;font:700 18px var(--display);margin-bottom:4px}
+.t-steps p{color:var(--ink-soft);font-size:15.5px}
+.t-path{font-weight:600;color:var(--ink)}
+.t-copy{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.t-copy code{font:600 15px ui-monospace,Menlo,monospace;background:var(--mist);padding:8px 12px;border-radius:10px;color:var(--ink)}
+.t-mini{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.t-help{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:18px;background:var(--ink);color:#fff}
+.t-help .btn.quiet{color:#fff;box-shadow:inset 0 0 0 1.5px #4a5378}
+</style>
+
+<header class="bar gut">
+  <div class="bar-in">
+    <a class="mark" href="#c1" aria-label="my CarrEar, your personal AI team">
+      <svg width="32" height="32" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15.5" fill="none" stroke="#f2a93b" stroke-width="2"/><path d="M17 7.5a9.5 9.5 0 1 0 6.7 16.2" fill="none" stroke="#121a3d" stroke-width="2.4" stroke-linecap="round"/><path d="M17 12.5a4.5 4.5 0 1 0 3.2 7.7" fill="none" stroke="#f2a93b" stroke-width="2.4" stroke-linecap="round"/><circle cx="25.6" cy="10.2" r="2.2" fill="#f2a93b"/></svg>
+      <span><b><i data-i="bmy">my</i> Carr<em>Ear</em></b><small data-i="btag">your personal AI team</small></span>
+    </a>
+    <nav class="steps-nav" id="nav" aria-label="Tour"></nav>
+    <div class="tools">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-l="en" aria-pressed="true">EN</button><button type="button" data-l="fr" aria-pressed="false">FR</button><button type="button" data-l="es" aria-pressed="false">ES</button>
+      </div>
+      <button type="button" class="meet-cta" id="meetBtn"><span class="mc-faces" aria-hidden="true"><img src="img/nina.jpg" alt=""><img src="img/marco.jpg" alt=""><img src="img/claire.jpg" alt=""></span><span data-i="meet"></span><i class="mc-play" aria-hidden="true">&#9654;</i></button>
+      <a class="btn sm" href="#c7" data-i="cta"></a>
+    </div>
+  </div>
+</header>
+
+<div class="stage" aria-hidden="true"><div class="cast" id="cast"><svg class="path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="14,25 33,57 52,25 71,57 88,25" fill="none" stroke="#f2a93b" stroke-width=".6" stroke-dasharray="1.6 1.4" vector-effect="non-scaling-stroke" style="stroke-width:2px"/></svg><div class="core" id="core"><b></b><small></small></div></div></div>
+
+<main>
+  <section class="ch on" id="c1" data-ch="1" aria-labelledby="h1">
+    <div class="hero-film">
+     <div class="hf-scene">
+      <div class="hf-glow" aria-hidden="true"></div>
+      <svg class="hf-orbit" viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="100" rx="96" ry="96" fill="none" stroke="#f2a93b" stroke-width=".7" stroke-dasharray="2 3"/><ellipse cx="100" cy="100" rx="70" ry="70" fill="none" stroke="#121a3d" stroke-opacity=".12" stroke-width=".5"/></svg>
+      <div class="hf-faces" id="hfFaces" aria-hidden="true"></div>
+      <div class="hf">
+        <video id="heroV" playsinline preload="metadata" poster="video/hook-poster.jpg" src="video/hook.mp4"></video>
+        <button type="button" class="hf-play" id="heroPlay"><span aria-hidden="true">&#9654;</span><b data-i="play"></b></button>
+      </div>
+      <div class="hf-card a" aria-hidden="true"><img src="img/nina.jpg" alt=""><span><b>Nina</b><i data-i="hfA"></i></span></div>
+      <div class="hf-card b" aria-hidden="true"><img src="img/leo.jpg" alt=""><span><b>Leo</b><i data-i="hfB"></i></span></div>
+     </div>
+    </div>
+    <div class="panel">
+      <p class="hero-brand" aria-hidden="true"><b><i data-i="bmy">my</i> Carr<em>Ear</em></b><small data-i="btag">your personal AI team</small></p>
+      <h1 id="h1" data-i="h1"></h1>
+      <p class="lede" data-i="lede"></p>
+      <div class="row"><a class="btn" href="#c7" data-i="cta"></a><a class="btn quiet" href="#c2" data-i="how"></a></div>
+      <p class="fine" data-i="free"></p>
+    </div>
+  </section>
+
+  <section class="ch" id="c2" data-ch="2" aria-labelledby="h2">
+    <div class="sep" aria-hidden="true" data-n="2"></div>
+    <div class="panel">
+      <h2 id="h2" data-i="h2"></h2>
+      <div class="chips" id="chips" role="group"></div>
+      <div class="answer" id="answer" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="ch" id="c3" data-ch="3" aria-labelledby="h3">
+    <div class="sep" aria-hidden="true" data-n="3"></div>
+    <div class="panel">
+      <h2 id="h3" data-i="hR"></h2>
+      <p class="lede" data-i="pR"></p>
+      <ol class="relay" id="relay"></ol>
+      <div class="row"><button type="button" class="btn quiet" id="relayFilm" data-i="watchR"></button></div>
+    </div>
+  </section>
+
+  <section class="ch" id="c4" data-ch="4" aria-labelledby="h4">
+    <div class="sep" aria-hidden="true" data-n="4"></div>
+    <div class="panel">
+      <h2 id="h4" data-i="h3"></h2>
+      <p class="lede" data-i="p3"></p>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="screen"><div class="url" id="url"></div><div class="pane" id="pane" role="tabpanel"></div></div>
+      <p class="fine" data-i="demo"></p>
+    </div>
+  </section>
+
+  <section class="ch" id="c5" data-ch="5" aria-labelledby="h5">
+    <div class="sep" aria-hidden="true" data-n="5"></div>
+    <div class="panel">
+      <h2 id="h5" data-i="h4"></h2>
+      <p class="lede" data-i="p4"></p>
+      <div class="vs" id="vs"></div>
+      <p class="quote" data-i="q4"></p>
+    </div>
+  </section>
+
+  <section class="ch" id="c6" data-ch="6" aria-labelledby="h6">
+    <div class="sep" aria-hidden="true" data-n="6"></div>
+    <div class="panel">
+      <h2 id="h6" data-i="h5"></h2>
+      <ol class="plan" id="plan"></ol>
+      <p class="fine" data-i="p5"></p>
+    </div>
+  </section>
+
+  <section class="ch" id="c7" data-ch="7" aria-labelledby="h7">
+    <div class="sep" aria-hidden="true" data-n="7"></div>
+    <div class="panel">
+      <h2 id="h7" data-i="h6"></h2>
+      <p class="lede" data-i="p6"></p>
+      <div class="opts" id="opts"></div>
+      <div class="req" id="reqBox"></div>
+      <div class="sum"><div><small data-i="from31"></small><span class="t" id="total"></span></div><button class="btn" type="button" id="go" data-i="cta"></button></div>
+      <p class="proto" id="proto" hidden data-i="proto"></p>
+      <p class="fine" id="planHint"></p>
+    </div>
+  </section>
+
+  <section class="ch" id="c8" data-ch="8" aria-labelledby="h8">
+    <div class="sep" aria-hidden="true" data-n="8"></div>
+    <div class="panel">
+      <h2 id="h8" data-i="h1"></h2>
+      <p class="lede" data-i="p7"></p>
+      <div class="row"><a class="btn" href="#c7" data-i="cta"></a></div>
+      <div class="faq" id="faq"></div>
+      <footer><span data-i="foot"></span> <a href="https://carrearworks.com" target="_blank" rel="noopener">carrearworks.com</a>, hello@carrearworks.com</footer>
+    </div>
+  </section>
+</main>
+
+<dialog id="meet" aria-labelledby="meetH"><div class="m-in">
+  <div class="m-top"><h2 id="meetH" data-i="meet"></h2><button type="button" class="m-x" id="meetX" aria-label="Close">&#x2715;</button></div>
+  <div class="m-tabs" id="mTabs" role="tablist"></div>
+  <div class="m-body" id="mBody" role="tabpanel" data-lenis-prevent></div>
+</div></dialog>
+
+<dialog id="join" aria-labelledby="joinH"><form class="j-in" id="joinF" method="dialog" data-lenis-prevent>
+  <div class="j-top"><h2 id="joinH"></h2><button type="button" class="m-x" id="joinX" aria-label="Close">&#x2715;</button></div>
+  <div class="req" id="reqBox2"></div>
+  <div class="j-checks" id="jChecks"></div>
+  <div class="j-q"><b id="jQ1"></b><div class="j-opts" id="jProf"></div></div>
+  <div class="j-q"><b id="jQ2"></b><div class="j-opts" id="jLane"></div></div>
+  <div class="j-sum"><div><small id="jSumL"></small><b id="jSum"></b></div><small id="jSumR"></small></div>
+  <p class="pilot" id="jPilot"></p>
+  <label class="j-checks"><span style="display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;padding:10px 14px;border-radius:14px;background:var(--surface);font-size:14px;color:var(--ink-soft)"><input type="checkbox" id="jTerms"><span id="jTermsT"></span></span></label>
+  <button type="button" class="btn gbtn" id="jGo" disabled><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.7-2 5-4.4 6.6v5.5h7.1c4.1-3.8 6.5-9.4 6.5-16.1z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.4l-7.1-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.5-3.8-12.2-9H4.5v5.7C8.1 41.1 15.5 46 24 46z"/><path fill="#FBBC05" d="M11.8 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.5C3 17.1 2 20.4 2 24s1 6.9 2.5 9.9l7.3-5.7z"/><path fill="#EA4335" d="M24 10.8c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.5 2 8.1 6.9 4.5 14.1l7.3 5.7c1.7-5.2 6.5-9 12.2-9z"/></svg><span id="jGoT"></span></button>
+  <p class="fine" id="jDemo" hidden></p>
+</form></dialog>
+
+<section id="thanks" hidden aria-labelledby="tH"><div class="t-in">
+  <h1 id="tH"></h1>
+  <p class="t-acc" id="tAcc"></p>
+  <div class="row"><a class="btn" id="tOpen" href="https://claude.ai" target="_blank" rel="noopener"></a><span class="fine" id="tKeep"></span></div>
+  <div class="t-vid"><video id="tVid" controls playsinline preload="metadata" poster="video/install-es-poster.jpg" src="video/install-es.mp4"></video></div>
+  <p class="fine" id="tVidN"></p>
+  <ol class="t-steps" id="tSteps"></ol>
+  <div class="t-help"><span id="tHelpT"></span><span class="row"><a class="btn" id="tHelp"></a><button type="button" class="btn quiet" id="tBack"></button></span></div>
+</div></section>
+
+<dialog id="film" class="film" aria-label="Video"><button type="button" class="m-x" id="filmX" aria-label="Close">&#x2715;</button><video id="filmV" controls playsinline preload="none"></video></dialog>
+
+<script src="js/lenis.min.js"></script>
+<script>
+(function(){
+const IDS=["nina","marco","helena","claire","leo","maya","ravi"];
+const NAME={nina:"Nina",marco:"Marco",helena:"Helena",claire:"Claire",leo:"Leo",maya:"Maya",ravi:"Ravi"};
+const img=id=>`img/${id}.jpg`;
+const PRICE={base:2.9,pro:2.9,nina:5,marco:5,both:8};
+
+const T={
+en:{
+nav:["What it is","What it does","Together","Not a chat","Why it’s better","Easy","Price","Start"],hR:"One job search. Five agents passing the work along.",pR:"This is a normal week when your team works together on your search.",watchR:"Watch it in the team film",teamFilm:"Team film",relay:[["helena","You tell Helena about your career and what you want next. She sets your north and hands it to Nina."],["nina","Nina searches every day and brings you the best jobs, with your CV and letter ready to apply."],["marco","Marco finds the people who decide, writes your way in and walks you to the offer, step by step."],["claire","Claire filters every message, so not one recruiter reply slips through."],["leo","Leo books every interview around your work and your personal life."]],
+cta:"Start my free month",how:"See how it works",play:"Play the film (30 s)",pl:"Play",bmy:"my",btag:"your personal AI team",hfA:"3 new jobs that fit you. Best match 92%",hfB:"Interview booked: Thursday, 10:00",hfC:"Found the hiring manager",
+h1:"Your career now has a team!",
+lede:"Seven AI agents look after your job search, your growth and your day. They work inside your own Claude and never send anything without your yes.",
+free:"From €2.90 a month. First month free: cancel before day 31 and you pay nothing.",
+you:"You",boss:"the boss",mem:"One memory of you",per:"a month from day 31",
+h2:"What do you want your team to do for you?",
+chips:[
+ {k:"job",l:"Find me a job",a:["nina","marco","helena"],h:"Your search, run by a team",b:["scores every job against what you want","finds who decides and drafts the message","prepares you for each interviewer"]},
+ {k:"worth",l:"Tell me what I’m worth",a:["helena","nina"],h:"Your radar, open without searching",b:["compares your pay with the market for your role","only shows you the jobs worth a look"]},
+ {k:"grow",l:"Help me grow where I am",a:["helena","maya"],h:"The next step, prepared",b:["sets your plan and your first 100 days","renews your LinkedIn in your voice, two posts a week"]},
+ {k:"day",l:"Put my day in order",a:["claire","leo"],h:"Nothing slips through",b:["answers WhatsApp, email and LinkedIn in your voice","turns every plan you accept into a calendar invite"]},
+ {k:"proj",l:"Run a project with a deadline",a:["ravi","leo","claire"],h:"A trip, a move, a wedding",b:["keeps milestones, owners and dates on one timeline","books things and reminds people before anything is late","hands Ravi anything that comes with a date"]}
+],
+h3:"Not a chat. Every agent has its own page.",
+p3:"See what each agent is doing, what comes next and what needs you. Approve in one click.",
+demo:"Demo data. Your pages fill with your own information.",
+claire:{items:[["WhatsApp","Sofía","Are we still on for Saturday?","Yes! 8 pm at our place, I’ll send the address."],["LinkedIn","Recruiter","Open to a quick call about a CFO role?","Thanks! Thursday 10:00 or Friday 16:00 work for me."],["Email","Landlord","Boiler maintenance visit","Tuesday morning works, I’ll leave the key with the concierge."]],use:"Approve",used:"Sent"},
+leo:{days:["Mon","Tue","Wed","Thu","Fri"],ev:[["09:30 Dentist"],["12:30 Lunch with Ana","18:00 Gym"],["10:00 Interview"],["20:00 Dinner for 6"],["15:00 Recruiter call"]],alert:"No restaurant booked for Thursday’s dinner yet.",fix:"Book it",fixed:"Booked for 6 at 20:00.",booked:"20:00 Dinner for 6, booked"},
+ravi:{title:"Trip to Lisbon with 6 friends",rows:[["Dates agreed","done",0,20],["Flights booked","done",16,42],["Apartment, due today","next",38,62],["Shared itinerary","",60,92]],today:"Key milestone today: your friends must confirm the apartment. It’s the last day of the promo price.",chase:"Ask Claire to chase them",chased:"Claire messaged your 5 friends on WhatsApp. 3 have confirmed, 2 to go."},
+h4:"Why it’s better than what’s out there",
+p4:"Most job tools do one thing: apply everywhere for you. Your team works the whole search, and it knows you.",
+them:"Other tools",us:"Your team",
+rows:[["Apply to hundreds of jobs","Nina picks the few that fit, with a % match"],["You chase every message","Claire answers in your voice and Leo books the meetings"],["You retell your story to every tool","You never repeat yourself: one memory of you, on your own computer, and it’s yours"]],
+q4:"Leaders hire the best team to run their product. Your career is your product.",
+h5:"Easy. Ready in about 30 minutes.",
+steps:[["Choose your team","Pick your agents and see your price."],["Add it to your Claude","We guide you click by click, with screenshots."],["Meet Helena","She gets to know you, sets your goals and wakes up the rest of the team."]],
+p5:"You need a Claude Pro plan. If you use your team a lot, a Max plan gives you more room.",
+h6:"How much does it cost?",
+p6:"Choose what you need. Your first month is free and your card is charged on day 31.",
+base:"Membership",baseS:"Helena, Maya, Claire, Leo and Ravi, with unlimited coaching.",
+pro:"Day-to-day Pro",proS:"Claire checks your messages every 2 hours; Leo fills your agenda on his own.",
+nina:"Nina, job hunter",ninaS:"Jobs with a % match, headhunters, a CV for every job.",
+marco:"Marco, dealmaker",marcoS:"Who decides, how to get in, interviews and the offer.",
+both:"Nina and Marco together: 8 € instead of 10 €.",
+from31:"From day 31",month:"/ month",
+proto:"Prototype: this button will open secure Stripe checkout, then the guided install.",
+planPro:"Claude Pro is enough for this team.",planMax:"With everything switched on, a Claude Max plan gives you more room if you chat a lot.",
+p7:"Hire yours today. The first month is on us.",
+faq:[["Do I need Claude?","Yes. Your team runs inside your own Claude account, with Claude Pro as the minimum."],["Does anything get sent without me?","No. Every message waits for your approval, unless you choose otherwise for something small."],["Can my employer see it?","No. It runs in your personal Claude and your own accounts."],["How do I cancel?","In a few clicks, any time. Cancel before day 31 and you pay nothing."]],
+meet:"Meet your agents",mDoes:"What they do for you",mCases:"In real life",agents:{"claire": {"role": "Chief of Staff", "w": "Nothing slips through.", "f": ["Sorts your inbox three times a day and drafts the replies", "Watches WhatsApp, email and LinkedIn for anything waiting on you", "Writes every reply in your voice; nothing leaves without your yes", "Puts everything that needs you today on one page", "Hands Ravi anything that comes with a deadline"], "u": ["Monday 8:00: 42 newsletters archived, 3 replies ready to approve.", "A recruiter wrote on Friday night: it’s on top of your list, reply drafted."]}, "leo": {"role": "Personal assistant", "w": "Booked. Sent. Done.", "f": ["“Lunch with Ana next week”: dates, place and message done", "Every plan you accept lands in your calendar, with the place and the people", "Checks today and tomorrow every morning and flags any clash", "Books restaurants, trips and appointments", "Moves your own blocks when a meeting needs the slot"], "u": ["Dinner for 6 on Thursday: options, votes, booking and invites.", "Your mum visits: flights, plans and who picks her up."]}, "helena": {"role": "Coach", "w": "Find your north.", "f": ["Gets to know your story, your results and your strengths", "Sets your north: role, pay and target companies", "Tells you what you’re worth, updated every quarter", "Prepares each interview, one interviewer at a time", "Unlimited coaching sessions, whenever you need them"], "u": ["Not sure what’s next? Three sessions and you have a plan.", "Big interview on Thursday: the likely questions and your three best stories."]}, "nina": {"role": "Job hunter", "w": "Jobs that fit.", "f": ["Reads job boards and headhunters every day for you", "Scores every job with a % match against your north", "Tailors a CV and a letter to each job", "Follows up with the headhunters who cover your profile", "Spots companies that are changing, before they post a job"], "u": ["Out of work in a month: the 4 jobs worth applying to, every morning.", "Happy where you are: a quiet radar that only speaks up for the outstanding ones."]}, "marco": {"role": "Dealmaker", "w": "Reach who decides.", "f": ["Finds who decides at each company, and who can open the door", "Drafts the message that gets you in, in your voice", "Follows your LinkedIn inbox every morning", "Prepares case studies, committees and presentations", "Negotiates the offer with you"], "u": ["Dream company, no opening: the hiring manager and a warm path to them.", "Offer on the table: your counter-proposal and what to ask for."]}, "maya": {"role": "Brand manager", "w": "Sound like you.", "f": ["Rewrites your LinkedIn profile in your own voice", "Has two posts ready for you every week", "Tells you who to comment on today, and what to say", "Aligns your photo, banner and video background with your next role", "Shows you each month what worked"], "u": ["Decision makers know you before the first meeting.", "Back from a break: your profile relaunched in a week."]}, "ravi": {"role": "Projects", "w": "Every deadline, met.", "f": ["Turns a trip, a move or a wedding into milestones, owners and dates", "Shows on one timeline what’s late and what’s next", "Asks Claire to chase people when a deadline gets close", "Opens from Claire whenever something has a date", "Included in your membership at no extra cost"], "u": ["Lisbon with 6 friends: dates, flights, apartment and itinerary.", "Moving house: boxes, contracts and the big day."]}},
+foot:"my CarrEar, your personal AI team, is a product of CarrEar Works, Paris."
+},
+fr:{
+nav:["C’est quoi","Ce qu’elle fait","Ensemble","Pas un chat","Pourquoi mieux","Simple","Prix","Commencer"],hR:"Une recherche d’emploi. Cinq agents qui se passent le relais.",pR:"Voici une semaine normale quand votre équipe travaille ensemble sur votre recherche.",watchR:"Le voir dans le film de l’équipe",teamFilm:"Film de l’équipe",relay:[["helena","Vous racontez à Helena votre parcours et ce que vous voulez ensuite. Elle fixe votre cap et passe le relais à Nina."],["nina","Nina cherche chaque jour et vous apporte les meilleures offres, CV et lettre prêts pour postuler."],["marco","Marco trouve ceux qui décident, rédige votre porte d’entrée et vous accompagne jusqu’à l’offre, étape par étape."],["claire","Claire filtre chaque message : aucune réponse de recruteur ne vous échappe."],["leo","Leo cale chaque entretien autour de votre travail et de votre vie personnelle."]],
+cta:"Commencer mon mois offert",how:"Voir comment ça marche",play:"Lancer le film (30 s)",pl:"Lire",bmy:"ma",btag:"votre équipe IA personnelle",hfA:"3 nouvelles offres pour vous. Meilleure correspondance 92 %",hfB:"Entretien calé : jeudi, 10 h",hfC:"Le manager qui recrute est trouvé",
+h1:"Votre carrière a enfin son équipe !",
+lede:"Sept agents IA s’occupent de votre recherche, de votre évolution et de votre quotidien. Ils travaillent dans votre propre Claude et n’envoient rien sans votre accord.",
+free:"À partir de 2,90 € par mois. Premier mois offert : résiliez avant le 31e jour et vous ne payez rien.",
+you:"Vous",boss:"le boss",mem:"Une seule mémoire de vous",per:"par mois dès le 31e jour",
+h2:"Que voulez-vous que votre équipe fasse pour vous ?",
+chips:[
+ {k:"job",l:"Trouvez-moi un poste",a:["nina","marco","helena"],h:"Votre recherche, menée par une équipe",b:["note chaque offre selon ce que vous voulez","trouve qui décide et rédige le message","vous prépare pour chaque interlocuteur"]},
+ {k:"worth",l:"Combien je vaux ?",a:["helena","nina"],h:"Votre radar, ouvert sans chercher",b:["compare votre salaire au marché pour votre poste","ne vous montre que les offres qui valent le coup"]},
+ {k:"grow",l:"Évoluer là où je suis",a:["helena","maya"],h:"La prochaine étape, préparée",b:["fixe votre plan et vos 100 premiers jours","renouvelle votre LinkedIn avec votre ton, deux posts par semaine"]},
+ {k:"day",l:"Mettre de l’ordre dans mes journées",a:["claire","leo"],h:"Rien ne vous échappe",b:["répond à WhatsApp, mails et LinkedIn avec votre ton","transforme chaque plan accepté en invitation"]},
+ {k:"proj",l:"Gérer un projet avec échéance",a:["ravi","leo","claire"],h:"Un voyage, un déménagement, un mariage",b:["tient jalons, responsables et dates sur une frise","réserve et relance avant tout retard","confie à Ravi tout ce qui a une date"]}
+],
+h3:"Pas un chat. Chaque agent a sa page.",
+p3:"Voyez ce que fait chaque agent, la suite et ce qui vous attend. Validez en un clic.",
+demo:"Données de démonstration. Vos pages se remplissent avec vos informations.",
+claire:{items:[["WhatsApp","Sofía","On se voit toujours samedi ?","Oui ! 20 h chez nous, je t’envoie l’adresse."],["LinkedIn","Recruteur","Disponible pour un appel sur un poste de DAF ?","Merci ! Jeudi 10 h ou vendredi 16 h me conviennent."],["Mail","Propriétaire","Entretien de la chaudière","Mardi matin c’est parfait, je laisse la clé à la gardienne."]],use:"Valider",used:"Envoyé"},
+leo:{days:["Lun","Mar","Mer","Jeu","Ven"],ev:[["09:30 Dentiste"],["12:30 Déjeuner Ana","18:00 Sport"],["10:00 Entretien"],["20:00 Dîner à 6"],["15:00 Appel recruteur"]],alert:"Aucun restaurant réservé pour le dîner de jeudi.",fix:"Réserver",fixed:"Réservé pour 6 à 20 h.",booked:"20:00 Dîner à 6, réservé"},
+ravi:{title:"Voyage à Lisbonne, 6 amis",rows:[["Dates validées","done",0,20],["Vols réservés","done",16,42],["Appartement, aujourd’hui","next",38,62],["Programme partagé","",60,92]],today:"Jalon clé aujourd’hui : vos amis doivent valider l’appartement. C’est le dernier jour du prix promo.",chase:"Demander à Claire de les relancer",chased:"Claire a écrit à vos 5 amis sur WhatsApp. 3 ont validé, il en reste 2."},
+h4:"Pourquoi c’est mieux que ce qui existe",
+p4:"La plupart des outils emploi font une seule chose : postuler partout. Votre équipe mène toute la recherche, et elle vous connaît.",
+them:"Les autres outils",us:"Votre équipe",
+rows:[["Postulent à des centaines d’offres","Nina choisit les quelques offres qui collent, avec un % de match"],["Vous courez après chaque message","Claire répond avec votre ton et Leo cale les rendez-vous"],["Vous racontez votre histoire à chaque outil","Vous ne vous répétez jamais : une seule mémoire de vous, sur votre ordinateur, qui vous appartient"]],
+q4:"Les dirigeants recrutent la meilleure équipe pour faire tourner leur produit. Votre carrière est votre produit.",
+h5:"Simple. Prêt en 30 minutes environ.",
+steps:[["Composez votre équipe","Choisissez vos agents et voyez votre prix."],["Ajoutez-la à votre Claude","On vous guide clic par clic, avec des captures."],["Rencontrez Helena","Elle apprend à vous connaître, fixe vos objectifs et réveille le reste de l’équipe."]],
+p5:"Il vous faut une offre Claude Pro. Si vous utilisez beaucoup votre équipe, une offre Max vous donne plus de marge.",
+h6:"Combien ça coûte ?",
+p6:"Choisissez ce dont vous avez besoin. Le premier mois est offert et votre carte est débitée le 31e jour.",
+base:"Abonnement",baseS:"Helena, Maya, Claire, Leo et Ravi, coaching illimité.",
+pro:"Quotidien Pro",proS:"Claire vérifie vos messages toutes les 2 heures ; Leo remplit votre agenda tout seul.",
+nina:"Nina, chasseuse de postes",ninaS:"Offres avec % de match, chasseurs de têtes, un CV par offre.",
+marco:"Marco, dealmaker",marcoS:"Qui décide, comment entrer, les entretiens et l’offre.",
+both:"Nina et Marco ensemble : 8 € au lieu de 10 €.",
+from31:"À partir du 31e jour",month:"/ mois",
+proto:"Prototype : ce bouton ouvrira le paiement sécurisé Stripe, puis l’installation guidée.",
+planPro:"Claude Pro suffit pour cette équipe.",planMax:"Avec tout activé, une offre Claude Max vous donne plus de marge si vous discutez beaucoup.",
+p7:"Recrutez la vôtre aujourd’hui. Le premier mois est offert.",
+faq:[["Ai-je besoin de Claude ?","Oui. Votre équipe fonctionne dans votre propre compte Claude, avec Claude Pro au minimum."],["Quelque chose part-il sans moi ?","Non. Chaque message attend votre validation, sauf si vous en décidez autrement pour les petites choses."],["Mon employeur peut-il le voir ?","Non. Tout fonctionne dans votre Claude personnel et vos propres comptes."],["Comment résilier ?","En quelques clics, à tout moment. Résiliez avant le 31e jour et vous ne payez rien."]],
+meet:"Rencontrez vos agents",mDoes:"Ce qu’ils font pour vous",mCases:"Dans la vraie vie",agents:{"claire": {"role": "Chief of Staff", "w": "Rien ne m’échappe.", "f": ["Trie votre boîte trois fois par jour et prépare les réponses", "Surveille WhatsApp, mails et LinkedIn pour tout ce qui vous attend", "Écrit chaque réponse avec votre ton ; rien ne part sans votre accord", "Rassemble sur une page tout ce qui a besoin de vous aujourd’hui", "Confie à Ravi tout ce qui a une échéance"], "u": ["Lundi 8 h : 42 newsletters archivées, 3 réponses prêtes à valider.", "Un recruteur a écrit vendredi soir : c’est en tête de liste, réponse rédigée."]}, "leo": {"role": "Assistant personnel", "w": "Réservé. Envoyé. Fait.", "f": ["« Déjeuner avec Ana la semaine prochaine » : dates, lieu et message faits", "Chaque plan accepté arrive dans votre agenda, avec le lieu et les invités", "Vérifie aujourd’hui et demain chaque matin et signale les conflits", "Réserve restaurants, voyages et rendez-vous", "Déplace vos propres créneaux quand une réunion en a besoin"], "u": ["Dîner à 6 jeudi : options, votes, réservation et invitations.", "Votre mère vient : vols, sorties et qui va la chercher."]}, "helena": {"role": "Coach", "w": "Trouvez votre cap.", "f": ["Apprend votre parcours, vos résultats et vos forces", "Fixe votre cap : poste, salaire et entreprises cibles", "Vous dit ce que vous valez, mis à jour chaque trimestre", "Prépare chaque entretien, un interlocuteur à la fois", "Séances de coaching illimitées, quand vous voulez"], "u": ["Pas sûr de la suite ? Trois séances et vous avez un plan.", "Grand entretien jeudi : les questions probables et vos trois meilleures histoires."]}, "nina": {"role": "Chasseuse de postes", "w": "Les offres qui collent.", "f": ["Lit chaque jour les sites d’emploi et les chasseurs pour vous", "Note chaque offre avec un % de match selon votre cap", "Adapte un CV et une lettre à chaque offre", "Relance les chasseurs de têtes qui couvrent votre profil", "Repère les entreprises en mouvement avant qu’elles ne publient"], "u": ["Sans poste dans un mois : chaque matin, les 4 offres qui valent le coup.", "Bien là où vous êtes : un radar discret qui ne parle que pour l’exceptionnel."]}, "marco": {"role": "Dealmaker", "w": "Atteindre qui décide.", "f": ["Trouve qui décide dans chaque entreprise, et qui peut ouvrir la porte", "Rédige le message qui vous fait entrer, avec votre ton", "Suit votre messagerie LinkedIn chaque matin", "Prépare études de cas, comités et présentations", "Négocie l’offre avec vous"], "u": ["L’entreprise de vos rêves, sans poste ouvert : le manager et un chemin chaleureux jusqu’à lui.", "Une offre sur la table : votre contre-proposition et quoi demander."]}, "maya": {"role": "Brand manager", "w": "Votre voix, partout.", "f": ["Réécrit votre profil LinkedIn avec votre ton", "Prépare deux posts pour vous chaque semaine", "Vous dit qui commenter aujourd’hui, et quoi dire", "Aligne photo, bannière et fond vidéo avec votre prochain poste", "Vous montre chaque mois ce qui a marché"], "u": ["Les décideurs vous connaissent avant le premier rendez-vous.", "De retour après une pause : votre profil relancé en une semaine."]}, "ravi": {"role": "Projets", "w": "Chaque échéance tenue.", "f": ["Transforme un voyage, un déménagement ou un mariage en jalons, responsables et dates", "Montre sur une frise ce qui est en retard et la suite", "Demande à Claire de relancer quand une échéance approche", "S’ouvre depuis Claire dès qu’il y a une date", "Inclus dans votre abonnement, sans surcoût"], "u": ["Lisbonne à 6 : dates, vols, appartement et programme.", "Un déménagement : cartons, contrats et le jour J."]}},
+foot:"ma CarrEar, votre équipe IA personnelle, est un produit de CarrEar Works, Paris."
+},
+es:{
+nav:["Qué es","Qué hace","En equipo","No es un chat","Por qué es mejor","Fácil","Precio","Empieza"],hR:"Una búsqueda de trabajo. Cinco agentes pasándose la estafeta.",pR:"Así se ve una semana normal cuando tu equipo trabaja junto en tu búsqueda.",watchR:"Verlo en la película del equipo",teamFilm:"Película del equipo",relay:[["helena","Le cuentas a Helena tu carrera y lo que quieres después. Ella fija tu norte y se lo pasa a Nina."],["nina","Nina busca todos los días y te trae las mejores vacantes, con tu CV y tu carta listos para aplicar."],["marco","Marco encuentra a quienes deciden, redacta cómo entrar y te lleva paso a paso hasta la oferta."],["claire","Claire filtra cada mensaje para que no se te pase ni una respuesta de un reclutador."],["leo","Leo agenda cada entrevista alrededor de tu trabajo y tu vida personal."]],
+cta:"Empezar mi mes gratis",how:"Ver cómo funciona",play:"Ver la película (30 s)",pl:"Reproducir",bmy:"mi",btag:"tu equipo personal de IA",hfA:"3 vacantes nuevas para ti. La mejor, al 92 %",hfB:"Entrevista agendada: jueves, 10:00",hfC:"Encontré al hiring manager",
+h1:"¡Tu carrera ya tiene equipo!",
+lede:"Siete agentes de IA se encargan de tu búsqueda de trabajo, de tu crecimiento y de tu día a día. Trabajan dentro de tu propio Claude y nunca envían nada sin tu sí.",
+free:"Desde 2,90 € al mes. Primer mes gratis: cancela antes del día 31 y no pagas nada.",
+you:"Tú",boss:"el jefe",mem:"Una sola memoria de ti",per:"al mes desde el día 31",
+h2:"¿Qué quieres que tu equipo haga por ti?",
+chips:[
+ {k:"job",l:"Consígueme trabajo",a:["nina","marco","helena"],h:"Tu búsqueda, llevada por un equipo",b:["califica cada vacante contra lo que quieres","encuentra quién decide y redacta el mensaje","te prepara para cada entrevistador"]},
+ {k:"worth",l:"¿Cuánto valgo?",a:["helena","nina"],h:"Tu radar, abierto sin buscar",b:["compara tu sueldo con el mercado para tu puesto","solo te muestra las vacantes que valen la pena"]},
+ {k:"grow",l:"Quiero crecer donde estoy",a:["helena","maya"],h:"El siguiente paso, preparado",b:["fija tu plan y tus primeros 100 días","renueva tu LinkedIn con tu voz, dos posts por semana"]},
+ {k:"day",l:"Pon en orden mi día",a:["claire","leo"],h:"Que no se te pase nada",b:["contesta WhatsApp, correo y LinkedIn con tu tono","convierte cada plan que aceptas en invitación"]},
+ {k:"proj",l:"Lleva un proyecto con fecha",a:["ravi","leo","claire"],h:"Un viaje, una mudanza, una boda",b:["lleva hitos, responsables y fechas en una línea de tiempo","reserva y recuerda antes de que algo se atrase","le pasa a Ravi todo lo que tiene fecha"]}
+],
+h3:"No es un chat. Cada agente tiene su página.",
+p3:"Ve qué hace cada agente, qué sigue y qué necesita de ti. Apruebas con un clic.",
+demo:"Datos de demostración. Tus páginas se llenan con tu información.",
+claire:{items:[["WhatsApp","Sofía","¿Seguimos para el sábado?","¡Sí! 8 pm en la casa, te mando la dirección."],["LinkedIn","Reclutador","¿Tienes un momento para hablar de un puesto de CFO?","¡Gracias! Jueves 10:00 o viernes 16:00 me quedan bien."],["Correo","Casero","Mantenimiento de la caldera","El martes en la mañana está perfecto, dejo la llave con la portera."]],use:"Aprobar",used:"Enviado"},
+leo:{days:["Lun","Mar","Mié","Jue","Vie"],ev:[["09:30 Dentista"],["12:30 Comida con Ana","18:00 Gym"],["10:00 Entrevista"],["20:00 Cena para 6"],["15:00 Llamada reclutador"]],alert:"Todavía no hay restaurante para la cena del jueves.",fix:"Reservar",fixed:"Reservado para 6 a las 20:00.",booked:"20:00 Cena para 6, reservada"},
+ravi:{title:"Viaje a Lisboa con 6 amigos",rows:[["Fechas acordadas","done",0,20],["Vuelos comprados","done",16,42],["Departamento, vence hoy","next",38,62],["Itinerario compartido","",60,92]],today:"Hito clave hoy: tus amigos tienen que confirmar el departamento. Es el último día del precio de promoción.",chase:"Pedirle a Claire que los persiga",chased:"Claire les escribió a tus 5 amigos por WhatsApp. 3 ya confirmaron, faltan 2."},
+h4:"Por qué es mejor que lo que existe",
+p4:"Casi todas las herramientas de empleo hacen una sola cosa: aplicar en todos lados por ti. Tu equipo lleva toda la búsqueda, y te conoce.",
+them:"Otras herramientas",us:"Tu equipo",
+rows:[["Aplican a cientos de vacantes","Nina elige las pocas que encajan, con % de match"],["Tú persigues cada mensaje","Claire contesta con tu tono y Leo agenda las reuniones"],["Le cuentas tu historia a cada herramienta","Nunca te repites: una sola memoria de ti, en tu computadora, y es tuya"]],
+q4:"Los líderes contratan al mejor equipo para operar su producto. Tu carrera es tu producto.",
+h5:"Fácil. Listo en unos 30 minutos.",
+steps:[["Arma tu equipo","Elige tus agentes y ve tu precio."],["Agrégalo a tu Claude","Te guiamos clic por clic, con capturas."],["Conoce a Helena","Te conoce, fija tus metas y despierta al resto del equipo."]],
+p5:"Necesitas un plan Claude Pro. Si usas mucho a tu equipo, un plan Max te da más margen.",
+h6:"¿Cuánto cuesta?",
+p6:"Elige lo que necesitas. Tu primer mes es gratis y tu tarjeta se cobra el día 31.",
+base:"Membresía",baseS:"Helena, Maya, Claire, Leo y Ravi, con coaching ilimitado.",
+pro:"Día a día Pro",proS:"Claire revisa tus mensajes cada 2 horas; Leo llena tu agenda solo.",
+nina:"Nina, cazadora de vacantes",ninaS:"Vacantes con % de match, headhunters, un CV por vacante.",
+marco:"Marco, dealmaker",marcoS:"Quién decide, cómo entrar, las entrevistas y la oferta.",
+both:"Nina y Marco juntos: 8 € en vez de 10 €.",
+from31:"Desde el día 31",month:"/ mes",
+proto:"Prototipo: este botón abrirá el pago seguro de Stripe y luego la instalación guiada.",
+planPro:"Con Claude Pro basta para este equipo.",planMax:"Con todo activado, un plan Claude Max te da más margen si chateas mucho.",
+p7:"Contrata al tuyo hoy. El primer mes va por nuestra cuenta.",
+faq:[["¿Necesito Claude?","Sí. Tu equipo corre dentro de tu propia cuenta de Claude, con Claude Pro como mínimo."],["¿Algo se envía sin mí?","No. Cada mensaje espera tu aprobación, salvo que decidas otra cosa para algo pequeño."],["¿Lo puede ver mi empresa?","No. Corre en tu Claude personal y en tus propias cuentas."],["¿Cómo cancelo?","En pocos clics, cuando quieras. Si cancelas antes del día 31 no pagas nada."]],
+meet:"Conoce a tus agentes",mDoes:"Lo que hace por ti",mCases:"En la vida real",agents:{"claire": {"role": "Chief of Staff", "w": "Nada se me escapa.", "f": ["Ordena tu correo tres veces al día y deja las respuestas listas", "Vigila WhatsApp, correo y LinkedIn por si algo te está esperando", "Escribe cada respuesta con tu tono; nada sale sin tu sí", "Junta en una página todo lo que hoy necesita de ti", "Le pasa a Ravi todo lo que tiene fecha límite"], "u": ["Lunes 8:00: 42 newsletters archivadas, 3 respuestas listas para aprobar.", "Un reclutador escribió el viernes en la noche: está hasta arriba, con la respuesta redactada."]}, "leo": {"role": "Asistente personal", "w": "Reservado. Enviado. Listo.", "f": ["«Comida con Ana la semana que viene»: fechas, lugar y mensaje listos", "Todo plan que aceptas llega a tu calendario, con el lugar y los invitados", "Revisa hoy y mañana cada mañana y te avisa de choques", "Reserva restaurantes, viajes y citas", "Mueve tus bloques cuando una reunión necesita ese horario"], "u": ["Cena para 6 el jueves: opciones, votos, reserva e invitaciones.", "Viene tu mamá: vuelos, planes y quién va por ella."]}, "helena": {"role": "Coach", "w": "Encuentra tu norte.", "f": ["Conoce tu historia, tus resultados y tus fortalezas", "Fija tu norte: puesto, sueldo y empresas objetivo", "Te dice cuánto vales, actualizado cada trimestre", "Prepara cada entrevista, un entrevistador a la vez", "Sesiones de coaching ilimitadas, cuando las necesites"], "u": ["¿No sabes qué sigue? Tres sesiones y tienes un plan.", "Entrevista importante el jueves: las preguntas probables y tus tres mejores historias."]}, "nina": {"role": "Cazadora de vacantes", "w": "Vacantes que encajan.", "f": ["Lee cada día bolsas de empleo y headhunters por ti", "Califica cada vacante con un % de match contra tu norte", "Adapta un CV y una carta a cada vacante", "Da seguimiento a los headhunters que cubren tu perfil", "Detecta empresas en movimiento antes de que publiquen la vacante"], "u": ["Te quedas sin trabajo en un mes: cada mañana, las 4 vacantes que valen la pena.", "Estás bien donde estás: un radar discreto que solo habla para lo excepcional."]}, "marco": {"role": "Dealmaker", "w": "Llega a quien decide.", "f": ["Encuentra quién decide en cada empresa y quién te abre la puerta", "Redacta el mensaje para entrar, con tu tono", "Revisa tu bandeja de LinkedIn cada mañana", "Prepara casos prácticos, comités y presentaciones", "Negocia la oferta contigo"], "u": ["La empresa de tus sueños sin vacante: el hiring manager y un camino cálido hasta él.", "Oferta sobre la mesa: tu contrapropuesta y qué pedir."]}, "maya": {"role": "Brand manager", "w": "Suena a ti.", "f": ["Reescribe tu perfil de LinkedIn con tu voz", "Te tiene dos posts listos cada semana", "Te dice a quién comentar hoy, y qué decir", "Alinea tu foto, tu banner y tu fondo de video con tu siguiente puesto", "Te enseña cada mes qué funcionó"], "u": ["Los que deciden ya te conocen antes de la primera reunión.", "Vuelves de una pausa: tu perfil relanzado en una semana."]}, "ravi": {"role": "Proyectos", "w": "Cada fecha, cumplida.", "f": ["Convierte un viaje, una mudanza o una boda en hitos, responsables y fechas", "Muestra en una línea de tiempo qué va tarde y qué sigue", "Le pide a Claire que persiga a la gente cuando se acerca una fecha", "Se abre desde Claire cuando algo tiene fecha", "Incluido en tu membresía sin costo extra"], "u": ["Lisboa con 6 amigos: fechas, vuelos, departamento e itinerario.", "Una mudanza: cajas, contratos y el gran día."]}},
+foot:"mi CarrEar, tu equipo personal de IA, es un producto de CarrEar Works, París."
+}};
+
+/* Pilot join flow. CONFIG is filled by the CTO when the licence server exists.
+   startUrl: our server's start endpoint (Google sign-in, then Stripe test checkout with client_reference_id);
+   it must send the customer back to this page with #gracias&email=<address>.
+   Empty startUrl = demo mode (no sign-in, no payment). */
+const CONFIG={startUrl:"/web/entrar",marketplace:"carrear-team/carrear-kit",helpMail:"hello@carrearworks.com",helpWhatsapp:""};
+const J={
+en:{reqH:"To work well, your team needs:",req:[["A computer","(Windows or Mac). You install it there, not on your phone."],["A personal Gmail","(ends in @gmail.com). It already includes Google Drive and Google Calendar. With a work email, your company may block the connection."],["Your calendar in Google Calendar","on that same Gmail. If you use Outlook or iCloud, your team won’t see it yet."],["Claude Pro","created with that same Gmail. It is paid separately to Anthropic. Higher levels need Claude Max."],["Recommended:","your CV in your Google Drive."],["30 quiet minutes","to set it up."]],
+joinH:"Before you start",chk:["I have a computer and a personal Gmail with my calendar in it.","I have Claude Pro with that same Gmail, or I will get it now."],q1:"What are you looking for?",prof:["Make my life more efficient; I’m not looking to change","Not looking, but open","Actively looking"],q2:"Do you already pay for Claude Pro?",lane:["Yes: express setup (about 15 min)","No: guided setup, step by step"],sumL:"Your team, from day 31",sumR:"30 days free",pilot:"Private pilot: the payment is a test. Use the test card 4242 4242 4242 4242, any future date and any CVC. Never enter your own card.",terms:"I accept the pilot terms and the privacy notice. I want to start now.",go:"Continue with Google",demo:"Demo mode: sign-in and test payment are not connected yet. This opens the page you will see after paying.",
+thxH:"Done! Your CarrEar access is active.",thxAcc:e=>e?`Linked to <b>${e}</b>. Use this same account everywhere.`:"Use the same Gmail everywhere: in Claude and in Google.",open:"Open Claude in another tab",keep:"Keep this page open.",vidN:"Video in Spanish with subtitles; English and French versions coming soon.",
+steps:[["Add the CarrEar package","In Claude, on the left bar: ","Customize › Plugins › Add › Add marketplace › Add from a repository","Paste this address, then Discover › CarrEar › Add. If you see “Sync automatically”, turn it on."],["Connect CarrEar to your account","","Plugins › CarrEar › Connectors › CarrEar › Add › Connect","Choose your Gmail and Allow. Then, in Customize › Connectors, connect Gmail, Google Drive and Google Calendar. Google will ask to read and send: that’s normal, your team only leaves drafts and never sends anything without your yes."],["Start","On the left bar: ","Projects › New project","Call it “Digital Brain”. Inside, open a chat and type: Install CarrEar"]],copy:"Copy",copied:"Copied",did:"Done",phrase:"Install CarrEar",helpT:"Stuck? A person answers you.",help:"Help me",back:"Back to the site"},
+fr:{reqH:"Pour bien fonctionner, votre équipe a besoin de :",req:[["Un ordinateur","(Windows ou Mac). L’installation se fait dessus, pas sur le téléphone."],["Un Gmail personnel","(se termine par @gmail.com). Il inclut déjà Google Drive et Google Agenda. Avec une adresse pro, votre entreprise peut bloquer la connexion."],["Votre agenda dans Google Agenda","sur ce même Gmail. Si vous utilisez Outlook ou iCloud, votre équipe ne le verra pas encore."],["Claude Pro","créé avec ce même Gmail. Il se paie à part à Anthropic. Les niveaux supérieurs demandent Claude Max."],["Recommandé :","votre CV dans votre Google Drive."],["30 minutes au calme","pour l’installer."]],
+joinH:"Avant de commencer",chk:["J’ai un ordinateur et un Gmail personnel avec mon agenda.","J’ai Claude Pro avec ce même Gmail, ou je le prends maintenant."],q1:"Que cherchez-vous ?",prof:["Me simplifier la vie ; je ne cherche pas à changer","Je ne cherche pas, mais je suis ouvert","Je cherche activement"],q2:"Payez-vous déjà Claude Pro ?",lane:["Oui : installation express (15 min environ)","Non : installation guidée, pas à pas"],sumL:"Votre équipe, dès le 31e jour",sumR:"30 jours offerts",pilot:"Pilote privé : le paiement est un test. Utilisez la carte de test 4242 4242 4242 4242, une date future et n’importe quel CVC. Ne saisissez jamais votre carte.",terms:"J’accepte les conditions du pilote et la notice de confidentialité. Je veux commencer maintenant.",go:"Continuer avec Google",demo:"Mode démo : la connexion et le paiement de test ne sont pas encore branchés. Cela ouvre la page que vous verrez après le paiement.",
+thxH:"C’est fait ! Votre accès CarrEar est actif.",thxAcc:e=>e?`Lié à <b>${e}</b>. Utilisez ce même compte partout.`:"Utilisez le même Gmail partout : dans Claude et dans Google.",open:"Ouvrir Claude dans un autre onglet",keep:"Gardez cette page ouverte.",vidN:"Vidéo en espagnol sous-titrée ; versions française et anglaise bientôt.",
+steps:[["Ajoutez le paquet CarrEar","Dans Claude, barre de gauche : ","Personnaliser › Plugins › Ajouter › Ajouter une boutique › Depuis un dépôt","Collez cette adresse, puis Découvrir › CarrEar › Ajouter. Si vous voyez « Synchroniser automatiquement », activez-le."],["Connectez CarrEar à votre compte","","Plugins › CarrEar › Connecteurs › CarrEar › Ajouter › Connecter","Choisissez votre Gmail et Autoriser. Puis, dans Personnaliser › Connecteurs, connectez Gmail, Google Drive et Google Agenda. Google demandera de lire et d’envoyer : c’est normal, votre équipe ne laisse que des brouillons et n’envoie rien sans votre accord."],["Commencez","Barre de gauche : ","Projets › Nouveau projet","Appelez-le « Digital Brain ». Dedans, ouvrez un chat et écrivez : Installe CarrEar"]],copy:"Copier",copied:"Copié",did:"Fait",phrase:"Installe CarrEar",helpT:"Bloqué ? Une personne vous répond.",help:"Aidez-moi",back:"Retour au site"},
+es:{reqH:"Para que tu equipo funcione bien necesitas:",req:[["Un ordenador","(Windows o Mac). La instalación se hace ahí, no desde el móvil."],["Una cuenta de Gmail personal","(termina en @gmail.com). Ya incluye Google Drive y Google Calendar. Con un correo de empresa, tu empresa puede bloquear la conexión."],["Tu calendario en Google Calendar","en esa misma cuenta. Si usas Outlook o iCloud, por ahora tu equipo no lo verá."],["Claude Pro","creado con ese mismo Gmail. Se paga aparte a Anthropic. Los niveles más altos piden Claude Max."],["Recomendado:","tu CV en tu Google Drive."],["30 minutos tranquilos","para instalarlo."]],
+joinH:"Antes de empezar",chk:["Tengo un ordenador y un Gmail personal con mi calendario.","Tengo Claude Pro con ese mismo Gmail, o lo voy a contratar ahora."],q1:"¿Qué buscas?",prof:["Hacer mi vida más eficiente; no busco cambiar","No busco, pero estoy abierto","Busco activamente"],q2:"¿Ya pagas Claude Pro?",lane:["Sí: instalación exprés (unos 15 min)","No: instalación guiada, paso a paso"],sumL:"Tu equipo, desde el día 31",sumR:"30 días gratis",pilot:"Piloto privado: el pago es de prueba. Usa la tarjeta de prueba 4242 4242 4242 4242, cualquier fecha futura y cualquier CVC. Nunca pongas tu tarjeta.",terms:"Acepto las condiciones del piloto y el aviso de privacidad. Quiero empezar ya.",go:"Continuar con Google",demo:"Modo demostración: el acceso con Google y el pago de prueba aún no están conectados. Esto abre la página que verás después de pagar.",
+thxH:"¡Listo! Tu acceso a CarrEar está activo.",thxAcc:e=>e?`Unido a <b>${e}</b>. Usa esta misma cuenta en todo.`:"Usa el mismo Gmail en todo: en Claude y en Google.",open:"Abrir Claude en otra pestaña",keep:"Deja esta página abierta.",vidN:"",
+steps:[["Añade el paquete CarrEar","En Claude, en la barra izquierda: ","Personalizar (Customize) › Plugins › Añadir (Add) › Añadir tienda (Add marketplace) › Desde un repositorio (Add from a repository)","Pega esta dirección y luego: Descubrir (Discover) › CarrEar › Añadir (Add). Si ves «Sincronizar automáticamente», actívalo."],["Conecta CarrEar a tu cuenta","","Plugins › CarrEar › Conectores (Connectors) › CarrEar › Añadir (Add) › Conectar (Connect)","Elige tu Gmail y pulsa Permitir. Después, en Personalizar › Conectores, conecta Gmail, Google Drive y Google Calendar. Google te pedirá permisos para leer y enviar: es normal, tu equipo solo deja borradores y nunca envía nada sin tu sí."],["Empieza","En la barra izquierda: ","Proyectos (Projects) › Nuevo proyecto (New project)","Llámalo «Digital Brain». Dentro, abre un chat y escribe: Instala CarrEar"]],copy:"Copiar",copied:"Copiado",did:"Ya lo hice",phrase:"Instala CarrEar",helpT:"¿Te atascas? Te responde una persona.",help:"Ayúdame",back:"Volver a la web"}
+};
+const j=k=>J[L][k];
+
+let L="en";
+const pick=()=>{const n=(navigator.language||"en").slice(0,2);return T[n]?n:"en"};
+try{const s=localStorage.getItem("mct-lang");L=T[s]?s:pick();}catch(e){L=pick();}
+const t=k=>T[L][k];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=v=>L==="en"?"€"+v.toFixed(2):v.toFixed(2).replace(".",",")+" €";
+
+const S={ch:1,chip:"job",tab:"claire",sel:{pro:true,nina:true,marco:true},sent:new Set(),fixed:false,chased:false};
+
+/* cast */
+const cast=document.getElementById("cast"),core=document.getElementById("core");
+const faces={};
+IDS.forEach(id=>{const d=document.createElement("div");d.className="face";d.style.setProperty("--c",`var(--c-${id})`);
+  d.innerHTML=`<span class="ph"><img src="${img(id)}" alt=""></span><b>${NAME[id]}</b>`;cast.appendChild(d);faces[id]=d;});
+const ORBIT=[[50,10],[85,27],[90,63],[68,90],[32,90],[10,63],[15,27]];
+const HEX=IDS.map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/7;return[50+Math.cos(a)*30,50+Math.sin(a)*30]});
+function pose(ch){const P={};
+  IDS.forEach((id,i)=>{let [x,y]=ORBIT[i],s=1,o=1,g=0;
+    if(ch===1){x=50;y=50;s=.3;o=0;}
+    if(ch===2){const on=t("chips").find(c=>c.k===S.chip).a.includes(id);s=on?1.2:.85;o=on?1:.35;g=on?0:1;}
+    if(ch===3){const R={helena:[14,25],nina:[33,57],marco:[52,25],claire:[71,57],leo:[88,25],maya:[40,88],ravi:[60,88]};[x,y]=R[id];if(id==="maya"||id==="ravi"){s=.55;o=.3;g=1;}else s=.92;}
+    if(ch===4){const big=["claire","leo","ravi"];if(big.includes(id)){x=[22,50,78][big.indexOf(id)];y=id===S.tab?38:44;s=id===S.tab?1.55:1.1;o=id===S.tab?1:.55;}else{x=[23,41,59,77][["nina","marco","helena","maya"].indexOf(id)];y=84;s=.62;o=.3;g=1;}}
+    if(ch===5){[x,y]=HEX[i];s=.9;}
+    if(ch===6){x=8+i*14;y=id==="helena"?42:52;s=id==="helena"?1.05:.72;o=id==="helena"?1:.8;}
+    if(ch===7){const off=(id==="nina"&&!S.sel.nina)||(id==="marco"&&!S.sel.marco);o=off?.25:1;g=off?1:0;s=off?.85:1;}
+    P[id]={x,y,s,o,g};});return P;}
+const lerp=(a,b,k)=>a+(b-a)*k,ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+const pos={ch:1,t:0};let coreKey="";
+function draw(){const A=pose(pos.ch),B=pos.t>0&&pos.ch<8?pose(pos.ch+1):A,k=ease(pos.t);
+  IDS.forEach(id=>{const p=A[id],q=B[id],f=faces[id];
+    f.style.left=lerp(p.x,q.x,k)+"%";f.style.top=lerp(p.y,q.y,k)+"%";f.style.transform=`translate(-50%,-50%) scale(${lerp(p.s,q.s,k).toFixed(3)})`;
+    f.style.opacity=lerp(p.o,q.o,k).toFixed(3);f.style.filter=`grayscale(${lerp(p.g,q.g,k).toFixed(2)})`;});
+  const ch=pos.t>.5?Math.min(8,pos.ch+1):pos.ch;cast.dataset.ch=ch;
+  const key=ch+L+total();if(key===coreKey)return;coreKey=key;
+  const b=core.querySelector("b"),sm=core.querySelector("small");
+  core.classList.toggle("off",ch===1||ch===3||ch===4||ch===6);b.classList.toggle("long",ch===5);
+  if(ch===5){b.textContent=t("mem");sm.textContent="";}
+  else if(ch===7){b.textContent=fmt(total());sm.textContent=t("per");}
+  else{b.textContent=t("you");sm.textContent=t("boss");}
+}
+function refresh(anim){if(anim){cast.classList.add("anim");clearTimeout(refresh.tm);refresh.tm=setTimeout(()=>cast.classList.remove("anim"),750);}coreKey="";draw();}
+
+/* nav + scroll engine: native scroll smoothed by Lenis; the cast morphs continuously between chapters */
+const secs=[...document.querySelectorAll(".ch")],nav=document.getElementById("nav");
+function renderNav(){nav.innerHTML=t("nav").map((l,i)=>`<button type="button" data-n="${i+1}" aria-label="${esc(l)}"><i></i><span>${esc(l)}</span></button>`).join("");
+  nav.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>jump(+b.dataset.n)));paintNav();}
+function paintNav(){const cur=pos.t>.5?pos.ch+1:pos.ch;S.ch=cur;document.documentElement.classList.toggle("at-hero",cur===1);if(cur!==1){const hv=document.getElementById("heroV");if(hv&&!hv.paused)hv.pause();}
+  nav.querySelectorAll("button").forEach((b,i)=>{const n=i+1,p=n<=pos.ch?100:n===pos.ch+1?Math.round(pos.t*100):0;
+    b.querySelector("i").style.setProperty("--p",p+"%");if(n===cur)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current");});}
+let tops=[];function measure(){tops=secs.map(s=>s.offsetTop);}
+function update(){const y=scrollY,a=y+innerHeight*.5;let k=0;tops.forEach((tp,i)=>{if(tp<=a)k=i;});
+  const top=tops[k],next=k+1<tops.length?tops[k+1]:top+secs[k].offsetHeight,f=(a-top)/Math.max(1,next-top);
+  pos.ch=k+1;pos.t=k+1<secs.length?Math.min(1,Math.max(0,(f-.55)/.45)):0;draw();paintNav();}
+const calm=matchMedia("(prefers-reduced-motion: reduce)").matches;let lenis=null;
+if(!calm&&window.Lenis){lenis=new Lenis({lerp:.085,wheelMultiplier:.9});const loop=tm=>{lenis.raf(tm);requestAnimationFrame(loop)};requestAnimationFrame(loop);}
+addEventListener("scroll",update,{passive:true});
+addEventListener("resize",()=>{measure();update();});
+function jump(n){const el=document.getElementById("c"+n);if(lenis)lenis.scrollTo(el,{duration:1.4});else el.scrollIntoView({behavior:calm?"auto":"smooth"});}
+document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#c"]');if(a){e.preventDefault();jump(+a.getAttribute("href").slice(2));}});
+
+/* hero faces + chapter separators */
+const HFP=[[9,9],[1,30],[5,80],[93,13],[100,42],[93,91],[50,98]];
+document.getElementById("hfFaces").innerHTML=IDS.map((id,i)=>`<span style="--c:var(--c-${id});left:${HFP[i][0]}%;top:${HFP[i][1]}%;animation-delay:${(i*.7).toFixed(1)}s,${(.3+i*.08).toFixed(2)}s"><img src="${img(id)}" alt=""></span>`).join("");
+function renderSeps(){document.querySelectorAll(".sep").forEach(el=>{const n=+el.dataset.n;
+  el.innerHTML=`<span class="sn">${String(n).padStart(2,"0")}</span><span class="sl">${esc(t("nav")[n-1])}</span><span class="ln"><b></b></span><span class="dots">${IDS.map(id=>`<i style="--c:var(--c-${id})"></i>`).join("")}</span>`;
+  el.querySelectorAll(".dots i").forEach((d,k)=>d.style.transitionDelay=(0.9+k*.07)+"s");});}
+if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("seen");io.unobserve(e.target);}}),{threshold:.35});secs.forEach(s=>io.observe(s));}else secs.forEach(s=>s.classList.add("seen"));
+
+/* ch2 */
+function renderChips(){const box=document.getElementById("chips");box.setAttribute("aria-label",t("h2"));
+  box.innerHTML=t("chips").map(c=>`<button type="button" class="chip" data-k="${c.k}" aria-pressed="${c.k===S.chip}">${esc(c.l)}</button>`).join("");
+  box.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{S.chip=b.dataset.k;renderChips();refresh(true);}));
+  const c=t("chips").find(x=>x.k===S.chip);
+  document.getElementById("answer").innerHTML=`<h3>${esc(c.h)}</h3><ul>${c.b.map((x,i)=>{const a=c.a[i]||c.a[0];return `<li><img src="${img(a)}" alt=""><span><b>${NAME[a]}</b> ${esc(x)}</span></li>`}).join("")}</ul>`;}
+
+/* ch3 */
+function renderDemo(){
+  const tabs=document.getElementById("tabs");
+  tabs.innerHTML=["claire","leo","ravi"].map(id=>`<button type="button" class="tab" role="tab" aria-selected="${id===S.tab}" style="--c:var(--c-${id})" data-id="${id}"><img src="${img(id)}" alt="">${NAME[id]}</button>`).join("");
+  tabs.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{S.tab=b.dataset.id;renderDemo();refresh(true);}));
+  document.getElementById("url").textContent="mycarrear.com/"+S.tab;
+  const pane=document.getElementById("pane");
+  if(S.tab==="claire"){const c=t("claire");
+    pane.innerHTML=c.items.map((it,i)=>`<div class="item"><div style="min-width:0"><p><b>${esc(it[1])}</b> (${esc(it[0])}): ${esc(it[2])}</p><small>${esc(it[3])}</small></div><button type="button" class="ok${S.sent.has(i)?" done":""}" data-i="${i}">${esc(S.sent.has(i)?c.used:c.use)}</button></div>`).join("");
+    pane.querySelectorAll(".ok").forEach(b=>b.addEventListener("click",()=>{S.sent.add(+b.dataset.i);renderDemo();}));}
+  else if(S.tab==="leo"){const c=t("leo");
+    pane.innerHTML=`<div class="week">${c.days.map((d,i)=>`<div class="day"><h4>${esc(d)}</h4>${c.ev[i].map(e=>i===3&&S.fixed?`<div class="ev done">${esc(c.booked)} \u2713</div>`:`<div class="ev${i===3?" warn":""}">${esc(e)}</div>`).join("")}</div>`).join("")}</div><div class="alert"><span>${esc(S.fixed?c.fixed:c.alert)}</span>${S.fixed?"":`<button type="button" class="ok" id="fix">${esc(c.fix)}</button>`}</div>`;
+    const f=document.getElementById("fix");if(f)f.addEventListener("click",()=>{S.fixed=true;renderDemo();});}
+  else{const c=t("ravi");
+    pane.innerHTML=`<p style="font-weight:700;margin-top:10px">${esc(c.title)}</p><div class="gantt">${c.rows.map(r=>`<div class="g"><span>${esc(r[0])}</span><div class="track"><i class="${r[1]}" style="left:${r[2]}%;width:${r[3]-r[2]}%"></i></div></div>`).join("")}</div><div class="alert"><span>${esc(S.chased?c.chased:c.today)}</span>${S.chased?"":`<button type="button" class="ok" id="chase">${esc(c.chase)}</button>`}</div>`;
+    const cz=document.getElementById("chase");if(cz)cz.addEventListener("click",()=>{S.chased=true;renderDemo();});}
+}
+
+/* ch4, ch5 */
+function renderVs(){document.getElementById("vs").innerHTML=`<div class="h them">${esc(t("them"))}</div><div class="h us">${esc(t("us"))}</div>`+t("rows").map(r=>`<div class="them">${esc(r[0])}</div><div class="us">${esc(r[1])}</div>`).join("");}
+function renderPlan(){document.getElementById("plan").innerHTML=t("steps").map(s=>`<li><div><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div></li>`).join("");}
+
+/* ch6 */
+function total(){return PRICE.base+(S.sel.pro?PRICE.pro:0)+(S.sel.nina&&S.sel.marco?PRICE.both:(S.sel.nina?PRICE.nina:0)+(S.sel.marco?PRICE.marco:0));}
+function renderOpts(){
+  const row=(k,title,sub,price,base)=>`<label class="opt${base?" base":""}"><input type="checkbox" data-k="${k}" ${base?"checked disabled":S.sel[k]?"checked":""}><span style="min-width:0"><b>${esc(title)}</b><small>${esc(sub)}</small></span><span class="price">${base?"":"+"}${fmt(price)}</span></label>`;
+  document.getElementById("opts").innerHTML=row("base",t("base"),t("baseS"),PRICE.base,true)+row("pro",t("pro"),t("proS"),PRICE.pro)+row("nina",t("nina"),t("ninaS"),PRICE.nina)+row("marco",t("marco"),t("marcoS"),PRICE.marco)+`<p class="fine" id="both">${esc(t("both"))}</p>`;
+  document.querySelectorAll("#opts input[data-k]").forEach(i=>i.addEventListener("change",()=>{S.sel[i.dataset.k]=i.checked;sum();refresh(true);}));
+  sum();}
+function sum(){document.getElementById("total").textContent=fmt(total())+" "+t("month");
+  document.getElementById("both").style.visibility=S.sel.nina&&S.sel.marco?"visible":"hidden";
+  document.getElementById("planHint").textContent=(S.sel.pro&&S.sel.nina&&S.sel.marco)?t("planMax"):t("planPro");}
+/* join flow */
+const join=document.getElementById("join"),thanks=document.getElementById("thanks");
+const JS={prof:"",lane:"",done:new Set()};
+function reqHTML(){return `<h3>${esc(j("reqH"))}</h3><ul>${j("req").map(r=>`<li><span><b>${esc(r[0])}</b> ${esc(r[1])}</span></li>`).join("")}</ul>`;}
+function reqShort(){return `<h3>${esc(j("reqH"))}</h3><p class="req-s">${j("req").slice(0,4).map(r=>`<span>✓ ${esc(r[0])}</span>`).join("")}</p>`;}
+function renderReq(){document.getElementById("reqBox").innerHTML=reqShort();document.getElementById("reqBox2").innerHTML=reqHTML();}
+function joinReady(){const ok=[...document.querySelectorAll("#jChecks input")].every(i=>i.checked)&&JS.prof&&JS.lane&&document.getElementById("jTerms").checked;document.getElementById("jGo").disabled=!ok;}
+function renderJoin(){
+  document.getElementById("joinH").textContent=j("joinH");
+  document.getElementById("jChecks").innerHTML=j("chk").map((c,i)=>`<label><input type="checkbox" data-c="${i}"><span>${esc(c)}</span></label>`).join("");
+  document.getElementById("jQ1").textContent=j("q1");document.getElementById("jQ2").textContent=j("q2");
+  document.getElementById("jProf").innerHTML=j("prof").map((p,i)=>`<label><input type="radio" name="prof" value="p${i+1}"${JS.prof==="p"+(i+1)?" checked":""}>${esc(p)}</label>`).join("");
+  document.getElementById("jLane").innerHTML=j("lane").map((p,i)=>{const v=i?"guided":"express";return `<label><input type="radio" name="lane" value="${v}"${JS.lane===v?" checked":""}>${esc(p)}</label>`}).join("");
+  document.getElementById("jSumL").textContent=j("sumL");document.getElementById("jSum").textContent=fmt(total())+" "+t("month");document.getElementById("jSumR").textContent=j("sumR");
+  document.getElementById("jPilot").textContent=j("pilot");document.getElementById("jTermsT").textContent=j("terms");document.getElementById("jGoT").textContent=j("go");
+  document.getElementById("jDemo").textContent=j("demo");
+  join.querySelectorAll("input").forEach(i=>i.addEventListener("change",()=>{if(i.name==="prof")JS.prof=i.value;if(i.name==="lane")JS.lane=i.value;joinReady();}));
+  joinReady();}
+document.getElementById("go").addEventListener("click",()=>{renderJoin();document.getElementById("jDemo").hidden=true;join.showModal();if(lenis)lenis.stop();});
+document.getElementById("joinX").addEventListener("click",()=>join.close());
+join.addEventListener("close",()=>{if(lenis)lenis.start();});
+document.getElementById("jGo").addEventListener("click",()=>{
+  const mods=["pro","nina","marco"].filter(k=>S.sel[k]).join(",");
+  const q=new URLSearchParams({profile:JS.prof,lane:JS.lane,modules:mods,lang:L});
+  if(CONFIG.startUrl){location.href=CONFIG.startUrl+(CONFIG.startUrl.includes("?")?"&":"?")+q.toString();return;}
+  const d=document.getElementById("jDemo");if(d.hidden){d.hidden=false;document.getElementById("jGoT").textContent="→";return;}
+  join.close();openThanks("");});
+function mask(e){const m=String(e).match(/^([^@]{1,64})@(.+)$/);return m?esc(m[1].charAt(0)+"…@"+m[2]):"";}
+function renderThanks(email){
+  document.getElementById("tH").textContent=j("thxH");document.getElementById("tAcc").innerHTML=j("thxAcc")(mask(email));
+  document.getElementById("tOpen").textContent=j("open");document.getElementById("tKeep").textContent=j("keep");
+  const vn=document.getElementById("tVidN");vn.textContent=j("vidN");vn.hidden=!j("vidN");
+  document.getElementById("tSteps").innerHTML=j("steps").map((s,i)=>`<li class="${JS.done.has(i)?"ok":""}"><div><b>${esc(s[0])}</b><p>${esc(s[1])}<span class="t-path">${esc(s[2])}</span></p>${i===0?`<div class="t-copy"><code>${esc(CONFIG.marketplace)}</code><button type="button" class="btn sm quiet" data-copy="${esc(CONFIG.marketplace)}">${esc(j("copy"))}</button></div>`:""}<p style="margin-top:8px">${esc(s[3])}</p><div class="t-mini">${i===2?`<button type="button" class="btn sm quiet" data-copy="${esc(j("phrase"))}">${esc(j("copy"))}: ${esc(j("phrase"))}</button>`:""}<button type="button" class="btn sm" data-did="${i}">${esc(j("did"))}</button></div></div></li>`).join("");
+  document.getElementById("tHelpT").textContent=j("helpT");
+  const h=document.getElementById("tHelp");h.textContent=j("help");h.href=CONFIG.helpWhatsapp||("mailto:"+CONFIG.helpMail+"?subject="+encodeURIComponent("CarrEar · "+j("help")));
+  document.getElementById("tBack").textContent=j("back");
+  document.querySelectorAll("#tSteps [data-copy]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.copy,lab=b.textContent;const ok=()=>{b.textContent=j("copied");setTimeout(()=>b.textContent=lab,1600)};
+    if(navigator.clipboard)navigator.clipboard.writeText(v).then(ok,ok);else ok();}));
+  document.querySelectorAll("#tSteps [data-did]").forEach(b=>b.addEventListener("click",()=>{JS.done.add(+b.dataset.did);renderThanks(email);}));}
+let thxEmail="";
+function openThanks(email){thxEmail=email||"";renderThanks(thxEmail);thanks.hidden=false;document.documentElement.style.overflow="hidden";if(lenis)lenis.stop();thanks.scrollTop=0;}
+document.getElementById("tBack").addEventListener("click",()=>{thanks.hidden=true;document.documentElement.style.overflow="";document.getElementById("tVid").pause();if(lenis)lenis.start();});
+function fromHash(){const h=location.hash||"";if(!h.startsWith("#gracias"))return;const p=new URLSearchParams(h.replace(/^#gracias&?/,"").replace(/^\?/,""));openThanks(p.get("email")||"");}
+
+/* ch7 */
+function renderFaq(){document.getElementById("faq").innerHTML=t("faq").map(f=>`<details><summary>${esc(f[0])}</summary><p>${esc(f[1])}</p></details>`).join("");}
+
+/* relay + films */
+function renderRelay(){document.getElementById("relay").innerHTML=t("relay").map(([id,x])=>`<li style="--c:var(--c-${id})"><span class="av"><img src="${img(id)}" alt=""></span><p>${esc(x).replace(NAME[id],`<b>${NAME[id]}</b>`)}</p></li>`).join("");}
+const film=document.getElementById("film"),filmV=document.getElementById("filmV");
+function openFilm(src,at){filmV.src=src;film.showModal();if(lenis)lenis.stop();filmV.addEventListener("loadedmetadata",()=>{filmV.currentTime=at||0;},{once:true});filmV.play().catch(()=>{});}
+const heroV=document.getElementById("heroV"),heroPlay=document.getElementById("heroPlay");
+heroPlay.addEventListener("click",()=>{heroV.controls=true;heroPlay.hidden=true;heroV.currentTime=0;heroV.play().catch(()=>{});});
+heroV.addEventListener("ended",()=>{heroV.controls=false;heroPlay.hidden=false;});
+const hfScene=document.querySelector(".hf-scene");heroV.addEventListener("play",()=>hfScene.classList.add("playing"));["pause","ended"].forEach(ev=>heroV.addEventListener(ev,()=>hfScene.classList.remove("playing")));
+document.getElementById("filmX").addEventListener("click",()=>film.close());
+film.addEventListener("click",e=>{if(e.target===film)film.close();});
+film.addEventListener("close",()=>{filmV.pause();if(lenis)lenis.start();});
+
+/* meet your agents */
+const meet=document.getElementById("meet"),MORDER=["nina","marco","helena","maya","leo","ravi","claire"];const AV={claire:50,leo:47,helena:50,maya:72,nina:51,marco:49};let mA="film";
+function renderMeet(){const M=t("agents"),a=M[mA],tabs=document.getElementById("mTabs"),body=document.getElementById("mBody");
+  const old=body.querySelector("video");if(old)old.pause();
+  tabs.innerHTML=`<button type="button" class="m-tab film" role="tab" aria-selected="${mA==="film"}" data-id="film">&#9654; ${esc(t("teamFilm"))}</button>`+MORDER.map(id=>`<button type="button" class="m-tab" role="tab" aria-selected="${id===mA}" style="--c:var(--c-${id})" data-id="${id}"><img src="${img(id)}" alt="">${NAME[id]}</button>`).join("");
+  tabs.querySelectorAll(".m-tab").forEach(b=>b.addEventListener("click",()=>{mA=b.dataset.id;renderMeet();body.scrollTop=0;}));
+  if(mA==="film"){body.innerHTML=`<div class="m-film"><img src="img/team.jpg" alt=""><button type="button" class="bigplay" aria-label="${esc(t("pl"))}: ${esc(t("teamFilm"))}"><span aria-hidden="true">&#9654;</span><b>${esc(t("teamFilm"))}</b></button></div>`;
+    body.querySelector(".bigplay").addEventListener("click",()=>playIn(body.querySelector(".m-film"),"video/meet-your-team.mp4"));return;}
+  body.style.setProperty("--c",`var(--c-${mA})`);
+  body.innerHTML=`<div class="m-photo" style="--op:${AV[mA]||50}%"><img src="${img(mA)}" alt="${NAME[mA]}">${AV[mA]!=null?`<button type="button" class="bigplay" aria-label="${esc(t("pl"))}: ${NAME[mA]}"><span aria-hidden="true">&#9654;</span><b>${NAME[mA]}</b></button>`:""}</div><div class="m-txt"><p class="m-role">${esc(a.role)}</p><h3 class="m-name">${NAME[mA]}</h3><p class="m-words">${esc(a.w)}</p><div class="m-sec"><h4>${esc(t("mDoes"))}</h4><ul class="m-list">${a.f.map(x=>`<li><span>${esc(x)}</span></li>`).join("")}</ul></div><div class="m-sec"><h4>${esc(t("mCases"))}</h4><div class="m-cases">${a.u.map(x=>`<p class="m-case">${esc(x)}</p>`).join("")}</div></div></div>`;
+  const bp=body.querySelector(".m-photo .bigplay");if(bp)bp.addEventListener("click",()=>playIn(body.querySelector(".m-photo"),`video/agents/${mA}.mp4`));}
+function playIn(box,src,at){box.classList.add("playing");box.innerHTML=`<video controls playsinline autoplay src="${src}"></video>`;const v=box.querySelector("video");
+  if(at!=null)v.addEventListener("loadedmetadata",()=>{v.currentTime=at;},{once:true});v.play().catch(()=>{});return v;}
+function openMeet(tab,at){mA=tab;renderMeet();meet.showModal();if(lenis)lenis.stop();if(tab==="film"&&at!=null)playIn(document.querySelector("#mBody .m-film"),"video/meet-your-team.mp4",at);}
+document.getElementById("meetBtn").addEventListener("click",()=>openMeet("film"));
+document.getElementById("relayFilm").addEventListener("click",()=>openMeet("film",50));
+document.getElementById("meetX").addEventListener("click",()=>meet.close());
+meet.addEventListener("click",e=>{if(e.target===meet)meet.close();});
+meet.addEventListener("close",()=>{const v=document.querySelector("#mBody video");if(v)v.pause();if(lenis)lenis.start();});
+
+function apply(){
+  document.documentElement.lang=L;
+  document.title=T[L].bmy+" CarrEar · "+T[L].btag;
+  const mk=document.querySelector(".mark");if(mk)mk.setAttribute("aria-label",T[L].bmy+" CarrEar, "+T[L].btag);
+  document.querySelectorAll("[data-i]").forEach(el=>{const v=T[L][el.dataset.i];if(typeof v==="string")el.textContent=v;});
+  document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===L));
+  renderNav();renderSeps();renderChips();renderDemo();renderVs();renderPlan();renderOpts();renderFaq();renderRelay();renderMeet();renderReq();if(join.open)renderJoin();if(!thanks.hidden)renderThanks(thxEmail);measure();refresh();update();
+}
+document.querySelectorAll(".lang button").forEach(b=>b.addEventListener("click",()=>{L=b.dataset.l;try{localStorage.setItem("mct-lang",L)}catch(e){}apply();}));
+apply();
+fromHash();addEventListener("hashchange",fromHash);
+})();
+</script>
+
+</body></html>

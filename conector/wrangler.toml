@@ -9,3 +9,9 @@ keep_vars = true
 [[kv_namespaces]]
 binding = "OAUTH_KV"
 id = "4d7a4765480a40a1a3d0575f258eeda1"
+
+# Web B2C (sitio del CCO) servida como archivos estáticos; lo demás (OAuth, MCP, pago) lo atiende el Worker.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "none"

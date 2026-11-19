@@ -92,7 +92,7 @@ async function portalConfig(env: WebEnv, base: string) {
   if (id) return id;
   const c = await stripe(env, 'POST', 'billing_portal/configurations', form({
     'business_profile[headline]': 'My CarrEar team · tu suscripción',
-    'default_return_url': base + '/empezar',
+    'default_return_url': base + '/',
     'features[invoice_history][enabled]': 'true',
     'features[payment_method_update][enabled]': 'true',
     'features[customer_update][enabled]': 'true',
@@ -199,7 +199,7 @@ async function s256(v: string) {
   const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
   return btoa(String.fromCharCode(...new Uint8Array(d))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
-async function googleLogin(env: WebEnv, origin: string, next: { para: 'pagar' | 'cuenta'; extras?: string; meta?: string; claude?: string }) {
+async function googleLogin(env: WebEnv, origin: string, next: { para: 'pagar' | 'cuenta'; extras?: string; meta?: string; claude?: string; lang?: string }) {
   const state = 'web.' + crypto.randomUUID();
   const verifier = crypto.randomUUID() + crypto.randomUUID();
   await env.OAUTH_KV.put('webst:' + state, JSON.stringify({ verifier, ...next }), { expirationTtl: 900 });
@@ -236,23 +236,26 @@ export async function webRoute(req: Request, env: WebEnv, url: URL): Promise<Res
   const p = url.pathname;
   const base = String(env.PUBLIC_URL || url.origin).replace(/\/$/, '');
 
-  if (p === '/' || p === '/empezar') return html('My CarrEar team · Empezar', empezarPage(url.searchParams.get('e') || ''));
+  // La web de verdad (sitio B2C del CCO) se sirve como archivos estáticos en «/». /empezar queda como atajo a sus precios.
+  if (p === '/empezar') return Response.redirect(base + '/#c7', 302);
+  if (p === '/empezar-simple') return html('My CarrEar team · Empezar', empezarPage(url.searchParams.get('e') || ''));
 
   if (p === '/web/entrar') {
-    if (!esPrueba(env)) return html('My CarrEar team', empezarPage('El pago de prueba aún no está activado. Vuelve en un rato.'), 503);
-    return googleLogin(env, url.origin, { para: 'pagar', extras: extrasValidos(url.searchParams.get('extras') || '').join(','), meta: String(url.searchParams.get('meta') || ''), claude: String(url.searchParams.get('claude') || '') });
+    if (!esPrueba(env)) return html('My CarrEar team', '<h1>Casi listo</h1><div class="aviso">El pago de prueba aún no está activado. Vuelve en un rato.</div>', 503);
+    const ex = url.searchParams.get('modules') ?? url.searchParams.get('extras') ?? '';
+    return googleLogin(env, url.origin, { para: 'pagar', extras: extrasValidos(ex).join(','), meta: String(url.searchParams.get('profile') || url.searchParams.get('meta') || '').slice(0, 40), claude: String(url.searchParams.get('lane') || url.searchParams.get('claude') || '').slice(0, 40), lang: String(url.searchParams.get('lang') || 'es').slice(0, 2) } as any);
   }
   if (p === '/cuenta') return googleLogin(env, url.origin, { para: 'cuenta' });
 
   if (p === '/callback' && String(url.searchParams.get('state') || '').startsWith('web.')) {
     const r: any = await googleVuelta(env, url);
-    if (r.error) return Response.redirect(base + '/empezar?e=' + encodeURIComponent(r.error), 302);
+    if (r.error) return Response.redirect(base + '/empezar-simple?e=' + encodeURIComponent(r.error), 302);
     const { email, st } = r;
     if (st.para === 'cuenta') {
       const l = await leerLic(env, email);
-      if (!l?.customerId) return Response.redirect(base + '/empezar?e=' + encodeURIComponent(`No encontramos una suscripción para ${email}.`), 302);
+      if (!l?.customerId) return Response.redirect(base + '/empezar-simple?e=' + encodeURIComponent(`No encontramos una suscripción para ${email}.`), 302);
       try {
-        const s = await stripe(env, 'POST', 'billing_portal/sessions', form({ customer: l.customerId, return_url: base + '/empezar', locale: 'es', configuration: await portalConfig(env, base) }));
+        const s = await stripe(env, 'POST', 'billing_portal/sessions', form({ customer: l.customerId, return_url: base + '/', locale: 'es', configuration: await portalConfig(env, base) }));
         return Response.redirect(s.url, 303);
       } catch (e: any) { return html('Mi cuenta', `<h1>Mi cuenta</h1><div class="aviso">No se pudo abrir tu cuenta: ${esc(e.message)}</div>`, 502); }
     }
@@ -264,8 +267,8 @@ export async function webRoute(req: Request, env: WebEnv, url: URL): Promise<Res
     }
     const extras = extrasValidos(st.extras || '');
     const f: Record<string, string | number> = {
-      mode: 'subscription', customer_email: email, locale: 'es', client_reference_id: email,
-      success_url: base + '/gracias?session_id={CHECKOUT_SESSION_ID}', cancel_url: base + '/empezar',
+      mode: 'subscription', customer_email: email, client_reference_id: email,
+      success_url: base + '/gracias?session_id={CHECKOUT_SESSION_ID}', cancel_url: base + '/#c7', locale: ['es', 'fr', 'en'].includes(st.lang) ? st.lang : 'auto',
       'subscription_data[trial_period_days]': DIAS_GRATIS,
       'subscription_data[metadata][email]': email, 'subscription_data[metadata][addons]': extras.join(','),
       'metadata[email]': email, 'metadata[addons]': extras.join(','), 'metadata[meta]': st.meta || '', 'metadata[claude]': st.claude || '',
@@ -283,7 +286,7 @@ export async function webRoute(req: Request, env: WebEnv, url: URL): Promise<Res
     try {
       const s = await stripe(env, 'POST', 'checkout/sessions', form(f));
       return Response.redirect(s.url, 303);
-    } catch (e: any) { return Response.redirect(base + '/empezar?e=' + encodeURIComponent('No se pudo abrir el pago: ' + e.message), 302); }
+    } catch (e: any) { return Response.redirect(base + '/empezar-simple?e=' + encodeURIComponent('No se pudo abrir el pago: ' + e.message), 302); }
   }
 
   if (p === '/gracias') {
@@ -300,7 +303,13 @@ export async function webRoute(req: Request, env: WebEnv, url: URL): Promise<Res
       email = String((await env.OAUTH_KV.get('gr:' + url.searchParams.get('g'))) || '');
       if (email) l = await leerLic(env, email);
     }
-    if (!email) return Response.redirect(base + '/empezar', 302);
+    if (!email) return Response.redirect(base + '/#c7', 302);
+    if (l && l.estado === 'activa' && url.searchParams.get('vista') !== 'simple') {
+      // De vuelta a la web, a su vista «Gracias» (solo el correo enmascarado en la dirección).
+      const m = email.match(/^([^@]+)@(.+)$/);
+      const masked = m ? m[1].charAt(0) + '…@' + m[2] : '';
+      return Response.redirect(base + '/#gracias&email=' + encodeURIComponent(masked), 302);
+    }
     return html('My CarrEar team · Bienvenido', graciasPage(email, l, base));
   }
 

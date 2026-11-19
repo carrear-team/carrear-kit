@@ -3,6 +3,7 @@
 // Guarda solo: id y correo de Google (cifrados en el token, como props). Nunca contenido del usuario.
 import { OAuthProvider, AuthorizationError, CimdFetchError } from '@cloudflare/workers-oauth-provider';
 import type { ConsentDescription } from '@cloudflare/workers-oauth-provider';
+import { webRoute, leerLic } from './web';
 
 interface Env {
   OAUTH_KV: KVNamespace;
@@ -12,11 +13,14 @@ interface Env {
   LICENCIAS_ACTIVAS: string;     // correos con licencia de prueba, separados por comas
   PAGO_URL: string;              // enlace de pago (piloto: página de prueba)
   LICENCIA_EXTRAS?: string;      // opcional: «correo=nina,marco;correo2=pro». Sin la variable: piloto con todos los extras
+  STRIPE_SECRET_KEY?: string;    // secreto: clave de PRUEBA de Stripe (la pone Eric en Cloudflare)
+  STRIPE_WEBHOOK_SECRET?: string;// secreto: whsec_… del aviso /stripe/webhook
+  PUBLIC_URL?: string;
 }
 type Props = { sub: string; email: string };
 
 const esc = (v: string) => String(v).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-const VERSION = '0.3.0';
+const VERSION = '0.4.0';
 // El método (capa 1) NO está en este código ni en el repo: vive en el KV privado de Cloudflare (claves «metodo:<agente>»).
 const AGENTES = ['claire', 'leo', 'helena', 'nina', 'marco', 'maya'];
 const METODO_VERSION = '0.2';
@@ -51,6 +55,8 @@ const defaultHandler = {
     const url = new URL(req.url);
     const oauth = env.OAUTH_PROVIDER;
     try {
+      const w = await webRoute(req, env as any, url);
+      if (w) return w;
       if (url.pathname === '/') return page('CarrEar', `<h1>Conector CarrEar ${VERSION}</h1><p>Funciona. Añádelo desde el paquete CarrEar en Claude.</p>`);
       if (url.pathname === '/authorize' && req.method === 'GET') {
         const request = await oauth.parseAuthRequest(req);
@@ -130,7 +136,7 @@ const TOOLS = [
 
 // Código de la página (capa 2): vive en el KV («pagina:actual» = {version, partes}; «pagina:<version>:<n>» = texto), nunca en el repo.
 async function pagina(env: Env, email: string, args: any) {
-  const lic = licencia(env, email);
+  const lic = await licencia(env, email);
   if (lic.estado !== 'activa') return lic;
   const man = await env.OAUTH_KV.get('pagina:actual', 'json') as any;
   if (!man || !man.version) return { error: 'El código de la página no está disponible ahora mismo. Inténtalo más tarde.' };
@@ -158,7 +164,7 @@ function seccion(texto: string, paso?: string) {
 }
 
 async function instrucciones(env: Env, email: string, args: any) {
-  const lic = licencia(env, email);
+  const lic = await licencia(env, email);
   if (lic.estado !== 'activa') return lic;
   const agente = String(args?.agente || '').toLowerCase();
   if (!AGENTES.includes(agente)) return { error: `Agente desconocido: ${agente}. Usa claire, leo, helena, nina, marco o maya.` };
@@ -182,11 +188,18 @@ function extras(env: Env, email: string): string[] {
   return [];
 }
 
-function licencia(env: Env, email: string) {
+async function licencia(env: Env, email: string): Promise<any> {
+  const web = String(env.PUBLIC_URL || 'https://carrear-conector.ericalexandre-pulido.workers.dev').replace(/\/$/, '');
+  const pago = env.PAGO_URL || web + '/empezar';
+  // 1) Licencia de pago (Stripe, modo prueba): la escribe la web al confirmar el pago y los avisos de Stripe.
+  const l = await leerLic(env as any, email);
+  if (l && l.estado === 'activa' && (!l.hasta || l.hasta >= new Date().toISOString().slice(0, 10)))
+    return { estado: 'activa', hasta: l.hasta || finDeMes(), cuenta: email, addons: l.addons || [], origen: 'suscripcion', gestionarUrl: web + '/cuenta', upgradeUrl: web + '/cuenta' };
+  // 2) Licencias de piloto dadas a mano (variable LICENCIAS_ACTIVAS).
   const lista = String(env.LICENCIAS_ACTIVAS || '').toLowerCase().split(/[\s,;]+/).filter(Boolean);
-  if (lista.includes(email)) return { estado: 'activa', hasta: finDeMes(), cuenta: email, addons: extras(env, email), upgradeUrl: env.PAGO_URL || 'https://mycarrearteam.com' };
-  return { estado: 'inactiva', cuenta: email, enlacePago: env.PAGO_URL || 'https://mycarrearteam.com',
-    mensaje: 'Tu acceso a CarrEar no está activo. Actívalo en el enlace y vuelve a intentarlo.' };
+  if (lista.includes(email)) return { estado: 'activa', hasta: finDeMes(), cuenta: email, addons: extras(env, email), origen: 'piloto', upgradeUrl: pago };
+  return { estado: 'inactiva', cuenta: email, enlacePago: l ? web + '/cuenta' : pago,
+    mensaje: l ? 'Tu suscripción a CarrEar no está activa. Revisa tu pago en el enlace.' : 'Tu acceso a CarrEar no está activo. Actívalo en el enlace y vuelve a intentarlo.' };
 }
 
 const rpc = (id: any, result: any) => Response.json({ jsonrpc: '2.0', id, result });
@@ -214,7 +227,7 @@ const apiHandler = {
         const name = params?.name;
         let out: any;
         if (name === 'hola') out = { ok: true, mensaje: `Hola, estás conectado a CarrEar ${VERSION} con ${props.email}.`, cuenta: props.email };
-        else if (name === 'licencia') out = licencia(env, props.email);
+        else if (name === 'licencia') out = await licencia(env, props.email);
         else if (name === 'instrucciones') {
           const r: any = await instrucciones(env, props.email, params?.arguments);
           if (r.metodo) return rpc(id, { content: [{ type: 'text', text: r.metodo }], structuredContent: { agente: r.agente, version: r.version, aviso: r.aviso } });

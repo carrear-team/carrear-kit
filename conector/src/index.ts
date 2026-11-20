@@ -243,12 +243,14 @@ const apiHandler = {
   },
 };
 
-let provider: any = null;
+// Un proveedor por dirección (mycarrear.com, www y la de workers.dev): cada conector ve un emisor
+// y un recurso que coinciden con la URL que tiene guardada, así los conectores antiguos siguen funcionando.
+const providers = new Map<string, any>();
 export default {
   fetch(req: Request, env: Env & { PUBLIC_URL: string }, ctx: ExecutionContext) {
-    // La dirección pública del Worker (variable PUBLIC_URL) solo se conoce al desplegar: el proveedor se crea en la primera petición.
+    const base = new URL(req.url).origin.replace(/\/$/, '');
+    let provider = providers.get(base);
     if (!provider) {
-      const base = String(env.PUBLIC_URL || new URL(req.url).origin).replace(/\/$/, '');
       provider = new OAuthProvider<Env>({
         apiRoute: '/mcp',
         apiHandler: apiHandler as any,
@@ -261,6 +263,7 @@ export default {
         resourceMetadata: { resource: `${base}/mcp`, authorization_servers: [base] },
         clientIdMetadataDocumentEnabled: true,
       } as any);
+      providers.set(base, provider);
     }
     return provider.fetch(req, env, ctx);
   },

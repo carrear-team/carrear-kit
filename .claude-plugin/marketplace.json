@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Marketplace de CarrEar (versión de prueba): solo cascarones, sin datos de nadie.",
-    "version": "1.1.0"
+    "version": "1.1.1"
   },
   "plugins": [
     {
       "name": "carrear",
       "source": "./plugins/carrear-humo",
       "description": "CarrEar: tu equipo de carrera (Claire, Leo, Helena, Nina, Marco y Maya) y su instalador. Instala y escribe «Instala CarrEar» en un chat de tu proyecto «Digital Brain». El método de cada agente llega del conector CarrEar con tu suscripción activa.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "category": "productivity"
     }
   ]

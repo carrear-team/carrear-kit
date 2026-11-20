@@ -189,7 +189,7 @@ function extras(env: Env, email: string): string[] {
 }
 
 async function licencia(env: Env, email: string): Promise<any> {
-  const web = String(env.PUBLIC_URL || 'https://carrear-conector.ericalexandre-pulido.workers.dev').replace(/\/$/, '');
+  const web = String(env.PUBLIC_URL || 'https://mycarrear.com').replace(/\/$/, '');
   const pago = env.PAGO_URL || web + '/empezar';
   // 1) Licencia de pago (Stripe, modo prueba): la escribe la web al confirmar el pago y los avisos de Stripe.
   const l = await leerLic(env as any, email);

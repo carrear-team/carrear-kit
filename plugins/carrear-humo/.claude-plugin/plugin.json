@@ -1,6 +1,6 @@
 {
   "name": "carrear",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "CarrEar: tu equipo de carrera (Claire, Leo, Helena, Nina, Marco y Maya) y su instalador. No contiene datos de ninguna persona: el método de cada agente llega del conector CarrEar con suscripción activa.",
   "author": {
     "name": "CarrEar"

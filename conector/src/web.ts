@@ -12,7 +12,7 @@ export interface WebEnv {
 }
 
 export const MARKETPLACE = 'carrear-team/carrear-kit';
-export const PLUGIN = 'carrear-humo';
+export const PLUGIN = 'carrear';
 
 // Precios aprobados por Eric el 10-nov-2026 (céntimos, €/mes). Primer mes gratis.
 export const PLANES = {
